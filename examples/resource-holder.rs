@@ -6,7 +6,7 @@ use {
         audio::{Sound, SoundBuffer},
         cpp::FBox,
         graphics::{Color, RenderTarget, RenderWindow, Sprite, Texture},
-        window::{Event, Key, Style},
+        window::{Event, Key, Style, window_enums::State},
     },
     std::{collections::HashMap, hash::Hash},
 };
@@ -63,6 +63,7 @@ fn main() -> SfResult<()> {
         (800, 600),
         "Resource holder test",
         Style::CLOSE,
+        State::Windowed,
         &Default::default(),
     )?;
     rw.set_vertical_sync_enabled(true);

@@ -8,8 +8,8 @@ use {
             RenderTexture, RenderWindow, Shader, ShaderType, Sprite, Text, Texture, Transform,
             Transformable, Vertex,
         },
-        system::{Clock, Vector2f},
-        window::{Event, Key, Style},
+        system::{Clock, Vector2, Vector2f},
+        window::{Event, Key, Style, window_enums::State},
     },
 };
 
@@ -27,10 +27,8 @@ struct Pixelate<'t> {
 
 impl<'t> Pixelate<'t> {
     fn new(texture: &'t Texture) -> SfResult<Self> {
-        let mut sprite = Sprite::new();
-        sprite.set_texture(texture, false);
         Ok(Self {
-            sprite,
+            sprite: Sprite::with_texture(texture),
             shader: Shader::from_file("pixelate.frag", ShaderType::Fragment)?,
         })
     }
@@ -182,7 +180,7 @@ struct Edge<'t> {
 
 impl<'t> Edge<'t> {
     fn new(bg_texture: &'t Texture, entity_texture: &'t Texture) -> SfResult<Self> {
-        let mut surface = RenderTexture::new(800, 600)?;
+        let mut surface = RenderTexture::new(Vector2::new(800, 600))?;
         surface.set_smooth(true);
         let mut bg_sprite = Sprite::with_texture(bg_texture);
         bg_sprite.set_position((135., 100.));
@@ -191,7 +189,7 @@ impl<'t> Edge<'t> {
         for i in 0..6 {
             entities.push(Sprite::with_texture_and_rect(
                 entity_texture,
-                IntRect::new(96 * i, 0, 96, 96),
+                IntRect::new(Vector2::new(96 * i, 0), Vector2::new(96, 96)),
             ));
         }
 
@@ -302,7 +300,7 @@ impl Drawable for Geometry<'_> {
 impl Effect for Geometry<'_> {
     fn update(&mut self, _t: f32, x: f32, y: f32) -> SfResult<()> {
         self.transform = Transform::IDENTITY;
-        self.transform.translate(400., 300.);
+        self.transform.translate(Vector2::new(400., 300.));
         self.transform.rotate(x * 360.0);
         let size = 25. + y.abs() * 50.;
         self.shader.set_uniform_vec2("size", size.into())?;
@@ -321,6 +319,7 @@ fn main() -> SfResult<()> {
         (800, 600),
         "SFML Shader",
         Style::TITLEBAR | Style::CLOSE,
+        State::Windowed,
         &Default::default(),
     )?;
     window.set_vertical_sync_enabled(true);
@@ -351,7 +350,8 @@ fn main() -> SfResult<()> {
     let mut instructions = Text::new(msg, &font, 20);
     instructions.set_position((280., 555.));
     instructions.set_fill_color(Color::rgb(80, 80, 80));
-    let clock = Clock::start()?;
+    let mut clock = Clock::new()?;
+    clock.start();
 
     while window.is_open() {
         while let Some(event) = window.poll_event() {

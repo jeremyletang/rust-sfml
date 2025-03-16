@@ -90,6 +90,4 @@ impl Type {
     pub const USER_ACCELERATION: Self = Self(sfSensorType::UserAcceleration);
     /// Measures the absolute 3D orientation (degrees)
     pub const ORIENTATION: Self = Self(sfSensorType::Orientation);
-    /// The total number of sensor types.
-    pub const COUNT: sfSensorType = sfSensorType::Count;
 }

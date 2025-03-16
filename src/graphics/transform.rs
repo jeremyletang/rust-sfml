@@ -109,8 +109,8 @@ impl Transform {
     /// # Arguments
     /// * x - Offset to apply on X axis
     /// * y - Offset to apply on Y axis
-    pub fn translate(&mut self, x: f32, y: f32) {
-        unsafe { ffi::sfTransform_translate(self, x, y) }
+    pub fn translate(&mut self, translate: Vector2f) {
+        unsafe { ffi::sfTransform_translate(self, translate) }
     }
 
     /// Combine the current transform with a rotation
@@ -132,8 +132,8 @@ impl Transform {
     /// * angle - Rotation angle, in degrees
     /// * `center_x` - X coordinate of the center of rotation
     /// * `center_y` - Y coordinate of the center of rotation
-    pub fn rotate_with_center(&mut self, angle: f32, center_x: f32, center_y: f32) {
-        unsafe { ffi::sfTransform_rotateWithCenter(self, angle, center_x, center_y) }
+    pub fn rotate_with_center(&mut self, angle: f32, center: Vector2f) {
+        unsafe { ffi::sfTransform_rotateWithCenter(self, angle, center) }
     }
 
     /// Combine the current transform with a scaling
@@ -141,8 +141,8 @@ impl Transform {
     /// # Arguments
     /// * `scale_x` - Scaling factor on the X axis
     /// * `scale_y` - Scaling factor on the Y axis
-    pub fn scale(&mut self, scale_x: f32, scale_y: f32) {
-        unsafe { ffi::sfTransform_scale(self, scale_x, scale_y) }
+    pub fn scale(&mut self, scale: Vector2f) {
+        unsafe { ffi::sfTransform_scale(self, scale) }
     }
 
     /// Combine the current transform with a scaling
@@ -157,8 +157,8 @@ impl Transform {
     /// * `scale_y` - Scaling factor on Y axis
     /// * `center_x` - X coordinate of the center of scaling
     /// * `center_y` - Y coordinate of the center of scaling
-    pub fn scale_with_center(&mut self, scale_x: f32, scale_y: f32, center_x: f32, center_y: f32) {
-        unsafe { ffi::sfTransform_scaleWithCenter(self, scale_x, scale_y, center_x, center_y) }
+    pub fn scale_with_center(&mut self, scale: Vector2f, center: Vector2f) {
+        unsafe { ffi::sfTransform_scaleWithCenter(self, scale, center) }
     }
 
     /// Apply a transform to a 2D point

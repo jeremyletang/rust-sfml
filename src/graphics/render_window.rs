@@ -7,8 +7,11 @@ use crate::{
         RcText, RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexBuffer,
         View,
     },
-    system::{SfStrConv, Vector2f, Vector2i, Vector2u},
-    window::{ContextSettings, Cursor, Event, Handle, Style, VideoMode, thread_safety},
+    system::{SfStrConv, Time, Vector2f, Vector2i, Vector2u},
+    window::{
+        ContextSettings, Cursor, Event, Handle, Style, VideoMode, thread_safety,
+        window_enums::State,
+    },
 };
 
 decl_opaque! {
@@ -46,36 +49,23 @@ impl RenderWindow {
         mode: V,
         title: S,
         style: Style,
+        state: State,
         settings: &ContextSettings,
     ) -> SfResult<FBox<Self>> {
         thread_safety::set_window_thread();
 
         title.with_as_sfstr(|sfstr| {
             let ptr = unsafe {
-                ffi::sfRenderWindow_new_mtss(mode.into(), sfstr.as_ptr(), style.bits(), settings)
+                ffi::sfRenderWindow_new_mtsss(
+                    mode.into(),
+                    sfstr.as_ptr(),
+                    style.bits(),
+                    state,
+                    settings,
+                )
             };
             FBox::new(ptr).ok_or(SfError::CallFailed)
         })
-    }
-    /// Recreate with new settings. See [`Self::new`] for more information.
-    pub fn recreate<V: Into<VideoMode>, S: SfStrConv>(
-        &mut self,
-        mode: V,
-        title: S,
-        style: Style,
-        settings: &ContextSettings,
-    ) {
-        thread_safety::set_window_thread();
-
-        title.with_as_sfstr(|sfstr| unsafe {
-            ffi::sfRenderWindow_create_mtss(
-                self,
-                mode.into(),
-                sfstr.as_ptr(),
-                style.bits(),
-                settings,
-            );
-        });
     }
 
     /// Create a render window from an existing platform-specific window handle
@@ -131,9 +121,11 @@ impl RenderWindow {
     /// sleep as long as no new event is received.
     ///
     /// Returns `Some(event)` or `None` if an error has occured
-    pub fn wait_event(&mut self) -> Option<Event> {
+    pub fn wait_event(&mut self, timeout: Time) -> Option<Event> {
         let mut event = std::mem::MaybeUninit::uninit();
-        let have_event = unsafe { ffi::sfRenderWindow_waitEvent(self, event.as_mut_ptr()) };
+        let have_event = unsafe {
+            ffi::sfRenderWindow_waitEvent(self, event.as_mut_ptr(), timeout.as_microseconds())
+        };
         if have_event {
             unsafe { Event::from_raw(&event.assume_init()) }
         } else {
@@ -288,8 +280,7 @@ impl RenderWindow {
     /// pixels must be an array of width x height pixels in 32-bits RGBA format.
     ///
     /// # Arguments
-    /// * width - Icon's width, in pixels
-    /// * height - Icon's height, in pixels
+    /// * size - Size of window
     /// * pixels - Vector of pixels
     ///
     /// # Safety
@@ -297,8 +288,8 @@ impl RenderWindow {
     /// `pixels` not being at least `width * height * 4` will likely cause undefined behavior.
     ///
     /// Platform-specific behavior is also unclear (limits on max size, etc).
-    pub unsafe fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
-        unsafe { ffi::sfRenderWindow_setIcon(self, width, height, pixels.as_ptr()) }
+    pub unsafe fn set_icon(&mut self, size: Vector2u, pixels: &[u8]) {
+        unsafe { ffi::sfRenderWindow_setIcon(self, size, pixels.as_ptr()) }
     }
 
     /// Close a render window and destroy all the attached resources
@@ -372,6 +363,26 @@ impl RenderWindow {
         unsafe { ffi::sfRenderWindow_setSize(self, size.into()) }
     }
 
+    /// Set the minimum rendering region size
+    ///
+    /// Pass `None` to unset the minimum size
+    pub fn set_minimum_size(&mut self, size: Option<Vector2u>) {
+        let ptr = size.as_ref().map_or(std::ptr::null(), |v| v);
+        unsafe {
+            ffi::sfRenderWindow_setMinimumSize(self, ptr);
+        }
+    }
+
+    /// Set the maximum rendering region size
+    ///
+    /// Pass `None` to unset the maximum size
+    pub fn set_maximum_size(&mut self, size: Option<Vector2u>) {
+        let ptr = size.as_ref().map_or(std::ptr::null(), |v| v);
+        unsafe {
+            ffi::sfRenderWindow_setMaximumSize(self, ptr);
+        }
+    }
+
     /// Set the displayed cursor to a native system cursor.
     ///
     /// Upon window creation, the arrow cursor is used by default.
@@ -412,7 +423,7 @@ impl RenderWindow {
     /// doesn't support, or implement a temporary workaround until a bug is fixed.
     #[must_use]
     pub fn system_handle(&self) -> Handle {
-        unsafe { ffi::sfRenderWindow_getSystemHandle(self) }
+        unsafe { ffi::sfRenderWindow_getNativeHandle(self) }
     }
 }
 
@@ -505,6 +516,15 @@ impl RenderTarget for RenderWindow {
     }
     fn clear(&mut self, color: Color) {
         unsafe { ffi::sfRenderWindow_clear(self, color) }
+    }
+    fn clear_stencil(&mut self, stencil_value: ffi::StencilValue) {
+        unsafe { ffi::sfRenderWindow_clearStencil(self, stencil_value) }
+    }
+    fn clear_color_and_stencil(&mut self, stencil_value: ffi::StencilValue, color: Color) {
+        unsafe { ffi::sfRenderWindow_clearColorAndStencil(self, color, stencil_value) }
+    }
+    fn scissor(&self, view: &View) -> IntRect {
+        unsafe { ffi::sfRenderWindow_getScissor(self, view) }
     }
 }
 

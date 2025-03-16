@@ -1,3 +1,4 @@
+use num_traits::Float;
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 use {
@@ -53,6 +54,12 @@ pub struct Vector3<T> {
     /// Z coordinate of the vector.
     pub z: T,
 }
+/// [`Vector3`] with `f32` coordinates.
+pub type Vector3f = Vector3<f32>;
+/// [`Vector3`] with `u32` coordinates.
+pub type Vector3u = Vector3<u32>;
+/// [`Vector3`] with `i32` coordinates.
+pub type Vector3i = Vector3<i32>;
 
 impl<T> Vector3<T> {
     /// Create a new `Vector3` with the given values.
@@ -134,14 +141,6 @@ impl<T> Vector3<T> {
             z: self.z.as_(),
         }
     }
-}
-
-/// [`Vector3`] with `f32` coordinates.
-pub type Vector3f = Vector3<f32>;
-/// [`Vector3`] with `i32` coordinates.
-pub type Vector3i = Vector3<i32>;
-
-impl<T: Mul<Output = T> + Add<Output = T> + Copy> Vector3<T> {
     /// Dot product of two 3D vectors.
     ///
     /// # Usage example
@@ -153,9 +152,13 @@ impl<T: Mul<Output = T> + Add<Output = T> + Copy> Vector3<T> {
     ///
     /// assert_eq!(a.dot(b), 6942);
     /// ```
-    pub fn dot(self, rhs: Self) -> T {
+    pub fn dot(self, rhs: Self) -> T
+    where
+        T: Mul<Output = T> + Add<Output = T> + Copy,
+    {
         self.x * rhs.x + self.y * rhs.y + self.z * rhs.z
     }
+
     /// Square of vector's length.
     ///
     /// # Usage Example
@@ -165,12 +168,13 @@ impl<T: Mul<Output = T> + Add<Output = T> + Copy> Vector3<T> {
     /// let a = Vector3i::new(9, 10, 21);
     /// assert_eq!(a.length_sq(), 622);
     /// ```
-    pub fn length_sq(self) -> T {
+    pub fn length_sq(self) -> T
+    where
+        T: Mul<Output = T> + Add<Output = T> + Copy,
+    {
         self.dot(self)
     }
-}
 
-impl<T: Mul<Output = T> + Sub<Output = T> + Copy> Vector3<T> {
     /// Cross product of two 3D vectors.
     ///
     /// # Usage Example
@@ -181,16 +185,17 @@ impl<T: Mul<Output = T> + Sub<Output = T> + Copy> Vector3<T> {
     /// let b = Vector3i::new(69, 420, 101);
     /// assert_eq!(a.cross(b), Vector3i::new(-7810, 540, 3090));
     /// ```
-    pub fn cross(self, rhs: Self) -> Vector3<T> {
+    pub fn cross(self, rhs: Self) -> Vector3<T>
+    where
+        T: Mul<Output = T> + Sub<Output = T> + Copy,
+    {
         Vector3 {
             x: self.y * rhs.z - self.z * rhs.y,
             y: self.z * rhs.x - self.x * rhs.z,
             z: self.x * rhs.y - self.y * rhs.x,
         }
     }
-}
 
-impl<T: Mul<Output = T>> Vector3<T> {
     /// Component-wise multiplication of self and rhs.
     ///
     /// # Usage Example
@@ -201,16 +206,17 @@ impl<T: Mul<Output = T>> Vector3<T> {
     /// let b = Vector3i::new(2, 2, 2);
     /// assert_eq!(a.cwise_mul(b), Vector3i::new(2, 2, 2));
     /// ```
-    pub fn cwise_mul(self, rhs: Self) -> Vector3<T> {
+    pub fn cwise_mul(self, rhs: Self) -> Vector3<T>
+    where
+        T: Mul<Output = T>,
+    {
         Self {
             x: self.x * rhs.x,
             y: self.y * rhs.y,
             z: self.z * rhs.z,
         }
     }
-}
 
-impl<T: Div<Output = T>> Vector3<T> {
     /// Component-wise division of self and rhs. Panics on divide by zero
     ///
     /// # Usage Example
@@ -221,16 +227,17 @@ impl<T: Div<Output = T>> Vector3<T> {
     /// let b = Vector3i::new(3, 3, 3);
     /// assert_eq!(a.cwise_div(b), Vector3i::new(3, 3, 3));
     /// ```
-    pub fn cwise_div(self, rhs: Self) -> Vector3<T> {
+    pub fn cwise_div(self, rhs: Self) -> Vector3<T>
+    where
+        T: Div<Output = T>,
+    {
         Vector3 {
             x: self.x / rhs.x,
             y: self.y / rhs.y,
             z: self.z / rhs.z,
         }
     }
-}
 
-impl<T: Div<Output = T> + CheckedDiv> Vector3<T> {
     /// Component-wise checked division of self and rhs. Returns None on divide by zero
     ///
     /// # Usage Example
@@ -245,11 +252,121 @@ impl<T: Div<Output = T> + CheckedDiv> Vector3<T> {
     /// let b = Vector3i::new(3, 0, 3);
     /// assert_eq!(a.cwise_checked_div(b), None);
     /// ```
-    pub fn cwise_checked_div(self, rhs: Self) -> Option<Vector3<T>> {
+    pub fn cwise_checked_div(self, rhs: Self) -> Option<Vector3<T>>
+    where
+        T: Div<Output = T> + CheckedDiv,
+    {
         let x = self.x.checked_div(&rhs.x)?;
         let y = self.y.checked_div(&rhs.y)?;
         let z = self.z.checked_div(&rhs.z)?;
         Some(Vector3 { x, y, z })
+    }
+
+    /// `checked_div` for scalar division
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::system::Vector3i;
+    /// // Passing case
+    /// let a = Vector3i::new(10, 10, 10);
+    /// assert_eq!(a.checked_div(3), Some(Vector3i::new(3, 3, 3)));
+    ///
+    /// // Failing case
+    /// assert_eq!(a.checked_div(0), None);
+    /// ```
+    pub fn checked_div(self, rhs: T) -> Option<Vector3<T>>
+    where
+        T: CheckedDiv,
+    {
+        let x = self.x.checked_div(&rhs)?;
+        let y = self.y.checked_div(&rhs)?;
+        let z = self.z.checked_div(&rhs)?;
+        Some(Vector3 { x, y, z })
+    }
+
+    /// Returns the length (magnitude) of the vector.
+    ///
+    /// If you are not interested in the actual length, but only in comparisons,
+    /// consider using `length_sq()`.
+    ///
+    /// # Usage Example
+    /// ```
+    /// # use sfml::system::Vector3f;
+    /// let v = Vector3f::new(3.0, 4.0, 12.0);
+    /// assert!((v.length() - 13.0).abs() < 1e-6);
+    /// ```
+    #[inline]
+    pub fn length(self) -> T
+    where
+        T: Float,
+    {
+        self.length_sq().sqrt()
+    }
+
+    /// Returns a normalized (unit length) vector with the same direction.
+    ///
+    /// # Panics
+    /// Panics in debug mode if the vector is zero.
+    ///
+    /// # Usage Example
+    /// ```
+    /// # use sfml::system::Vector3f;
+    /// let v = Vector3f::new(3.0, 0.0, 4.0);
+    /// let n = v.normalized();
+    /// assert!((n.length() - 1.0).abs() < 1e-6);
+    /// ```
+    #[inline]
+    pub fn normalized(self) -> Vector3<T>
+    where
+        T: Float,
+    {
+        let len = self.length();
+        Self {
+            x: self.x / len,
+            y: self.y / len,
+            z: self.z / len,
+        }
+    }
+}
+
+impl<T> From<(T, T, T)> for Vector3<T> {
+    /// Constructs a `Vector3` from `(x, y, z)`.
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::system::Vector3i;
+    /// let a = Vector3i::from((1, 2, 3));
+    /// assert_eq!(a, Vector3i::new(1, 2, 3));
+    /// ```
+    fn from(src: (T, T, T)) -> Self {
+        Self {
+            x: src.0,
+            y: src.1,
+            z: src.2,
+        }
+    }
+}
+
+impl<T> From<Vector3<T>> for (T, T, T) {
+    /// Constructs `(x, y, z)` from a `Vector3`
+    fn from(vec: Vector3<T>) -> Self {
+        (vec.x, vec.y, vec.z)
+    }
+}
+
+impl<T> From<[T; 3]> for Vector3<T> {
+    /// Constructs a `Vector3` from `[x, y, z]`.
+    fn from([x, y, z]: [T; 3]) -> Self {
+        Self { x, y, z }
+    }
+}
+
+impl<T> From<Vector3<T>> for [T; 3] {
+    /// Constructs `[x, y, z]` from a `Vector3`
+    fn from(vec: Vector3<T>) -> Self {
+        [vec.x, vec.y, vec.z]
     }
 }
 
@@ -410,29 +527,6 @@ impl<T: DivAssign + Copy> DivAssign<T> for Vector3<T> {
         self.z /= rhs;
     }
 }
-
-impl<T: CheckedDiv> Vector3<T> {
-    /// `checked_div` for scalar division
-    ///
-    /// # Usage Example
-    ///
-    /// ```
-    /// # use sfml::system::Vector3i;
-    /// // Passing case
-    /// let a = Vector3i::new(10, 10, 10);
-    /// assert_eq!(a.checked_div(3), Some(Vector3i::new(3, 3, 3)));
-    ///
-    /// // Failing case
-    /// assert_eq!(a.checked_div(0), None);
-    /// ```
-    pub fn checked_div(self, rhs: T) -> Option<Vector3<T>> {
-        let x = self.x.checked_div(&rhs)?;
-        let y = self.y.checked_div(&rhs)?;
-        let z = self.z.checked_div(&rhs)?;
-        Some(Vector3 { x, y, z })
-    }
-}
-
 impl<T: Neg<Output = T>> Neg for Vector3<T> {
     type Output = Self;
 
@@ -452,45 +546,5 @@ impl<T: Neg<Output = T>> Neg for Vector3<T> {
             y: -self.y,
             z: -self.z,
         }
-    }
-}
-
-impl<T> From<(T, T, T)> for Vector3<T> {
-    /// Constructs a `Vector3` from `(x, y, z)`.
-    ///
-    /// # Usage Example
-    ///
-    /// ```
-    /// # use sfml::system::Vector3i;
-    /// let a = Vector3i::from((1, 2, 3));
-    /// assert_eq!(a, Vector3i::new(1, 2, 3));
-    /// ```
-    fn from(src: (T, T, T)) -> Self {
-        Self {
-            x: src.0,
-            y: src.1,
-            z: src.2,
-        }
-    }
-}
-
-impl<T> From<Vector3<T>> for (T, T, T) {
-    /// Constructs `(x, y, z)` from a `Vector3`
-    fn from(vec: Vector3<T>) -> Self {
-        (vec.x, vec.y, vec.z)
-    }
-}
-
-impl<T> From<[T; 3]> for Vector3<T> {
-    /// Constructs a `Vector3` from `[x, y, z]`.
-    fn from([x, y, z]: [T; 3]) -> Self {
-        Self { x, y, z }
-    }
-}
-
-impl<T> From<Vector3<T>> for [T; 3] {
-    /// Constructs `[x, y, z]` from a `Vector3`
-    fn from(vec: Vector3<T>) -> Self {
-        [vec.x, vec.y, vec.z]
     }
 }

@@ -3,7 +3,7 @@ use sfml::{
     graphics::{
         Color, PrimitiveType, RenderTarget, RenderWindow, Vertex, VertexBuffer, VertexBufferUsage,
     },
-    window::{Event, Style, mouse::Button},
+    window::{Event, Style, mouse::Button, window_enums::State},
 };
 
 fn main() -> SfResult<()> {
@@ -11,6 +11,7 @@ fn main() -> SfResult<()> {
         (800, 600),
         "SFML VertexBuffer accessors Example",
         Style::CLOSE,
+        State::Windowed,
         &Default::default(),
     )?;
     window.set_vertical_sync_enabled(true);
@@ -36,11 +37,10 @@ fn main() -> SfResult<()> {
                 Event::Closed => break 'mainloop,
                 Event::MouseButtonPressed {
                     button: Button::Left,
-                    x,
-                    y,
+                    position,
                 } => {
                     vertices.push(Vertex::with_pos_color(
-                        (x as f32, y as f32).into(),
+                        (position.x as f32, position.y as f32).into(),
                         Color::GREEN,
                     ));
                     vertex_buffer.update(&vertices, 0)?;

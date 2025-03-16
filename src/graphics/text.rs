@@ -5,7 +5,7 @@ use {
             Color, Drawable, FloatRect, Font, RenderStates, RenderTarget, TextStyle, Transform,
             Transformable,
         },
-        system::{SfStr, SfStrConv, Vector2f},
+        system::{Angle, SfStr, SfStrConv, Vector2f},
     },
     std::{marker::PhantomData, ptr::NonNull},
 };
@@ -30,18 +30,25 @@ pub struct Text<'s> {
 impl<'s> Text<'s> {
     /// Create a new text with initialized value
     ///
-    /// Default value for characterSize on SFML is 30.
+    /// Default value for characterSize on SFML is 30.i
+    ///
+    /// # Panics
+    /// Panics during const evaluation.
+    /// This method will panic during const evaluation if the string cannot be
+    /// determined to be null or not.
     ///
     /// # Arguments
     /// * string - The string of the text
     /// * font - The font to display the Text
     /// * characterSize - The size of the Text
     pub fn new<S: SfStrConv>(string: S, font: &'s Font, character_size: u32) -> Text<'s> {
-        let mut text = Text::default();
-        text.set_string(string);
-        text.set_font(font);
-        text.set_character_size(character_size);
-        text
+        let text = string.with_as_sfstr(|sfstr| unsafe {
+            ffi::sfText_new(font, sfstr.as_ptr(), character_size)
+        });
+        Text {
+            handle: NonNull::new(text).expect("Failed to create Text"),
+            font: PhantomData,
+        }
     }
 
     /// Set the string of a text
@@ -247,16 +254,6 @@ impl<'s> Text<'s> {
     }
 }
 
-impl Default for Text<'_> {
-    fn default() -> Self {
-        let text = unsafe { ffi::sfText_new() };
-        Self {
-            handle: NonNull::new(text).expect("Failed to create Text"),
-            font: PhantomData,
-        }
-    }
-}
-
 impl<'s> Clone for Text<'s> {
     /// Return a new Text or panic! if there is not enough memory
     fn clone(&self) -> Text<'s> {
@@ -282,8 +279,8 @@ impl Transformable for Text<'_> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
         unsafe { ffi::sfText_setPosition(self.handle.as_ptr(), position.into()) }
     }
-    fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfText_setRotation(self.handle.as_ptr(), angle) }
+    fn set_rotation(&mut self, angle: Angle) {
+        unsafe { ffi::sfText_setRotation(self.handle.as_ptr(), angle.as_degrees()) }
     }
     fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
         unsafe { ffi::sfText_setScale(self.handle.as_ptr(), scale.into()) }
@@ -294,8 +291,8 @@ impl Transformable for Text<'_> {
     fn position(&self) -> Vector2f {
         unsafe { ffi::sfText_getPosition(self.handle.as_ptr()) }
     }
-    fn rotation(&self) -> f32 {
-        unsafe { ffi::sfText_getRotation(self.handle.as_ptr()) }
+    fn rotation(&self) -> Angle {
+        Angle::degrees(unsafe { ffi::sfText_getRotation(self.handle.as_ptr()) })
     }
     fn get_scale(&self) -> Vector2f {
         unsafe { ffi::sfText_getScale(self.handle.as_ptr()) }
@@ -306,8 +303,8 @@ impl Transformable for Text<'_> {
     fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
         unsafe { ffi::sfText_move(self.handle.as_ptr(), offset.into()) }
     }
-    fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfText_rotate(self.handle.as_ptr(), angle) }
+    fn rotate(&mut self, angle: Angle) {
+        unsafe { ffi::sfText_rotate(self.handle.as_ptr(), angle.as_degrees()) }
     }
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
         unsafe { ffi::sfText_scale(self.handle.as_ptr(), factors.into()) }

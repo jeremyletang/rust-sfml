@@ -5,7 +5,7 @@ use {
             Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Shape, Texture,
             Transform, Transformable,
         },
-        system::Vector2f,
+        system::{Angle, Vector2f},
     },
     std::{
         marker::PhantomData,
@@ -55,8 +55,8 @@ impl<'s> RectangleShape<'s> {
     #[must_use]
     pub fn from_rect(rect: FloatRect) -> Self {
         let mut shape = Self::new();
-        shape.set_size((rect.width, rect.height));
-        shape.set_position((rect.left, rect.top));
+        shape.set_size(rect.size);
+        shape.set_position(rect.position);
         shape
     }
 
@@ -100,8 +100,8 @@ impl Transformable for RectangleShape<'_> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
         unsafe { ffi::sfRectangleShape_setPosition(self.handle.as_ptr(), position.into()) }
     }
-    fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfRectangleShape_setRotation(self.handle.as_ptr(), angle) }
+    fn set_rotation(&mut self, angle: Angle) {
+        unsafe { ffi::sfRectangleShape_setRotation(self.handle.as_ptr(), angle.as_degrees()) }
     }
     fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
         unsafe { ffi::sfRectangleShape_setScale(self.handle.as_ptr(), scale.into()) }
@@ -112,8 +112,8 @@ impl Transformable for RectangleShape<'_> {
     fn position(&self) -> Vector2f {
         unsafe { ffi::sfRectangleShape_getPosition(self.handle.as_ptr()) }
     }
-    fn rotation(&self) -> f32 {
-        unsafe { ffi::sfRectangleShape_getRotation(self.handle.as_ptr()) }
+    fn rotation(&self) -> Angle {
+        Angle::degrees(unsafe { ffi::sfRectangleShape_getRotation(self.handle.as_ptr()) })
     }
     fn get_scale(&self) -> Vector2f {
         unsafe { ffi::sfRectangleShape_getScale(self.handle.as_ptr()) }
@@ -124,8 +124,8 @@ impl Transformable for RectangleShape<'_> {
     fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
         unsafe { ffi::sfRectangleShape_move(self.handle.as_ptr(), offset.into()) }
     }
-    fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfRectangleShape_rotate(self.handle.as_ptr(), angle) }
+    fn rotate(&mut self, angle: Angle) {
+        unsafe { ffi::sfRectangleShape_rotate(self.handle.as_ptr(), angle.as_degrees()) }
     }
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
         unsafe { ffi::sfRectangleShape_scale(self.handle.as_ptr(), factors.into()) }
@@ -183,6 +183,9 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     }
     fn global_bounds(&self) -> FloatRect {
         unsafe { ffi::sfRectangleShape_getGlobalBounds(self.handle.as_ptr()) }
+    }
+    fn geometric_center(&self) -> Vector2f {
+        unsafe { ffi::sfRectangleShape_getGeometricCenter(self.handle.as_ptr()) }
     }
 }
 

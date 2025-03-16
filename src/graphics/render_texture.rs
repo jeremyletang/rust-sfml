@@ -20,10 +20,9 @@ impl RenderTexture {
     /// Construct a new render texture
     ///
     /// # Arguments
-    /// * width - Width of the render texture
-    /// * height - Height of the render texture
-    pub fn new(width: u32, height: u32) -> SfResult<FBox<Self>> {
-        Self::with_settings(width, height, &ContextSettings::default())
+    /// * size - size of new render texture
+    pub fn new(size: Vector2u) -> SfResult<FBox<Self>> {
+        Self::with_settings(size, &ContextSettings::default())
     }
 
     /// Create a `RenderTexture` with the given `ContextSettings`.
@@ -33,28 +32,30 @@ impl RenderTexture {
     /// Otherwise it is unnecessary, and you should call [`RenderTexture::new`].
     ///
     /// # Parameters
-    /// * width - Width of the render-texture
-    /// * height - Height of the render-texture
+    /// * size - width and height of the render-texture
     /// * settings - Additional settings for the underlying OpenGL texture and context
-    pub fn with_settings(
-        width: u32,
-        height: u32,
-        settings: &ContextSettings,
-    ) -> SfResult<FBox<Self>> {
+    pub fn with_settings(size: Vector2u, settings: &ContextSettings) -> SfResult<FBox<Self>> {
         let mut new = FBox::new(unsafe { ffi::sfRenderTexture_new() }).into_sf_result()?;
-        new.recreate(width, height, settings)?;
+        new.resize(size, settings)?;
         Ok(new)
     }
-    /// Recreate this `RenderTexture` with the given width, height, and settings.
-    pub fn recreate(
-        &mut self,
-        width: u32,
-        height: u32,
-        settings: &ContextSettings,
-    ) -> SfResult<()> {
-        unsafe { ffi::sfRenderTexture_create(self, width, height, settings) }.into_sf_result()
-    }
 
+    /// Resize the render-texture
+    ///
+    /// The last parameter, `settings`, is useful if you want to enable
+    /// multi-sampling or use the render-texture for OpenGL rendering that
+    /// requires a depth or stencil buffer. Otherwise it is unnecessary, and
+    /// you should leave this parameter at its default value.
+    ///
+    /// After resizing, the contents of the render-texture are undefined.
+    /// Call `RenderTexture::clear` first to ensure a single color fill.
+    ///
+    /// # Parameters
+    /// * size - width and height of the render-texture
+    /// * settings - Additional settings for the underlying OpenGL texture and context
+    pub fn resize(&mut self, size: Vector2u, settings: &ContextSettings) -> SfResult<()> {
+        unsafe { ffi::sfRenderTexture_resize(self, size, settings) }.into_sf_result()
+    }
     /// Update the contents of the target texture
     pub fn display(&mut self) {
         unsafe { ffi::sfRenderTexture_display(self) }
@@ -213,6 +214,17 @@ impl RenderTarget for RenderTexture {
     }
     fn reset_gl_states(&mut self) {
         unsafe { ffi::sfRenderTexture_resetGLStates(self) }
+    }
+    fn clear_stencil(&mut self, stencil_value: ffi::StencilValue) {
+        unsafe { ffi::sfRenderTexture_clearStencil(self, stencil_value) }
+    }
+    fn clear_color_and_stencil(&mut self, stencil_value: ffi::StencilValue, color: Color) {
+        unsafe {
+            ffi::sfRenderTexture_clearColorAndStencil(self, color, stencil_value);
+        }
+    }
+    fn scissor(&self, view: &View) -> IntRect {
+        unsafe { ffi::sfRenderTexture_getScissor(self, view) }
     }
 }
 

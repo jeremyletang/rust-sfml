@@ -9,16 +9,16 @@ pub fn sfClipboard_setUnicodeString(text: *const u32);
 // Context.cpp
 pub fn sfContext_new() -> *mut sfContext;
 pub fn sfContext_del(context: *mut sfContext);
+pub fn sfContext_isExtensionAvailable(name: *const c_char) -> bool;
 pub fn sfContext_setActive(context: *mut sfContext, active: bool) -> bool;
 pub fn sfContext_getSettings(context: *const sfContext) -> *const sfContextSettings;
 pub fn sfContext_getActiveContextId() -> u64;
 pub fn sfContext_getActiveContext() -> *const sfContext;
 pub fn sfContext_getFunction(name: *const c_char) -> sfGlFunctionPointer;
 // Cursor.cpp
-pub fn sfCursor_new() -> *mut sfCursor;
+pub fn sfCursor_createFromPixels(pixels: *const u8, size: sfVector2u, hotspot: sfVector2u) -> *mut sfCursor;
+pub fn sfCursor_createFromSystem(type_: sfCursorType) -> *mut sfCursor;
 pub fn sfCursor_del(cursor: *mut sfCursor);
-pub fn sfCursor_loadFromPixels(cursor: *mut sfCursor, pixels: *const u8, size: sfVector2u, hotspot: sfVector2u) -> bool;
-pub fn sfCursor_loadFromSystem(cursor: *mut sfCursor, type_: sfCursorType) -> bool;
 // Joystick.cpp
 pub fn sfJoystick_isConnected(joystick: c_uint) -> bool;
 pub fn sfJoystick_getButtonCount(joystick: c_uint) -> c_uint;
@@ -32,7 +32,11 @@ pub fn sfJoystickIdentification_getProductId(ident: *const sfJoystickIdentificat
 pub fn sfJoystickIdentification_getName(ident: *const sfJoystickIdentification) -> *const sfString;
 pub fn sfJoystick_update();
 // Keyboard.cpp
-pub fn sfKeyboard_isKeyPressed(key: sfKeyboardKey) -> bool;
+pub fn sfKeyboard_isKeyPressed(key: sfKeyCode) -> bool;
+pub fn sfKeyboard_isScancodePressed(code: sfScancode) -> bool;
+pub fn sfKeyboard_localize(code: sfScancode) -> sfKeyCode;
+pub fn sfKeyboard_delocalize(code: sfKeyCode) -> sfScancode;
+pub fn sfKeyboard_getDescription(code: sfScancode) -> *mut sfString;
 pub fn sfKeyboard_setVirtualKeyboardVisible(visible: bool);
 // Mouse.cpp
 pub fn sfMouse_isButtonPressed(button: sfMouseButton) -> bool;
@@ -57,19 +61,21 @@ pub fn sfVideoModeVector_getData(vec: *const sfVideoModeVector) -> *const sfVide
 // Window.cpp
 pub fn sfWindow_new() -> *mut sfWindow;
 pub fn sfWindow_del(window: *mut sfWindow);
-pub fn sfWindow_create_mtss(window: *mut sfWindow, mode: sfVideoMode, title: *const u32, style: u32, settings: *const sfContextSettings);
+pub fn sfWindow_create_mtsss(window: *mut sfWindow, mode: sfVideoMode, title: *const u32, style: u32, state: sfState, settings: *const sfContextSettings);
 pub fn sfWindow_create_handle_settings(window: *mut sfWindow, handle: sfWindowHandle, settings: *const sfContextSettings);
 pub fn sfWindow_close(window: *mut sfWindow);
 pub fn sfWindow_isOpen(window: *const sfWindow) -> bool;
 pub fn sfWindow_getSettings(window: *const sfWindow) -> *const sfContextSettings;
 pub fn sfWindow_pollEvent(window: *mut sfWindow, event: *mut sfEvent) -> bool;
-pub fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut sfEvent) -> bool;
+pub fn sfWindow_waitEvent(window: *mut sfWindow, event: *mut sfEvent, timeout: i64) -> bool;
 pub fn sfWindow_getPosition(window: *const sfWindow) -> sfVector2i;
 pub fn sfWindow_setPosition(window: *mut sfWindow, position: sfVector2i);
 pub fn sfWindow_getSize(window: *const sfWindow) -> sfVector2u;
 pub fn sfWindow_setSize(window: *mut sfWindow, size: sfVector2u);
+pub fn sfWindow_setMinimumSize(window: *mut sfWindow, size: *const sfVector2u);
+pub fn sfWindow_setMaximumSize(window: *mut sfWindow, size: *const sfVector2u);
 pub fn sfWindow_setUnicodeTitle(window: *mut sfWindow, title: *const u32);
-pub fn sfWindow_setIcon(window: *mut sfWindow, width: c_uint, height: c_uint, pixels: *const u8);
+pub fn sfWindow_setIcon(window: *mut sfWindow, size: sfVector2u, pixels: *const u8);
 pub fn sfWindow_setVisible(window: *mut sfWindow, visible: bool);
 pub fn sfWindow_setMouseCursorVisible(window: *mut sfWindow, visible: bool);
 pub fn sfWindow_setMouseCursorGrabbed(window: *mut sfWindow, grabbed: bool);
@@ -82,6 +88,6 @@ pub fn sfWindow_hasFocus(window: *const sfWindow) -> bool;
 pub fn sfWindow_display(window: *mut sfWindow);
 pub fn sfWindow_setFramerateLimit(window: *mut sfWindow, limit: c_uint);
 pub fn sfWindow_setJoystickThreshold(window: *mut sfWindow, threshold: f32);
-pub fn sfWindow_getSystemHandle(window: *const sfWindow) -> sfWindowHandle;
+pub fn sfWindow_getNativeHandle(window: *const sfWindow) -> sfWindowHandle;
 
 }

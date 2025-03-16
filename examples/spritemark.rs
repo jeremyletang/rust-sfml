@@ -67,6 +67,7 @@ fn main() -> SfResult<()> {
         native_mode,
         "Spritemark",
         Style::default(),
+        Default::default(),
         &ContextSettings::default(),
     )?;
     window.set_position(Vector2::new(0, 0));
@@ -82,10 +83,10 @@ fn main() -> SfResult<()> {
     let mut rs = RenderStates::default();
     let mut buf = Vec::new();
     let mut frames_rendered = 0;
-    let mut sec_clock = Clock::start()?;
+    let mut sec_clock = Clock::new()?;
+    sec_clock.start();
     let mut fps = 0;
     let mut lmb_down = false;
-    let mut view = View::new()?;
 
     while window.is_open() {
         while let Some(event) = window.poll_event() {
@@ -107,8 +108,8 @@ fn main() -> SfResult<()> {
                 } => {
                     lmb_down = false;
                 }
-                Event::Resized { width, height } => {
-                    view.reset(Rect::new(0., 0., width as f32, height as f32));
+                Event::Resized { size } => {
+                    let view = View::from_rect(Rect::new(Vector2::new(0., 0.), size.as_other()));
                     window.set_view(&view);
                 }
                 _ => {}
@@ -127,17 +128,21 @@ fn main() -> SfResult<()> {
                 });
             }
         }
-
         for obj in &mut objects {
             let size = f32::from(SUBIMAGE_SIZE);
             let tex_x = f32::from(obj.image_id) * size;
             let mut tf = Transform::default();
-            tf.translate(obj.position.x, obj.position.y);
-            tf.rotate_with_center(obj.angle, size / 2.0, size / 2.0);
+            tf.translate(obj.position);
+            tf.rotate_with_center(obj.angle, Vector2::new(size / 2., size / 2.));
             buf.push(Vertex {
                 color: Color::WHITE,
                 position: tf.transform_point(Vector2f::new(0., 0.)),
                 tex_coords: Vector2f::new(tex_x, 0.),
+            });
+            buf.push(Vertex {
+                color: Color::WHITE,
+                position: tf.transform_point(Vector2f::new(size, 0.)),
+                tex_coords: Vector2f::new(tex_x + size, 0.),
             });
             buf.push(Vertex {
                 color: Color::WHITE,
@@ -146,19 +151,25 @@ fn main() -> SfResult<()> {
             });
             buf.push(Vertex {
                 color: Color::WHITE,
-                position: tf.transform_point(Vector2f::new(size, size)),
-                tex_coords: Vector2f::new(tex_x + size, size),
+                position: tf.transform_point(Vector2f::new(0., size)),
+                tex_coords: Vector2f::new(tex_x, size),
             });
             buf.push(Vertex {
                 color: Color::WHITE,
                 position: tf.transform_point(Vector2f::new(size, 0.)),
                 tex_coords: Vector2f::new(tex_x + size, 0.),
             });
+            buf.push(Vertex {
+                color: Color::WHITE,
+                position: tf.transform_point(Vector2f::new(size, size)),
+                tex_coords: Vector2f::new(tex_x + size, size),
+            });
             obj.update(window.size().y as f32, window.size().x as f32);
         }
+
         window.clear(Color::BLACK);
         rs.texture = Some(&texture);
-        window.draw_primitives(&buf, PrimitiveType::QUADS, &rs);
+        window.draw_primitives(&buf, PrimitiveType::TRIANGLES, &rs);
         rs.texture = None;
         text.set_string(&format!("{} sprites\n{fps} fps", objects.len()));
         window.draw_text(&text, &rs);

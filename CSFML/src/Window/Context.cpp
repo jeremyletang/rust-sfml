@@ -9,6 +9,10 @@ extern "C" void sfContext_del(sf::Context *context) {
     delete context;
 }
 
+extern "C" bool sfContext_isExtensionAvailable(const char *name) {
+    return sf::Context::isExtensionAvailable(name);
+}
+
 extern "C" bool sfContext_setActive(sf::Context *context, bool active) {
     return context->setActive(active);
 }

@@ -27,7 +27,41 @@
 //! [`View`]: crate::graphics::View
 //!
 
-use crate::{ffi, system::Vector3f};
+use std::f32::consts::PI;
+
+use crate::{
+    ffi,
+    system::{Angle, Vector3f},
+};
+
+/// Structure defining the properties of a directional cone
+///
+/// Sounds will play at gain 1 when they are positioned
+/// within the inner angle of the cone. Sounds will play
+/// at `outerGain` when they are positioned outside the
+/// outer angle of the cone. The gain declines linearly
+/// from 1 to `outerGain` as the sound moves from the inner
+/// angle to the outer angle.
+#[repr(C)]
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub struct Cone {
+    /// Inner angle, in degrees
+    pub inner_angle: Angle,
+    /// Outer angle, in degrees
+    pub outer_angle: Angle,
+    /// Outer gain
+    pub outer_gain: f32,
+}
+
+impl Default for Cone {
+    fn default() -> Self {
+        Self {
+            inner_angle: Angle::degrees(2. * PI),
+            outer_angle: Angle::degrees(2. * PI),
+            outer_gain: 1.,
+        }
+    }
+}
 
 /// Change the global volume of all the sounds and musics
 ///
@@ -103,4 +137,31 @@ pub fn set_up_vector(value: Vector3f) {
 #[must_use]
 pub fn up_vector() -> Vector3f {
     unsafe { ffi::audio::sfListener_getUpVector() }
+}
+
+/// Get the current forward vector of the listener in the scene
+#[must_use]
+pub fn velocity() -> Vector3f {
+    unsafe { ffi::audio::sfListener_getVelocity() }
+}
+
+/// Set the velocity of the listener in the scene
+///
+/// The default listener's velocity is (0, 0, -1).
+pub fn set_velocity(velocity: Vector3f) {
+    unsafe { ffi::audio::sfListener_setVelocity(velocity) }
+}
+
+/// Set the cone properties of the listener in the audio scene
+///
+/// The cone defines how directional attenuation is applied.
+/// The default cone of a sound is (2 * PI, 2 * PI, 1).
+pub fn set_cone(cone: Cone) {
+    unsafe { ffi::audio::sfListener_setCone(cone.into()) }
+}
+
+/// Get the cone properties of the listener in the audio scene
+#[must_use]
+pub fn cone() -> Cone {
+    unsafe { ffi::audio::sfListener_getCone().into() }
 }

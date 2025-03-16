@@ -31,3 +31,11 @@ extern "C" bool sfSoundBufferRecorder_setDevice(sf::SoundBufferRecorder *soundBu
 extern "C" const std::string *sfSoundBufferRecorder_getDevice(sf::SoundBufferRecorder *soundBufferRecorder) {
     return &soundBufferRecorder->getDevice();
 }
+
+extern "C" void sfSoundBufferRecorder_setChannelCount(sf::SoundBufferRecorder *soundBufferRecorder, unsigned int channelCount) {
+    soundBufferRecorder->setChannelCount(channelCount);
+}
+
+extern "C" unsigned int sfSoundBufferRecorder_getChannelCount(const sf::SoundBufferRecorder *soundBufferRecorder) {
+    return soundBufferRecorder->getChannelCount();
+}

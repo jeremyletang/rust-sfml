@@ -7,9 +7,9 @@ pub use {
         cursor::{Cursor, Type as CursorType},
         event::Event,
         keyboard::{Key, set_virtual_keyboard_visible},
-        style::Style,
         video_mode::VideoMode,
         window::{Handle, Window},
+        window_enums::Style,
     },
     crate::ffi::window::Scancode,
 };
@@ -23,9 +23,9 @@ pub mod joystick;
 mod keyboard;
 pub mod mouse;
 pub mod sensor;
-mod style;
 pub(crate) mod thread_safety;
 pub mod touch;
 mod video_mode;
 #[expect(clippy::module_inception)]
 mod window;
+pub mod window_enums;

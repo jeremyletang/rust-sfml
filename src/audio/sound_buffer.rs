@@ -1,7 +1,8 @@
 use {
+    super::sound_channel::SoundChannel,
     crate::{
         IntoSfResult, SfResult,
-        cpp::FBox,
+        cpp::{CppVector, FBox},
         ffi::{self},
         system::{InputStream, Time},
     },
@@ -83,9 +84,10 @@ impl SoundBuffer {
         samples: &[i16],
         channel_count: u32,
         sample_rate: u32,
+        channel_map: &[SoundChannel],
     ) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
-        new.load_from_samples(samples, channel_count, sample_rate)?;
+        new.load_from_samples(samples, channel_count, sample_rate, channel_map)?;
         Ok(new)
     }
     /// Load sound data from a file.
@@ -119,6 +121,7 @@ impl SoundBuffer {
         samples: &[i16],
         channel_count: u32,
         sample_rate: u32,
+        channel_map: &[SoundChannel],
     ) -> SfResult<()> {
         unsafe {
             ffi::audio::sfSoundBuffer_loadFromSamples(
@@ -127,6 +130,8 @@ impl SoundBuffer {
                 samples.len() as _,
                 channel_count,
                 sample_rate,
+                channel_map.as_ptr().cast(),
+                channel_map.len(),
             )
         }
         .into_sf_result()
@@ -168,6 +173,17 @@ impl SoundBuffer {
     #[must_use]
     pub fn channel_count(&self) -> u32 {
         unsafe { ffi::audio::sfSoundBuffer_getChannelCount(self) }
+    }
+
+    /// Get the map of position in sample frame to sound channel
+    ///
+    /// This is used to map a sample in the sample stream to a
+    /// position during spatialization.
+    ///
+    /// Return Map of position in sample frame to sound channel
+    #[must_use]
+    pub fn channel_map(&self) -> &'static CppVector<SoundChannel> {
+        unsafe { &*ffi::audio::sfSoundBuffer_getChannelMap(self) }
     }
 
     /// Get the total duration of a sound buffer

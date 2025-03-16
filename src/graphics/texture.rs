@@ -1,8 +1,9 @@
 use {
+    self::ffi::sfTexture_resize,
     crate::{
         IntoSfResult, SfError, SfResult,
         cpp::FBox,
-        ffi::graphics::{self as ffi, sfTexture_create},
+        ffi::graphics::{self as ffi},
         graphics::{Image, IntRect, RenderWindow},
         system::{InputStream, Vector2u},
         window::Window,
@@ -56,18 +57,22 @@ pub Texture;
 
 /// Creation and loading
 impl Texture {
-    /// Create the texture.
-    ///
-    /// If this function fails, the texture is left unchanged.
-    ///
-    /// Returns whether creation was successful.
-    #[must_use = "Check if texture was created successfully"]
-    pub fn create(&mut self, width: u32, height: u32) -> SfResult<()> {
-        unsafe { sfTexture_create(self, width, height) }.into_sf_result()
-    }
     /// Creates a new `Texture`
     pub fn new() -> SfResult<FBox<Texture>> {
         FBox::new(unsafe { ffi::sfTexture_new() }).into_sf_result()
+    }
+
+    /// Resize the texture
+    ///
+    /// If this function fails, the texture is left unchanged.
+    ///
+    /// # Arguments
+    /// size - Width and height of the texture
+    /// sRgb - `true` to enable sRGB conversion, `false` to disable it
+    ///
+    /// Returns `true` if resizing was successful, `false` if it failed
+    pub fn resize(&mut self, size: Vector2u, srgb: bool) -> bool {
+        unsafe { sfTexture_resize(self, size, srgb) }
     }
 
     /// Load texture from memory
@@ -80,9 +85,9 @@ impl Texture {
     /// # Arguments
     /// * mem - Pointer to the file data in memory
     /// * area - Area of the image to load
-    pub fn load_from_memory(&mut self, mem: &[u8], area: IntRect) -> SfResult<()> {
+    pub fn load_from_memory(&mut self, mem: &[u8], srgb: bool, area: IntRect) -> SfResult<()> {
         unsafe {
-            ffi::sfTexture_loadFromMemory(self, mem.as_ptr().cast(), mem.len(), area)
+            ffi::sfTexture_loadFromMemory(self, mem.as_ptr().cast(), mem.len(), srgb, area)
                 .into_sf_result()
         }
     }
@@ -100,11 +105,13 @@ impl Texture {
     pub fn load_from_stream<T: Read + Seek>(
         &mut self,
         stream: &mut T,
+        srgb: bool,
         area: IntRect,
     ) -> SfResult<()> {
         let mut input_stream = InputStream::new(stream);
         unsafe {
-            ffi::sfTexture_loadFromStream(self, &mut *input_stream.stream, area).into_sf_result()
+            ffi::sfTexture_loadFromStream(self, &mut *input_stream.stream, srgb, area)
+                .into_sf_result()
         }
     }
 
@@ -112,22 +119,22 @@ impl Texture {
     ///
     /// # Arguments
     /// * filename - Path of the image file to load
-    pub fn load_from_file(&mut self, filename: &str, area: IntRect) -> SfResult<()> {
+    pub fn load_from_file(&mut self, filename: &str, srgb: bool, area: IntRect) -> SfResult<()> {
         let c_str = CString::new(filename)?;
-        unsafe { ffi::sfTexture_loadFromFile(self, c_str.as_ptr(), area).into_sf_result() }
+        unsafe { ffi::sfTexture_loadFromFile(self, c_str.as_ptr(), srgb, area).into_sf_result() }
     }
 
     /// Convenience method to easily create and load a `Texture` from a file.
     pub fn from_file(filename: &str) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
-        new.load_from_file(filename, IntRect::default())?;
+        new.load_from_file(filename, Default::default(), IntRect::default())?;
         Ok(new)
     }
 
     /// Convenience method to easily create and load a `Texture` from an iamge.
-    pub fn from_image(image: &Image, area: IntRect) -> SfResult<FBox<Self>> {
+    pub fn from_image(image: &Image, srgb: bool, area: IntRect) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
-        new.load_from_image(image, area)?;
+        new.load_from_image(image, srgb, area)?;
         Ok(new)
     }
 
@@ -140,8 +147,8 @@ impl Texture {
     ///   If you want the entire image then use a default `IntRect`.
     ///   If the area rectangle crosses the bounds of the image,
     ///   it is adjusted to fit the image size.
-    pub fn load_from_image(&mut self, image: &Image, area: IntRect) -> SfResult<()> {
-        unsafe { ffi::sfTexture_loadFromImage(self, image, area).into_sf_result() }
+    pub fn load_from_image(&mut self, image: &Image, srgb: bool, area: IntRect) -> SfResult<()> {
+        unsafe { ffi::sfTexture_loadFromImage(self, image, srgb, area).into_sf_result() }
     }
 }
 
@@ -213,23 +220,6 @@ impl Texture {
     pub fn set_repeated(&mut self, repeated: bool) {
         unsafe { ffi::sfTexture_setRepeated(self, repeated) }
     }
-    /// Enable or disable conversion from sRGB.
-    ///
-    /// When providing texture data from an image file or memory, it can either be stored in a
-    /// linear color space or an sRGB color space. Most digital images account for gamma correction
-    /// already, so they would need to be "uncorrected" back to linear color space before being
-    /// processed by the hardware. The hardware can automatically convert it from the sRGB
-    /// color space to a linear color space when it gets sampled. When the rendered image gets
-    /// output to the final framebuffer, it gets converted back to sRGB.
-    ///
-    /// After enabling or disabling sRGB conversion, make sure to reload the texture data in
-    /// order for the setting to take effect.
-    ///
-    /// This option is only useful in conjunction with an sRGB capable framebuffer.
-    /// This can be requested during window creation.
-    pub fn set_srgb(&mut self, srgb: bool) {
-        unsafe { ffi::sfTexture_setSrgb(self, srgb) }
-    }
 }
 
 /// OpenGL interop
@@ -270,8 +260,8 @@ impl Texture {
     /// # Safety
     /// No additional check is performed on the size of the window, passing an invalid combination
     /// of window size and offset will lead to an _undefined behavior_.
-    pub unsafe fn update_from_window(&mut self, window: &Window, x: u32, y: u32) {
-        unsafe { ffi::sfTexture_updateFromWindow(self, window, x, y) }
+    pub unsafe fn update_from_window(&mut self, window: &Window, dest: Vector2u) {
+        unsafe { ffi::sfTexture_updateFromWindow(self, window, dest) }
     }
 
     /// Update a part of the texture from the contents of a render window.
@@ -284,10 +274,9 @@ impl Texture {
     pub unsafe fn update_from_render_window(
         &mut self,
         render_window: &RenderWindow,
-        x: u32,
-        y: u32,
+        dest: Vector2u,
     ) {
-        unsafe { ffi::sfTexture_updateFromRenderWindow(self, render_window, x, y) }
+        unsafe { ffi::sfTexture_updateFromRenderWindow(self, render_window, dest) }
     }
 
     /// Update a part of the texture from an image.
@@ -297,8 +286,8 @@ impl Texture {
     /// # Safety
     /// No additional check is performed on the size of the image, passing an invalid combination
     /// of image size and offset will lead to an _undefined behavior_.
-    pub unsafe fn update_from_image(&mut self, image: &Image, x: u32, y: u32) {
-        unsafe { ffi::sfTexture_updateFromImage(self, image, x, y) }
+    pub unsafe fn update_from_image(&mut self, image: &Image, dest: Vector2u) {
+        unsafe { ffi::sfTexture_updateFromImage(self, image, dest) }
     }
 
     /// Update a part of this texture from another texture.
@@ -309,8 +298,8 @@ impl Texture {
     /// No additional check is performed on the size of the texture,
     /// passing an invalid combination of texture size and offset will
     /// lead to an _undefined behavior_.
-    pub unsafe fn update_from_texture(&mut self, texture: &Texture, x: u32, y: u32) {
-        unsafe { ffi::sfTexture_updateFromTexture(self, texture, x, y) }
+    pub unsafe fn update_from_texture(&mut self, texture: &Texture, dest: Vector2u) {
+        unsafe { ffi::sfTexture_updateFromTexture(self, texture, dest) }
     }
 
     /// Update a part of the texture from an array of pixels.
@@ -322,14 +311,14 @@ impl Texture {
     /// # Panics
     ///
     /// Panics the provided parameters would result in out of bounds access.
-    pub fn update_from_pixels(&mut self, pixels: &[u8], width: u32, height: u32, x: u32, y: u32) {
+    pub fn update_from_pixels(&mut self, pixels: &[u8], size: Vector2u, dest: Vector2u) {
         let my_dims = self.size();
         assert!(
-            x + width <= my_dims.x
-                && y + height <= my_dims.y
-                && pixels.len() >= (width * height * 4) as usize
+            dest.x + size.x <= my_dims.x
+                && dest.y + size.y <= my_dims.y
+                && pixels.len() >= (size.x * size.y * 4) as usize
         );
-        unsafe { ffi::sfTexture_updateFromPixels(self, pixels.as_ptr(), width, height, x, y) }
+        unsafe { ffi::sfTexture_updateFromPixels(self, pixels.as_ptr(), size, dest) }
     }
 
     /// Swap the contents of this texture with those of another.

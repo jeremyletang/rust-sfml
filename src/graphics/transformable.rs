@@ -1,4 +1,7 @@
-use crate::{graphics::Transform, system::Vector2f};
+use crate::{
+    graphics::Transform,
+    system::{Angle, Vector2f},
+};
 
 /// Decomposed transform defined by a position, a rotation and a scale.
 pub trait Transformable {
@@ -8,12 +11,12 @@ pub trait Transformable {
     /// See [`move_`](Self::move_) to apply an offset based on the previous position instead.
     /// The default position of a transformable object is (0, 0).
     fn set_position<P: Into<Vector2f>>(&mut self, position: P);
-    /// Set the orientation of the object in degrees.
+    /// Set the orientation of the object.
     ///
     /// This function completely overwrites the previous rotation.
     /// See the rotate function to add an angle based on the previous rotation instead.
     /// The default rotation of a transformable object is 0.
-    fn set_rotation(&mut self, angle: f32);
+    fn set_rotation(&mut self, angle: Angle);
     /// Sets the scale factors of the object.
     ///
     /// This function completely overwrites the previous scale.
@@ -30,10 +33,10 @@ pub trait Transformable {
     fn set_origin<O: Into<Vector2f>>(&mut self, origin: O);
     /// Gets the position of the object.
     fn position(&self) -> Vector2f;
-    /// Gets the rotation of the object in degrees.
+    /// Gets the rotation of the object.
     ///
     /// The rotation is always in the range [0, 360].
-    fn rotation(&self) -> f32;
+    fn rotation(&self) -> Angle;
     /// Gets the current scale of the object.
     fn get_scale(&self) -> Vector2f;
     /// Gets the local origin of the object.
@@ -47,7 +50,7 @@ pub trait Transformable {
     ///
     /// This function adds to the current rotation of the object, unlike
     /// [`set_rotation`](Self::set_rotation), which overwrites it.
-    fn rotate(&mut self, angle: f32);
+    fn rotate(&mut self, angle: Angle);
     /// Scales the object.
     ///
     /// This function multiplies the current scale of the object, unlike

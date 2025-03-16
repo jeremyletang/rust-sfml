@@ -1,6 +1,9 @@
 use {
     sfml::{
-        audio::{Music, SoundStatus},
+        audio::{
+            Music,
+            sound_source::{self, SoundSource},
+        },
         system::{InputStream, Time, sleep},
     },
     std::{error::Error, fs::File, io::Write},
@@ -23,7 +26,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     music.play();
 
-    while music.status() == SoundStatus::PLAYING {
+    while music.status() == sound_source::Status::Playing {
         // Leave some CPU time for other processes
         sleep(Time::milliseconds(100));
         // Display the playing position

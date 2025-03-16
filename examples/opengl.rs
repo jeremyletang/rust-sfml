@@ -30,13 +30,13 @@ fn main() -> SfResult<()> {
             (800, 600),
             "SFML graphics with OpenGL",
             Style::default(),
+            Default::default(),
             &ctx_sett,
         )?;
         window.set_vertical_sync_enabled(true);
 
         let mut bg_tex = Texture::new()?;
-        bg_tex.set_srgb(srgb);
-        bg_tex.load_from_file("opengl-background.jpg", IntRect::default())?;
+        bg_tex.load_from_file("opengl-background.jpg", srgb, IntRect::default())?;
         let bg_sprite = Sprite::with_texture(&bg_tex);
 
         let font = Font::from_file("sansation.ttf")?;
@@ -103,7 +103,8 @@ fn main() -> SfResult<()> {
         }
 
         window.set_active(false)?;
-        let clock = Clock::start()?;
+        let mut clock = Clock::new()?;
+        clock.start();
         let mut mipmap_enabled = true;
 
         while window.is_open() {
@@ -136,10 +137,10 @@ fn main() -> SfResult<()> {
                         srgb = !srgb;
                         window.close();
                     }
-                    Event::Resized { width, height } => {
+                    Event::Resized { size } => {
                         window.set_active(true)?;
                         unsafe {
-                            gl::glViewport(0, 0, width as _, height as _);
+                            gl::glViewport(0, 0, size.x as _, size.y as _);
                         }
                         window.set_active(false)?;
                     }

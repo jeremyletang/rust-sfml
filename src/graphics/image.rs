@@ -2,9 +2,9 @@ use {
     crate::{
         IntoSfResult, SfResult,
         cpp::FBox,
-        ffi::graphics as ffi,
+        ffi::graphics::{self as ffi, sfImage_saveToMemory},
         graphics::{Color, IntRect},
-        system::{InputStream, Vector2u},
+        system::{InputStream, Vector2u, buffer::Buffer},
     },
     std::{
         error::Error,
@@ -27,12 +27,10 @@ impl Image {
         FBox::new(unsafe { ffi::sfImage_new() }).into_sf_result()
     }
     /// Create a new `Image` filled with a solid color.
-    ///
-    /// See [`Self::recreate_solid`].
-    pub fn new_solid(width: u32, height: u32, color: Color) -> SfResult<FBox<Self>> {
-        let mut new = Self::new()?;
-        new.recreate_solid(width, height, color);
-        Ok(new)
+    pub fn new_solid(size: Vector2u, color: Color) -> SfResult<FBox<Self>> {
+        let mut img = Self::new()?;
+        img.resize_with_color(size, color);
+        Ok(img)
     }
     /// Create a new `Image` from the provided RGBA pixel data.
     ///
@@ -41,12 +39,10 @@ impl Image {
     /// # Safety
     ///
     /// Also see [`Self::recreate_from_pixels`].
-    pub unsafe fn from_pixels(width: u32, height: u32, data: &[u8]) -> SfResult<FBox<Self>> {
-        let mut new = Self::new()?;
-        unsafe {
-            new.recreate_from_pixels(width, height, data);
-        }
-        Ok(new)
+    pub unsafe fn from_pixels(size: Vector2u, data: &[u8]) -> SfResult<FBox<Self>> {
+        let mut img = Self::new()?;
+        img.resize_with_pixels(size, data);
+        Ok(img)
     }
     /// Create a new `Image` from an image file on the filesystem.
     ///
@@ -71,22 +67,6 @@ impl Image {
         let mut new = Self::new()?;
         new.load_from_stream(stream)?;
         Ok(new)
-    }
-    /// Recreate with the given size, filled with a solid color.
-    pub fn recreate_solid(&mut self, width: u32, height: u32, color: Color) {
-        unsafe {
-            ffi::sfImage_create_w_h_color(self, width, height, color);
-        }
-    }
-    /// Recreate from the provided RGBA pixel data.
-    ///
-    /// # Safety
-    ///
-    /// `data` is assumed to contain 32-bit RGBA pixels, and match the given size.
-    pub unsafe fn recreate_from_pixels(&mut self, width: u32, height: u32, data: &[u8]) {
-        unsafe {
-            ffi::sfImage_create_w_h_pixels(self, width, height, data.as_ptr());
-        }
     }
     /// Load from image file data on the filesystem.
     ///
@@ -135,8 +115,8 @@ impl Image {
     /// This function doesn't check the validity of the pixel
     /// coordinates, using out-of-range values will result in
     /// an undefined behaviour.
-    pub unsafe fn set_pixel_unchecked(&mut self, x: u32, y: u32, color: Color) {
-        unsafe { ffi::sfImage_setPixel(self, x, y, color) }
+    pub unsafe fn set_pixel_unchecked(&mut self, coords: Vector2u, color: Color) {
+        unsafe { ffi::sfImage_setPixel(self, coords, color) }
     }
 
     /// Change the color of a pixel in an image
@@ -145,24 +125,24 @@ impl Image {
     /// * x - X coordinate of pixel to change
     /// * y - Y coordinate of pixel to change
     /// * color - New color of the pixel
-    pub fn set_pixel(&mut self, x: u32, y: u32, color: Color) -> Result<(), PixelAccessError> {
+    pub fn set_pixel(&mut self, coords: Vector2u, color: Color) -> Result<(), PixelAccessError> {
         let image_size = self.size();
-        if x >= image_size.x {
+        if coords.x >= image_size.x {
             return Err(PixelAccessError::XTooLarge {
-                x,
+                x: coords.x,
                 width: image_size.x - 1,
             });
         }
-        if y >= image_size.y {
+        if coords.y >= image_size.y {
             return Err(PixelAccessError::YTooLarge {
-                y,
+                y: coords.y,
                 height: image_size.y - 1,
             });
         }
 
         // Since we check for index validity before setting the pixel, it is safe unless the
         // image has been unloaded, but I doubt you can even do that.
-        unsafe { ffi::sfImage_setPixel(self, x, y, color) }
+        unsafe { ffi::sfImage_setPixel(self, coords, color) }
         Ok(())
     }
     /// Get the color of a pixel in an image
@@ -179,8 +159,8 @@ impl Image {
     /// coordinates, using out-of-range values will result in
     /// an undefined behaviour.
     #[must_use]
-    pub unsafe fn pixel_at_unchecked(&self, x: u32, y: u32) -> Color {
-        unsafe { ffi::sfImage_getPixel(self, x, y) }
+    pub unsafe fn pixel_at_unchecked(&self, coords: Vector2u) -> Color {
+        unsafe { ffi::sfImage_getPixel(self, coords) }
     }
 
     /// Get the color of a pixel in an image
@@ -191,15 +171,15 @@ impl Image {
     ///
     /// Return the Color of the pixel at coordinates (x, y)
     #[must_use]
-    pub fn pixel_at(&self, x: u32, y: u32) -> Option<Color> {
+    pub fn pixel_at(&self, coords: Vector2u) -> Option<Color> {
         let image_size = self.size();
-        if image_size.x <= x || image_size.y <= y {
+        if image_size.x <= coords.x || image_size.y <= coords.y {
             return None;
         }
 
         // Since we check for index validity before getting the pixel, it is safe unless the
         // image has been unloaded, but I doubt you can even do that.
-        unsafe { Some(ffi::sfImage_getPixel(self, x, y)) }
+        unsafe { Some(ffi::sfImage_getPixel(self, coords)) }
     }
 
     /// Return the memory buffer of this image.
@@ -262,17 +242,30 @@ impl Image {
     pub fn copy_image(
         &mut self,
         source: &Image,
-        dest_x: u32,
-        dest_y: u32,
+        dest: Vector2u,
         source_rect: IntRect,
         apply_alpha: bool,
-    ) {
-        unsafe { ffi::sfImage_copy(self, source, dest_x, dest_y, source_rect, apply_alpha) }
+    ) -> SfResult<()> {
+        unsafe { ffi::sfImage_copy(self, source, dest, source_rect, apply_alpha) }.into_sf_result()
     }
 }
 
 /// Etc.
 impl Image {
+    /// Resize the image and fill it with a unique color
+    pub fn resize_with_color(&mut self, size: Vector2u, color: Color) {
+        unsafe {
+            ffi::sfImage_resizeWithColor(self, size, color);
+        }
+    }
+    /// Resize the image from an array of pixels
+    ///
+    /// The pixel array is assumed to contain 32-bits RGBA pixels,
+    /// and have the given `size`. If not, this is an undefined behavior.
+    /// If `pixels` is `nullptr`, an empty image is created.
+    pub fn resize_with_pixels(&mut self, size: Vector2u, data: &[u8]) {
+        unsafe { ffi::sfImage_resizeWithPixels(self, size, data.as_ptr()) }
+    }
     /// Save an image to a file on disk
     ///
     /// The format of the image is automatically deduced from
@@ -287,6 +280,20 @@ impl Image {
     pub fn save_to_file(&self, filename: &str) -> SfResult<()> {
         let c_str = CString::new(filename)?;
         unsafe { ffi::sfImage_saveToFile(self, c_str.as_ptr()) }.into_sf_result()
+    }
+
+    /// Save the image to a buffer in memory
+    ///
+    /// The format of the image must be specified.
+    /// The supported image formats are bmp, png, tga and jpg.
+    /// This function fails if the image is empty, or if
+    /// the format was invalid.
+    ///
+    /// Returns an optional buffer None for failure
+    #[must_use = "The returned buffer contains the saved data. Ignoring this result will discard the exported memory."]
+    pub fn save_to_memory(&self, format: &str) -> SfResult<FBox<Buffer>> {
+        let c_str = CString::new(format)?;
+        FBox::new(unsafe { sfImage_saveToMemory(self, c_str.as_ptr()) }).into_sf_result()
     }
 
     /// Return the size of an image

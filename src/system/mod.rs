@@ -4,6 +4,7 @@
 //!
 
 pub use self::{
+    angle::Angle,
     clock::Clock,
     input_stream::InputStream,
     sleep::sleep,
@@ -13,6 +14,8 @@ pub use self::{
     vector3::{Vector3, Vector3f, Vector3i},
 };
 
+mod angle;
+pub(crate) mod buffer;
 mod clock;
 mod input_stream;
 mod sleep;

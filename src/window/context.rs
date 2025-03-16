@@ -26,6 +26,15 @@ impl Context {
         FBox::new(unsafe { ffi::sfContext_new() }).into_sf_result()
     }
 
+    /// Check whether a given OpenGL extension is available.
+    ///
+    /// # Arguments
+    /// name - Name of the extension to check for
+    #[must_use]
+    pub fn is_extension_available(name: &CStr) -> bool {
+        unsafe { ffi::sfContext_isExtensionAvailable(name.as_ptr()) }
+    }
+
     /// Explicitly activates or deactivates the context.
     ///
     /// # Arguments
@@ -71,8 +80,14 @@ impl Context {
 fn test_settings() {
     use {crate::window::Window, std::thread};
 
-    let window =
-        Window::new_open((32, 32), "test", Default::default(), &Default::default()).unwrap();
+    let window = Window::new_open(
+        (32, 32),
+        "test",
+        Default::default(),
+        Default::default(),
+        &Default::default(),
+    )
+    .unwrap();
     let win_settings = *window.settings();
     thread::spawn(move || {
         let context = Context::new().unwrap();

@@ -68,7 +68,7 @@ impl Font {
     /// See [`Self::load_from_file`].
     pub fn from_file(path: &str) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
-        new.load_from_file(path)?;
+        new.open_from_file(path)?;
         Ok(new)
     }
     /// Creates a new `Font` from font file data in memory.
@@ -81,7 +81,7 @@ impl Font {
     pub unsafe fn from_memory(data: &[u8]) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         unsafe {
-            new.load_from_memory(data)?;
+            new.open_from_memory(data)?;
         }
         Ok(new)
     }
@@ -103,7 +103,7 @@ impl Font {
     pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         unsafe {
-            new.load_from_stream(stream)?;
+            new.open_from_stream(stream)?;
         }
         Ok(new)
     }
@@ -130,9 +130,9 @@ impl Font {
     ///     }
     /// };
     /// ```
-    pub fn load_from_file(&mut self, path: &str) -> SfResult<()> {
+    pub fn open_from_file(&mut self, path: &str) -> SfResult<()> {
         let c_str = CString::new(path)?;
-        unsafe { ffi::sfFont_loadFromFile(self, c_str.as_ptr()) }.into_sf_result()
+        unsafe { ffi::sfFont_openFromFile(self, c_str.as_ptr()) }.into_sf_result()
     }
 
     /// Load the font from a custom stream.
@@ -146,9 +146,9 @@ impl Font {
     ///
     /// # See also
     /// [`Font::from_file`], [`Font::from_memory`]
-    pub unsafe fn load_from_stream<T: Read + Seek>(&mut self, stream: &mut T) -> SfResult<()> {
+    pub unsafe fn open_from_stream<T: Read + Seek>(&mut self, stream: &mut T) -> SfResult<()> {
         let mut input_stream = InputStream::new(stream);
-        unsafe { ffi::sfFont_loadFromStream(self, &mut *input_stream.stream) }.into_sf_result()
+        unsafe { ffi::sfFont_openFromStream(self, &mut *input_stream.stream) }.into_sf_result()
     }
 
     /// Load the font from a file in memory.
@@ -165,8 +165,8 @@ impl Font {
     /// # See also
     ///
     /// [`Font::from_file`], [`Font::from_stream`]
-    pub unsafe fn load_from_memory(&mut self, data: &[u8]) -> SfResult<()> {
-        unsafe { ffi::sfFont_loadFromMemory(self, data.as_ptr(), data.len()) }.into_sf_result()
+    pub unsafe fn open_from_memory(&mut self, data: &[u8]) -> SfResult<()> {
+        unsafe { ffi::sfFont_openFromMemory(self, data.as_ptr(), data.len()) }.into_sf_result()
     }
     /// Load the font from a file in static memory.
     ///
@@ -174,7 +174,7 @@ impl Font {
     ///
     /// See [`Self::load_from_memory`].
     pub fn load_from_memory_static(&mut self, data: &'static [u8]) -> SfResult<()> {
-        unsafe { self.load_from_memory(data) }
+        unsafe { self.open_from_memory(data) }
     }
 }
 
@@ -268,6 +268,20 @@ impl Font {
                 outline_thickness,
             ))
         }
+    }
+
+    /// \brief Determine if this font has a glyph representing the requested code point
+    ///
+    /// Most fonts only include a very limited selection of glyphs from
+    /// specific Unicode subsets, like Latin, Cyrillic, or Asian characters.
+    ///
+    /// While code points without representation will return a font specific
+    /// default character, it might be useful to verify whether specific
+    /// code points are included to determine whether a font is suited
+    /// to display text in a specific language.
+    #[must_use]
+    pub fn has_glyph(&self, codepoint: u32) -> bool {
+        unsafe { ffi::sfFont_hasGlyph(self, codepoint) }
     }
     /// Returns the font information.
     ///

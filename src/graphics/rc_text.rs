@@ -6,7 +6,7 @@ use {
             Color, Drawable, FloatRect, Font, RcFont, RenderStates, RenderTarget, TextStyle,
             Transform, Transformable,
         },
-        system::{SfStr, SfStrConv, Vector2f},
+        system::{Angle, SfStr, SfStrConv, Vector2f},
     },
     std::{cell::RefCell, ptr::NonNull, rc::Weak},
 };
@@ -43,16 +43,23 @@ impl RcText {
     ///
     /// Default value for characterSize on SFML is 30.
     ///
+    /// # Panics
+    /// Panics during const evaluation.
+    /// This method will panic during const evaluation if the string cannot be
+    /// determined to be null or not.
+    ///
     /// # Arguments
     /// * string - The string of the `RcText`
     /// * font - The [`RcFont`] to display the `RcText`
     /// * characterSize - The size of the `RcText`
     pub fn new<S: SfStrConv>(string: S, font: &RcFont, character_size: u32) -> Self {
-        let mut text = Self::default();
-        text.set_string(string);
-        text.set_font(font);
-        text.set_character_size(character_size);
-        text
+        let text = string.with_as_sfstr(|sfstr| unsafe {
+            ffi::sfText_new(font.raw_font(), sfstr.as_ptr(), character_size)
+        });
+        RcText {
+            handle: NonNull::new(text).expect("Failed to create Text"),
+            font: font.downgrade(),
+        }
     }
 
     fn font_exists(&self) -> bool {
@@ -310,16 +317,6 @@ impl RcText {
     }
 }
 
-impl Default for RcText {
-    fn default() -> Self {
-        let text = unsafe { ffi::sfText_new() };
-        Self {
-            handle: NonNull::new(text).expect("Failed to create Text"),
-            font: Weak::new(),
-        }
-    }
-}
-
 impl Clone for RcText {
     /// Return a new Text or panic! if there is not enough memory
     fn clone(&self) -> Self {
@@ -359,12 +356,12 @@ impl Transformable for RcText {
     ///
     /// # Warning
     /// Function fails, and prints an error message if `RcText`'s font is dead.
-    fn set_rotation(&mut self, angle: f32) {
+    fn set_rotation(&mut self, angle: Angle) {
         if !self.font_exists() {
             eprintln!("{ERROR_MSG}");
             return;
         }
-        unsafe { ffi::sfText_setRotation(self.handle.as_ptr(), angle) }
+        unsafe { ffi::sfText_setRotation(self.handle.as_ptr(), angle.as_degrees()) }
     }
     /// Reference [`Transformable::set_scale`] for additional information
     ///
@@ -403,12 +400,12 @@ impl Transformable for RcText {
     ///
     /// # Warning
     /// Function fails, returns default, and prints an error message if [`RcFont`] is dead.
-    fn rotation(&self) -> f32 {
+    fn rotation(&self) -> Angle {
         if !self.font_exists() {
             eprintln!("{RETURN_ERROR_MSG}");
             return Default::default();
         }
-        unsafe { ffi::sfText_getRotation(self.handle.as_ptr()) }
+        Angle::degrees(unsafe { ffi::sfText_getRotation(self.handle.as_ptr()) })
     }
     /// Reference [`Transformable::get_scale`] for additional information
     ///
@@ -447,12 +444,12 @@ impl Transformable for RcText {
     ///
     /// # Warning
     /// Function fails, and prints an error message if `RcText`'s font is dead.
-    fn rotate(&mut self, angle: f32) {
+    fn rotate(&mut self, angle: Angle) {
         if !self.font_exists() {
             eprintln!("{ERROR_MSG}");
             return;
         }
-        unsafe { ffi::sfText_rotate(self.handle.as_ptr(), angle) }
+        unsafe { ffi::sfText_rotate(self.handle.as_ptr(), angle.as_degrees()) }
     }
     /// Reference [`Transformable::scale`] for additional information
     ///

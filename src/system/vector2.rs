@@ -1,5 +1,8 @@
+use crate::system::Angle;
+use num_traits::Float;
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
+
 use {
     num_traits::{AsPrimitive, CheckedDiv},
     std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign},
@@ -22,8 +25,7 @@ use {
 /// - `Vector2<u32>` is [`Vector2u`]
 ///
 /// The `Vector2` type has a small and simple interface, its x and y members can be
-/// accessed directly (there are no accessors like `set_x()`, `get_x()`) and it contains no
-/// mathematical function like dot product, cross product, length, etc.
+/// accessed directly (there are no accessors like `set_x()`, `get_x()`).
 ///
 /// # Usage example
 ///
@@ -70,6 +72,7 @@ impl<T> Vector2<T> {
     pub const fn new(x: T, y: T) -> Self {
         Self { x, y }
     }
+
     /// Lossless conversion into `Vector2<U>`.
     ///
     /// # Usage example
@@ -90,6 +93,7 @@ impl<T> Vector2<T> {
             y: self.y.into(),
         }
     }
+
     /// Fallible conversion into `Vector2<U>`
     ///
     /// # Usage example
@@ -116,6 +120,7 @@ impl<T> Vector2<T> {
             y: self.y.try_into()?,
         })
     }
+
     /// Lossy conversion into `Vector2<U>`
     ///
     /// # Usage example
@@ -136,9 +141,7 @@ impl<T> Vector2<T> {
             y: self.y.as_(),
         }
     }
-}
 
-impl<T: Mul<Output = T> + Add<Output = T> + Copy> Vector2<T> {
     /// Dot product of two 2D vectors.
     ///
     /// # Usage example
@@ -149,9 +152,46 @@ impl<T: Mul<Output = T> + Add<Output = T> + Copy> Vector2<T> {
     /// let b = Vector2i::new(2, 4);
     /// assert_eq!(a.dot(b), 288);
     /// ```
-    pub fn dot(self, rhs: Self) -> T {
+    pub fn dot(self, rhs: Self) -> T
+    where
+        T: Mul<Output = T> + Add<Output = T> + Copy,
+    {
         self.x * rhs.x + self.y * rhs.y
     }
+
+    /// Length of the vector
+    ///
+    /// # Usage example
+    ///
+    /// ```
+    /// # use sfml::system::Vector2f;
+    /// let a = Vector2f::new(3., 4.);
+    /// assert!((a.length() - 5.).abs() <= f32::EPSILON);
+    /// ```
+    pub fn length(self) -> T
+    where
+        T: Mul<Output = T> + Add<Output = T> + Copy + Float,
+    {
+        self.length_sq().sqrt()
+    }
+
+    /// Vector with the same direciton but length 1
+    ///
+    /// # Usage example
+    ///
+    /// ```
+    /// # use sfml::system::Vector2f;
+    /// let a = Vector2f::new(2., 2.).normalized();
+    /// assert!((a.length() - 1.).abs() <= f32::EPSILON);
+    /// assert!((a.x - 2f32.sqrt()/2.).abs() <= f32::EPSILON);
+    /// ```
+    pub fn normalized(self) -> Vector2<T>
+    where
+        T: Mul<Output = T> + Add<Output = T> + Copy + Float + Div<Output = T>,
+    {
+        self / self.length()
+    }
+
     /// Square of vector's length.
     ///
     /// # Usage example
@@ -161,12 +201,13 @@ impl<T: Mul<Output = T> + Add<Output = T> + Copy> Vector2<T> {
     /// let a = Vector2i::new(10, 9);
     /// assert_eq!(a.length_sq(), 181);
     /// ```
-    pub fn length_sq(self) -> T {
+    pub fn length_sq(self) -> T
+    where
+        T: Mul<Output = T> + Add<Output = T> + Copy,
+    {
         self.dot(self)
     }
-}
 
-impl<T: Mul<Output = T> + Sub<Output = T> + Copy> Vector2<T> {
     /// Z component of the cross product of two 2D vectors.
     ///
     /// # Usage example
@@ -177,12 +218,13 @@ impl<T: Mul<Output = T> + Sub<Output = T> + Copy> Vector2<T> {
     /// let b = Vector2i::new(21, 101);
     /// assert_eq!(a.cross(b), -1851);
     /// ```
-    pub fn cross(self, rhs: Self) -> T {
+    pub fn cross(self, rhs: Self) -> T
+    where
+        T: Mul<Output = T> + Sub<Output = T> + Copy,
+    {
         self.x * rhs.y - self.y * rhs.x
     }
-}
 
-impl<T: Mul<Output = T>> Vector2<T> {
     /// Component-wise multiplication of self and rhs.
     ///
     /// # Usage example
@@ -193,15 +235,16 @@ impl<T: Mul<Output = T>> Vector2<T> {
     /// let b = Vector2i::new(2, 2);
     /// assert_eq!(a.cwise_mul(b), Vector2i::new(2, 2));
     /// ```
-    pub fn cwise_mul(self, rhs: Self) -> Vector2<T> {
+    pub fn cwise_mul(self, rhs: Self) -> Vector2<T>
+    where
+        T: Mul<Output = T>,
+    {
         Self {
             x: self.x * rhs.x,
             y: self.y * rhs.y,
         }
     }
-}
 
-impl<T: Div<Output = T>> Vector2<T> {
     /// Component-wise division of self and rhs. Panics on divide by zero
     ///
     /// # Usage example
@@ -212,15 +255,16 @@ impl<T: Div<Output = T>> Vector2<T> {
     /// let b = Vector2i::new(3, 3);
     /// assert_eq!(a.cwise_div(b), Vector2i::new(23, 23));
     /// ```
-    pub fn cwise_div(self, rhs: Self) -> Vector2<T> {
+    pub fn cwise_div(self, rhs: Self) -> Vector2<T>
+    where
+        T: Div<Output = T>,
+    {
         Vector2 {
             x: self.x / rhs.x,
             y: self.y / rhs.y,
         }
     }
-}
 
-impl<T: Div<Output = T> + CheckedDiv> Vector2<T> {
     /// Component-wise checked division of self and rhs. Returns None on divide by zero
     ///
     /// # Usage example
@@ -236,14 +280,15 @@ impl<T: Div<Output = T> + CheckedDiv> Vector2<T> {
     /// let b = Vector2i::new(0, 3);
     /// assert_eq!(a.cwise_checked_div(b), None);
     /// ```
-    pub fn cwise_checked_div(self, rhs: Self) -> Option<Vector2<T>> {
+    pub fn cwise_checked_div(self, rhs: Self) -> Option<Vector2<T>>
+    where
+        T: Div<Output = T> + CheckedDiv,
+    {
         let x = self.x.checked_div(&rhs.x)?;
         let y = self.y.checked_div(&rhs.y)?;
         Some(Vector2 { x, y })
     }
-}
 
-impl<T: Neg<Output = T>> Vector2<T> {
     /// Returns a perpendicular vector rotated +90 degrees
     ///
     /// # Usage example
@@ -253,8 +298,153 @@ impl<T: Neg<Output = T>> Vector2<T> {
     /// let a = Vector2i::new(21, -21);
     /// assert_eq!(a.perpendicular(), Vector2i::new(21, 21));
     /// ```
-    pub fn perpendicular(self) -> Vector2<T> {
+    pub fn perpendicular(self) -> Vector2<T>
+    where
+        T: Neg<Output = T>,
+    {
         Vector2::new(-self.y, self.x)
+    }
+
+    /// `checked_div` for scalar division
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::system::Vector2i;
+    /// // Passing case
+    /// let a = Vector2i::new(420, 69);
+    /// assert_eq!(a.checked_div(1000), Some(Vector2i::new(0, 0)));
+    ///
+    /// // Failing case
+    /// assert_eq!(a.checked_div(0), None);
+    /// ```
+    pub fn checked_div(self, rhs: T) -> Option<Vector2<T>>
+    where
+        T: CheckedDiv,
+    {
+        let x = self.x.checked_div(&rhs)?;
+        let y = self.y.checked_div(&rhs)?;
+        Some(Vector2 { x, y })
+    }
+    /// Creates a vector from polar coordinates (magnitude and angle)
+    ///
+    /// # Usage example
+    ///
+    /// ```
+    /// # use sfml::system::{Vector2f, Angle};
+    /// let v = Vector2f::from_polar(5.0, Angle::degrees(90.0)); // 5 units pointing up
+    /// assert!((v.x - 0.0).abs() < 1e-6);
+    /// assert!((v.y - 5.0).abs() < 1e-6);
+    /// ```
+    pub fn from_polar(r: T, phi: crate::system::Angle) -> Self
+    where
+        T: From<f32> + Copy + Mul<Output = T>,
+    {
+        let (sin, cos) = phi.as_radians().sin_cos();
+        Self {
+            x: r * T::from(cos),
+            y: r * T::from(sin),
+        }
+    }
+
+    /// Returns the angle of this vector from the positive X-axis
+    ///
+    /// # Usage example
+    ///
+    /// ```
+    /// # use sfml::system::{Vector2f, Angle};
+    /// let v = Vector2f::new(1.0, 1.0);
+    /// let angle = v.angle();
+    /// assert!((angle.as_degrees() - 45.0).abs() < 0.001);
+    /// ```
+    pub fn angle(self) -> crate::system::Angle
+    where
+        T: Float + Copy + Into<f32>,
+    {
+        debug_assert!(
+            self.x != T::zero() || self.y != T::zero(),
+            "Cannot calculate angle of zero vector"
+        );
+        Angle::radians(T::atan2(self.y, self.x).into())
+    }
+
+    /// Returns the signed angle from this vector to another vector
+    ///
+    /// # Usage example
+    ///
+    /// ```
+    /// # use sfml::system::{Vector2f, Angle};
+    /// let v1 = Vector2f::new(1.0, 0.0);  // pointing right
+    /// let v2 = Vector2f::new(0.0, 1.0);  // pointing up
+    /// let angle = v1.angle_to(v2);
+    /// assert!((angle.as_degrees() - 90.0).abs() < 0.001);
+    /// ```
+    pub fn angle_to(self, rhs: Self) -> crate::system::Angle
+    where
+        T: Float + Copy + Into<f32>,
+    {
+        debug_assert!(
+            self.x != T::zero() || self.y != T::zero(),
+            "Cannot calculate angle from zero vector"
+        );
+        debug_assert!(
+            rhs.x != T::zero() || rhs.y != T::zero(),
+            "Cannot calculate angle to zero vector"
+        );
+
+        let cross = self.cross(rhs);
+        let dot = self.dot(rhs);
+        Angle::radians(T::atan2(cross, dot).into())
+    }
+
+    /// Returns this vector rotated by the specified angle
+    ///
+    /// # Usage example
+    ///
+    /// ```
+    /// # use sfml::system::{Vector2f, Angle};
+    /// let v = Vector2f::new(1.0, 0.0);  // pointing right
+    /// let rotated = v.rotated_by(Angle::degrees(90.0));  // rotate 90 degrees
+    /// assert!((rotated.x - 0.0).abs() < 0.001);
+    /// assert!((rotated.y - 1.0).abs() < 0.001);
+    /// ```
+    pub fn rotated_by(self, phi: crate::system::Angle) -> Self
+    where
+        T: Float + Copy + From<f32>,
+    {
+        let (sin, cos) = phi.as_radians().sin_cos();
+        let (sin, cos) = (sin.into(), cos.into());
+
+        Self {
+            x: self.x * cos - self.y * sin,
+            y: self.x * sin + self.y * cos,
+        }
+    }
+
+    /// Returns the projection of this vector onto the given axis
+    ///
+    /// # Usage example
+    ///
+    /// ```
+    /// # use sfml::system::Vector2f;
+    /// let v = Vector2f::new(3.0, 4.0);
+    /// let axis = Vector2f::new(1.0, 0.0);  // X-axis
+    /// let projected = v.projected_onto(axis);
+    /// assert!((projected.x - 3.0).abs() < f32::EPSILON);
+    /// assert!((projected.y - 0.0).abs() < f32::EPSILON);
+    /// ```
+    pub fn projected_onto(self, axis: Self) -> Self
+    where
+        T: Float + Copy,
+    {
+        debug_assert!(
+            axis.x != T::zero() || axis.y != T::zero(),
+            "Cannot project onto zero vector"
+        );
+
+        let axis_length_sq = axis.length_sq();
+        let projection_length = self.dot(axis) / axis_length_sq;
+        axis * projection_length
     }
 }
 
@@ -457,27 +647,6 @@ impl<T: DivAssign + Copy> DivAssign<T> for Vector2<T> {
     }
 }
 
-impl<T: CheckedDiv> Vector2<T> {
-    /// `checked_div` for scalar division
-    ///
-    /// # Usage Example
-    ///
-    /// ```
-    /// # use sfml::system::Vector2i;
-    /// // Passing case
-    /// let a = Vector2i::new(420, 69);
-    /// assert_eq!(a.checked_div(1000), Some(Vector2i::new(0, 0)));
-    ///
-    /// // Failing case
-    /// assert_eq!(a.checked_div(0), None);
-    /// ```
-    pub fn checked_div(self, rhs: T) -> Option<Vector2<T>> {
-        let x = self.x.checked_div(&rhs)?;
-        let y = self.y.checked_div(&rhs)?;
-        Some(Vector2 { x, y })
-    }
-}
-
 impl<T: Neg<Output = T>> Neg for Vector2<T> {
     type Output = Self;
     /// Negates the vector
@@ -489,6 +658,7 @@ impl<T: Neg<Output = T>> Neg for Vector2<T> {
     /// use std::ops::Neg;
     /// let a = Vector2i::new(21, 21);
     /// assert_eq!(a.neg(), Vector2i::new(-21, -21));
+    /// ```
     fn neg(self) -> Self {
         Vector2 {
             x: -self.x,

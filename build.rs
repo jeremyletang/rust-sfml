@@ -42,7 +42,7 @@ fn static_link_windows(
     .into();
     // Copy only needed SFML extlibs to out dir to avoid linking every ext lib.
     // We don't need libFLAC, because we build it ourselves.
-    for lib in ["freetype", "openal32", "vorbisenc", "vorbisfile", "vorbis"] {
+    for lib in ["freetype", "vorbisenc", "vorbisfile", "vorbis"] {
         let lib_name = env.lib_filename(lib);
         let from = sfml_extlibs_path.join(&lib_name);
         let to = build_lib_path.join(&lib_name);
@@ -53,6 +53,7 @@ fn static_link_windows(
     }
     println!("cargo:rustc-link-lib=dylib=winmm");
     println!("cargo:rustc-link-lib=dylib=user32");
+    println!("cargo:rustc-link-lib=dylib=advapi32");
     if feat_window {
         println!("cargo:rustc-link-lib=dylib=opengl32");
         println!("cargo:rustc-link-lib=dylib=gdi32");
@@ -61,7 +62,6 @@ fn static_link_windows(
         println!("cargo:rustc-link-lib=static=freetype");
     }
     if feat_audio {
-        println!("cargo:rustc-link-lib=static=openal32");
         flac_ogg_linkage.link("FLAC");
         println!("cargo:rustc-link-lib=static=vorbisenc");
         println!("cargo:rustc-link-lib=static=vorbisfile");
@@ -80,6 +80,7 @@ fn static_link_linux(
     if feat_window {
         println!("cargo:rustc-link-lib=dylib=GL");
         println!("cargo:rustc-link-lib=dylib=X11");
+        println!("cargo:rustc-link-lib=Xi");
         println!("cargo:rustc-link-lib=dylib=Xcursor");
         println!("cargo:rustc-link-lib=dylib=Xrandr");
     }
@@ -87,8 +88,6 @@ fn static_link_linux(
         unix_graphics_link_support_libs();
     }
     if feat_audio {
-        // We link openal separately because Mac Os has its own OpenAL framework
-        pkgconfig_probe_with_fallback("openal", "rustc-link-lib=dylib=openal");
         unix_audio_link_support_libs(flac_ogg_linkage);
     }
 }
@@ -151,6 +150,20 @@ impl WinEnv {
 }
 
 fn main() {
+    // Need to probe Cargo's env as build.rs uses the default toolchain to
+    // run the build meaning that #[cfg(..)]'s won't work
+    let is_windows = env::var("CARGO_CFG_WINDOWS").is_ok();
+    let is_unix = env::var("CARGO_CFG_UNIX").is_ok();
+    let is_linux = env::var("CARGO_CFG_TARGET_OS")
+        .map(|os| os == "linux")
+        .unwrap_or(false);
+    let is_macos = env::var("CARGO_CFG_TARGET_OS")
+        .map(|os| os == "macos")
+        .unwrap_or(false);
+    if is_macos {
+        link_mac_os_frameworks();
+    }
+
     println!("cargo:rerun-if-changed=CSFML");
     println!("cargo:rerun-if-changed=SFML");
     let feat_audio = env::var("CARGO_FEATURE_AUDIO").is_ok();
@@ -168,12 +181,21 @@ fn main() {
     // we cannot support debug builds of SFML.
     cmake.profile("Release");
     cmake
+        .define("CMAKE_FIND_DEBUG_MODE", "TRUE")
+        .define("BUILD_SHARED_LIBS", "FALSE")
+        .define("SFML_BUILD_NETWORK", "FALSE")
+        .define("SFML_INSTALL_PKGCONFIG_FILES", "FALSE")
+        .define("CMAKE_CXX_STANDARD", "17")
+        .define("CMAKE_CXX_STANDARD_REQUIRED", "ON")
         .define("CMAKE_FIND_DEBUG_MODE", "TRUE") // I think I'll leave this on for now. Useful for debugging.
         .define("BUILD_SHARED_LIBS", "FALSE")
         .define("SFML_BUILD_NETWORK", "FALSE")
         .define("SFML_INSTALL_PKGCONFIG_FILES", "FALSE")
         // Disable "install" step
         .no_build_target(true);
+    if is_windows {
+        cmake.cxxflag("/std:c++17").cxxflag("/EHsc");
+    }
     if !feat_audio {
         cmake.define("SFML_BUILD_AUDIO", "FALSE");
     } else {
@@ -217,7 +239,6 @@ fn main() {
     let mut build = cc::Build::new();
     build
         .cpp(true)
-        .flag_if_supported("--std=c++17")
         .define("CSFML_SYSTEM_EXPORTS", None)
         .define("CSFML_AUDIO_EXPORTS", None)
         .define("CSFML_WINDOW_EXPORTS", None)
@@ -225,6 +246,11 @@ fn main() {
         .define("SFML_STATIC", None)
         .include("CSFML/src/")
         .include("SFML/include");
+    if is_windows {
+        build.flag_if_supported("/std:c++17");
+    } else {
+        build.flag_if_supported("--std=c++17");
+    }
     build.files(
         [
             "CSFML/src/System/Clock.cpp",
@@ -233,6 +259,7 @@ fn main() {
             "CSFML/src/System/SfString.cpp",
             "CSFML/src/System/SfStdString.cpp",
             "CSFML/src/System/SfStdVector.cpp",
+            "CSFML/src/System/Buffer.cpp",
         ]
         .iter(),
     );
@@ -242,6 +269,7 @@ fn main() {
                 "CSFML/src/Audio/Listener.cpp",
                 "CSFML/src/Audio/Music.cpp",
                 "CSFML/src/Audio/Sound.cpp",
+                "CSFML/src/Audio/SoundChannel.cpp",
                 "CSFML/src/Audio/SoundBuffer.cpp",
                 "CSFML/src/Audio/SoundBufferRecorder.cpp",
                 "CSFML/src/Audio/SoundRecorder.cpp",
@@ -291,19 +319,6 @@ fn main() {
         );
     }
     build.compile("rcsfml");
-    // Need to probe Cargo's env as build.rs uses the default toolchain to
-    // run the build meaning that #[cfg(..)]'s won't work
-    let is_windows = env::var("CARGO_CFG_WINDOWS").is_ok();
-    let is_unix = env::var("CARGO_CFG_UNIX").is_ok();
-    let is_linux = env::var("CARGO_CFG_TARGET_OS")
-        .map(|os| os == "linux")
-        .unwrap_or(false);
-    let is_macos = env::var("CARGO_CFG_TARGET_OS")
-        .map(|os| os == "macos")
-        .unwrap_or(false);
-    if is_macos {
-        link_mac_os_frameworks();
-    }
     let link_search = if matches!(win_env, Some(WinEnv::Msvc)) {
         "build/lib/Release"
     } else {
@@ -369,5 +384,4 @@ fn link_mac_os_frameworks() {
     println!("cargo:rustc-link-lib=framework=IOKit");
     println!("cargo:rustc-link-lib=framework=Carbon");
     println!("cargo:rustc-link-lib=framework=AppKit");
-    println!("cargo:rustc-link-lib=framework=OpenAL");
 }

@@ -3,7 +3,7 @@ use sfml::{
     graphics::{
         Color, CustomShape, CustomShapePoints, RenderTarget, RenderWindow, Shape, Transformable,
     },
-    system::{Clock, Vector2f},
+    system::{Angle, Clock, Vector2f},
     window::{Event, Key, Style},
 };
 
@@ -48,9 +48,11 @@ fn main() -> SfResult<()> {
         [800, 600],
         "Custom shape",
         Style::DEFAULT,
+        Default::default(),
         &Default::default(),
     )?;
-    let clock = Clock::start()?;
+    let mut clock = Clock::new()?;
+    clock.start();
     window.set_vertical_sync_enabled(true);
 
     let mut shape = CustomShape::new(Box::new(TriangleShape));
@@ -71,7 +73,7 @@ fn main() -> SfResult<()> {
 
         let t = clock.elapsed_time().as_seconds();
 
-        shape.set_rotation(t.sin().abs() * 360.0);
+        shape.set_rotation(Angle::degrees(t.sin().abs() * 360.0));
         let scale = t.cos().abs();
         shape.set_scale(scale);
         shape.set_fill_color(hue_time(t));

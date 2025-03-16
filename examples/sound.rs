@@ -1,7 +1,10 @@
 use {
     sfml::{
         SfResult,
-        audio::{Music, Sound, SoundBuffer, SoundStatus},
+        audio::{
+            Music, Sound, SoundBuffer,
+            sound_source::{self, SoundSource},
+        },
         system::{Time, sleep},
     },
     std::io::Write,
@@ -22,7 +25,7 @@ fn play_sound() -> SfResult<()> {
     let mut sound = Sound::with_buffer(&buffer);
     sound.play();
 
-    while sound.status() == SoundStatus::PLAYING {
+    while sound.status() == sound_source::Status::Playing {
         // Display the playing position
         print!("\rPlaying... {:.2}", sound.playing_offset().as_seconds());
         let _ = std::io::stdout().flush();
@@ -45,7 +48,7 @@ fn play_music() -> SfResult<()> {
 
     music.play();
 
-    while music.status() == SoundStatus::PLAYING {
+    while music.status() == sound_source::Status::Playing {
         // Display the playing position
         print!("\rPlaying... {:.2}", music.playing_offset().as_seconds());
         let _ = std::io::stdout().flush();

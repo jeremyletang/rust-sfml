@@ -1,10 +1,11 @@
 use {
+    super::{sound_channel::SoundChannel, sound_source::SoundSource},
     crate::{
-        audio::{SoundSource, SoundStatus},
+        cpp::CppVector,
         ffi::audio::*,
         system::{Time, Vector3f},
     },
-    std::{marker::PhantomData, os::raw::c_void, panic, ptr::NonNull},
+    std::{ffi::c_uint, marker::PhantomData, os::raw::c_void, panic, ptr::NonNull},
 };
 
 /// Trait for streamed audio sources.
@@ -23,6 +24,11 @@ pub trait SoundStream: Send {
     fn channel_count(&self) -> u32;
     /// Get the stream sample rate of the stream.
     fn sample_rate(&self) -> u32;
+    /// This is used to map a sample in the sample stream to a
+    /// position during spatialization.
+    ///
+    /// Return Map of position in sample frame to sound channel}
+    fn get_channel_map(&self) -> Vec<SoundChannel>;
 }
 
 /// Player for custom streamed audio sources. See [`SoundStream`].
@@ -81,6 +87,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     pub fn new(sound_stream: &'a mut S) -> Self {
         let channel_count = sound_stream.channel_count();
         let sample_rate = sound_stream.sample_rate();
+        let channel_map = sound_stream.get_channel_map();
         let sound_stream: *mut S = sound_stream;
         Self {
             handle: unsafe {
@@ -89,6 +96,8 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
                     Some(seek_callback::<S>),
                     channel_count,
                     sample_rate,
+                    channel_map.as_ptr().cast(),
+                    channel_map.len(),
                     sound_stream.cast(),
                 ))
                 .expect("Failed to create SoundStreamPlayer")
@@ -111,11 +120,6 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
         unsafe {
             sfCustomSoundStream_pause(self.handle.as_ptr());
         }
-    }
-    /// Get the current status of the stream (stopped, paused, playing)
-    #[must_use]
-    pub fn status(&self) -> SoundStatus {
-        unsafe { SoundStatus(sfCustomSoundStream_getStatus(self.handle.as_ptr())) }
     }
     /// Stop playing, lending out the underlying [`SoundStream`].
     ///
@@ -159,10 +163,18 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     pub fn sample_rate(&self) -> u32 {
         unsafe { sfCustomSoundStream_getSampleRate(self.handle.as_ptr()) }
     }
+    /// This is used to map a sample in the sample stream to a
+    /// position during spatialization.
+    ///
+    /// Return Map of position in sample frame to sound channel
+    #[must_use]
+    pub fn channel_map(&self) -> &'static CppVector<SoundChannel> {
+        unsafe { &*sfCustomSoundStream_getChannelMap(self.handle.as_ptr()) }
+    }
     /// Tell whether or not the stream is in loop mode.
     #[must_use]
     pub fn is_looping(&self) -> bool {
-        unsafe { sfCustomSoundStream_getLoop(self.handle.as_ptr()) }
+        unsafe { sfCustomSoundStream_isLooping(self.handle.as_ptr()) }
     }
     /// Set whether or not the stream should loop after reaching the end.
     ///
@@ -170,7 +182,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// until it is stopped or `set_looping(false)` is called.
     /// The default looping state for streams is false.
     pub fn set_looping(&mut self, looping: bool) {
-        unsafe { sfCustomSoundStream_setLoop(self.handle.as_ptr(), looping) }
+        unsafe { sfCustomSoundStream_setLooping(self.handle.as_ptr(), looping) }
     }
 }
 
@@ -210,6 +222,90 @@ impl<S: SoundStream> SoundSource for SoundStreamPlayer<'_, S> {
     }
     fn attenuation(&self) -> f32 {
         unsafe { sfCustomSoundStream_getAttenuation(self.handle.as_ptr()) }
+    }
+    fn set_pan(&mut self, pan: f32) {
+        unsafe { sfCustomSoundStream_setPan(self.handle.as_ptr(), pan) }
+    }
+    fn set_spatialization_enabled(&mut self, enabled: bool) {
+        unsafe { sfCustomSoundStream_setSpatializationEnabled(self.handle.as_ptr(), enabled) }
+    }
+    fn set_direction<P: Into<Vector3f>>(&mut self, direction: P) {
+        unsafe { sfCustomSoundStream_setDirection(self.handle.as_ptr(), direction.into()) }
+    }
+    fn set_cone(&mut self, cone: super::sound_source::Cone) {
+        unsafe { sfCustomSoundStream_setCone(self.handle.as_ptr(), cone.into()) }
+    }
+    fn set_velocity<P: Into<Vector3f>>(&mut self, velocity: P) {
+        unsafe { sfCustomSoundStream_setVelocity(self.handle.as_ptr(), velocity.into()) }
+    }
+    fn set_doppler_factor(&mut self, factor: f32) {
+        unsafe { sfCustomSoundStream_setDopplerFactor(self.handle.as_ptr(), factor) }
+    }
+    fn set_directional_attenuation_factor(&mut self, factor: f32) {
+        unsafe { sfCustomSoundStream_setDirectionalAttenuationFactor(self.handle.as_ptr(), factor) }
+    }
+    fn set_max_distance(&mut self, distance: f32) {
+        unsafe { sfCustomSoundStream_setMaxDistance(self.handle.as_ptr(), distance) }
+    }
+    fn set_min_gain(&mut self, gain: f32) {
+        unsafe { sfCustomSoundStream_setMinGain(self.handle.as_ptr(), gain) }
+    }
+    fn set_max_gain(&mut self, gain: f32) {
+        unsafe { sfCustomSoundStream_setMaxGain(self.handle.as_ptr(), gain) }
+    }
+    fn set_effect_processor(&mut self, effect_processor: super::sound_source::EffectProcessor) {
+        let (cb, user_data) = match effect_processor {
+            Some(cb) => {
+                let boxed = Box::new(cb);
+                let trampoline: unsafe extern "C" fn(
+                    *const f32,
+                    *mut c_uint,
+                    *mut f32,
+                    *mut c_uint,
+                    c_uint,
+                    *mut c_void,
+                ) = effect_processor_trampoline;
+                (Some(trampoline), Box::into_raw(boxed).cast::<c_void>())
+            }
+            None => (None, std::ptr::null_mut()),
+        };
+
+        unsafe {
+            sfCustomSoundStream_setEffectProcessor(self.handle.as_ptr(), cb, user_data);
+        }
+    }
+    fn pan(&self) -> f32 {
+        unsafe { sfCustomSoundStream_getPan(self.handle.as_ptr()) }
+    }
+    fn is_spatialization_enabled(&self) -> bool {
+        unsafe { sfCustomSoundStream_isSpatializationEnabled(self.handle.as_ptr()) }
+    }
+    fn direction(&self) -> Vector3f {
+        unsafe { sfCustomSoundStream_getDirection(self.handle.as_ptr()) }
+    }
+    fn cone(&self) -> super::sound_source::Cone {
+        unsafe { sfCustomSoundStream_getCone(self.handle.as_ptr()).into() }
+    }
+    fn velocity(&self) -> Vector3f {
+        unsafe { sfCustomSoundStream_getVelocity(self.handle.as_ptr()) }
+    }
+    fn doppler_factor(&self) -> f32 {
+        unsafe { sfCustomSoundStream_getDopplerFactor(self.handle.as_ptr()) }
+    }
+    fn directional_attenuation_factor(&self) -> f32 {
+        unsafe { sfCustomSoundStream_getDirectionalAttenuationFactor(self.handle.as_ptr()) }
+    }
+    fn get_max_distance(&self) -> f32 {
+        unsafe { sfCustomSoundStream_getMaxDistance(self.handle.as_ptr()) }
+    }
+    fn get_min_gain(&self) -> f32 {
+        unsafe { sfCustomSoundStream_getMinGain(self.handle.as_ptr()) }
+    }
+    fn get_max_gain(&self) -> f32 {
+        unsafe { sfCustomSoundStream_getMaxGain(self.handle.as_ptr()) }
+    }
+    fn status(&self) -> super::sound_source::Status {
+        unsafe { sfCustomSoundStream_getStatus(self.handle.as_ptr()) }
     }
 }
 

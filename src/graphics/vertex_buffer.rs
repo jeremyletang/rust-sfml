@@ -184,7 +184,7 @@ impl VertexBuffer {
     /// use sfml::graphics::{PrimitiveType, VertexBuffer, VertexBufferUsage};
     ///
     /// let mut vb1 = VertexBuffer::new(PrimitiveType::TRIANGLES, 32, VertexBufferUsage::STATIC).unwrap();
-    /// let mut vb2 = VertexBuffer::new(PrimitiveType::QUADS, 12, VertexBufferUsage::DYNAMIC).unwrap();
+    /// let mut vb2 = VertexBuffer::new(PrimitiveType::TRIANGLE_FAN, 12, VertexBufferUsage::DYNAMIC).unwrap();
     ///
     /// // ...
     ///

@@ -4,7 +4,6 @@ use {
         audio::SoundBuffer,
         cpp::{CppString, CppVector, FBox},
         ffi::audio as ffi,
-        system::Time,
     },
     std::{ffi::CString, os::raw::c_void, ptr::NonNull},
 };
@@ -193,22 +192,6 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     pub fn channel_count(&self) -> u32 {
         unsafe { ffi::sfCustomSoundRecorder_getChannelCount(self.handle.as_ptr()) }
     }
-    /// Set the processing interval.
-    ///
-    /// The processing interval controls the period between calls to
-    /// [`SoundRecorder::on_process_samples`].
-    /// You may want to use a small interval if you want to process the recorded data in real time,
-    /// for example.
-    ///
-    /// Note: this is only a hint, the actual period may vary.
-    /// So don't rely on this parameter to implement precise timing.
-    ///
-    /// The default processing interval is 100 ms.
-    pub fn set_processing_interval(&mut self, interval: Time) {
-        unsafe {
-            ffi::sfCustomSoundRecorder_setProcessingInterval(self.handle.as_ptr(), interval.raw())
-        }
-    }
     /// Get the name of the current audio capture device.
     #[must_use]
     pub fn device(&self) -> &CppString {
@@ -337,6 +320,32 @@ impl SoundBufferRecorder {
         let success =
             unsafe { ffi::sfSoundBufferRecorder_setDevice(self.handle.as_ptr(), name.as_ptr()) };
         success.into_sf_result()
+    }
+
+    /// Get the number of channels used by this recorder
+    ///
+    /// Currently only mono and stereo are supported, so the
+    /// value is either 1 (for mono) or 2 (for stereo).
+    ///
+    /// Number of channels
+    #[must_use]
+    pub fn channel_count(&self) -> u32 {
+        unsafe { ffi::sfSoundBufferRecorder_getChannelCount(self.handle.as_ptr()) }
+    }
+
+    /// Set the channel count of the audio capture device
+    ///
+    /// This method allows you to specify the number of channels
+    /// used for recording. Currently only 16-bit mono and
+    /// 16-bit stereo are supported.
+    ///
+    /// # Arguments
+    /// channelCount - Number of channels. Currently only
+    ///                     mono (1) and stereo (2) are supported.
+    pub fn set_channel_count(&mut self, channel_count: u32) {
+        unsafe {
+            ffi::sfSoundBufferRecorder_setChannelCount(self.handle.as_ptr(), channel_count);
+        }
     }
 }
 

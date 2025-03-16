@@ -4,7 +4,7 @@ use sfml::{
         Color, Font, RectangleShape, RenderTarget, RenderWindow, Shape, Text, TextStyle,
         Transformable,
     },
-    window::{Event, Key, Style, clipboard},
+    window::{Event, Key, Style, clipboard, window_enums::State},
 };
 
 include!("../example_common.rs");
@@ -16,6 +16,7 @@ fn main() -> SfResult<()> {
         (800, 600),
         "◢◤ Unicode text entry ◥◣",
         Style::CLOSE,
+        State::Windowed,
         &Default::default(),
     )?;
     window.set_vertical_sync_enabled(true);
@@ -24,7 +25,7 @@ fn main() -> SfResult<()> {
     let mut font = Font::new()?;
 
     match std::env::args().nth(1) {
-        Some(path) => font.load_from_file(&path)?,
+        Some(path) => font.open_from_file(&path)?,
         None => font.load_from_memory_static(include_bytes!("resources/sansation.ttf"))?,
     };
     let mut string = String::from("This text can be edited.\nTry it!");

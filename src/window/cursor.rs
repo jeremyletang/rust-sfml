@@ -1,7 +1,7 @@
 use crate::{
     IntoSfResult, SfResult,
     cpp::FBox,
-    ffi::window::{self as ffi, sfCursor_loadFromPixels, sfCursor_loadFromSystem, sfCursor_new},
+    ffi::window::{self as ffi},
     system::Vector2u,
 };
 
@@ -33,43 +33,7 @@ impl Drop for Cursor {
 
 /// Creation
 impl Cursor {
-    /// # Safety
-    ///
-    /// Must be inited with [`Self::load_from_pixels`] or [`Self::load_from_system`]
-    unsafe fn new() -> SfResult<FBox<Self>> {
-        FBox::new(unsafe { sfCursor_new() }).into_sf_result()
-    }
     /// Create a new `Cursor` from the provided image data.
-    ///
-    /// See [`Self::load_from_pixels`].
-    ///
-    /// # Safety
-    ///
-    /// Also see [`Self::load_from_pixels`].
-    pub unsafe fn from_pixels(
-        pixels: &[u8],
-        size: Vector2u,
-        hotspot: Vector2u,
-    ) -> SfResult<FBox<Self>> {
-        unsafe {
-            let mut new = Self::new()?;
-            new.load_from_pixels(pixels, size, hotspot)?;
-            Ok(new)
-        }
-    }
-    /// Create a new `Cursor` from a native system cursor.
-    pub fn from_system(type_: Type) -> SfResult<FBox<Self>> {
-        unsafe {
-            let mut new = Self::new()?;
-            new.load_from_system(type_)?;
-            Ok(new)
-        }
-    }
-}
-
-/// Loading
-impl Cursor {
-    /// Load the cursor with the provided image data.
     ///
     /// `pixels` must be an array of width by height pixels in 32-bit RGBA format.
     /// If not, this will cause undefined behavior.
@@ -105,15 +69,15 @@ impl Cursor {
     /// > I noticed that on at least Linux X11, if the size of the image is not a power of 2,
     /// > the image is loaded in a wrong way that doesn't respect the dimensions. This is also
     /// > why I decided to leave this function unsafe.
-    pub unsafe fn load_from_pixels(
-        &mut self,
+    pub unsafe fn from_pixels(
         pixels: &[u8],
         size: Vector2u,
         hotspot: Vector2u,
-    ) -> SfResult<()> {
-        unsafe { sfCursor_loadFromPixels(self, pixels.as_ptr(), size, hotspot) }.into_sf_result()
+    ) -> SfResult<FBox<Self>> {
+        FBox::new(unsafe { sfCursor_createFromPixels(pixels.as_ptr(), size, hotspot) })
+            .into_sf_result()
     }
-    /// Load a native system cursor.
+    /// Create a new `Cursor` from a native system cursor.
     ///
     /// Refer to the list of cursor available on each system (see `CursorType`) to
     /// know whether a given cursor is expected to load successfully or
@@ -123,9 +87,11 @@ impl Cursor {
     /// - `type_`: Native system cursor type
     ///
     /// Returns an error if the cursor type is not supported by the operating system.
-    pub fn load_from_system(&mut self, type_: Type) -> SfResult<()> {
-        unsafe { sfCursor_loadFromSystem(self, type_) }.into_sf_result()
+    pub fn from_system(type_: Type) -> SfResult<FBox<Self>> {
+        FBox::new(unsafe { sfCursor_createFromSystem(type_) }).into_sf_result()
     }
 }
 
 pub use ffi::sfCursorType as Type;
+
+use self::ffi::{sfCursor_createFromPixels, sfCursor_createFromSystem};

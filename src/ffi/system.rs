@@ -17,5 +17,6 @@ type sfInputStreamHelperSeekCb =
     Option<unsafe extern "C" fn(pos: i64, user_data: *mut c_void) -> i64>;
 type sfInputStreamHelperTellCb = Option<unsafe extern "C" fn(userData: *mut c_void) -> i64>;
 type sfInputStreamHelperGetSizeCb = Option<unsafe extern "C" fn(user_data: *mut c_void) -> i64>;
+pub type sfBuffer = crate::system::buffer::Buffer;
 
 include!("system_bindgen.rs");

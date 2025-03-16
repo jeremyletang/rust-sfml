@@ -14,7 +14,6 @@ rust-version = "1.86"
 exclude = [
     "SFML/doc",
     "SFML/examples",
-    "SFML/tools",
     "SFML/extlibs/bin",
     "SFML/extlibs/libs-android",
     "SFML/extlibs/libs-ios",
@@ -24,10 +23,6 @@ exclude = [
     "SFML/extlibs/libs-mingw/x64/libogg.a",
     "SFML/extlibs/libs-mingw/x86/libFLAC.a",
     "SFML/extlibs/libs-mingw/x86/libogg.a",
-    "SFML/extlibs/libs-msvc/x64/flac.lib",
-    "SFML/extlibs/libs-msvc/x64/ogg.lib",
-    "SFML/extlibs/libs-msvc/x86/flac.lib",
-    "SFML/extlibs/libs-msvc/x86/ogg.lib",
     "SFML/extlibs/libs-msvc-universal/x86/flac.lib",
     "SFML/extlibs/libs-msvc-universal/x86/ogg.lib",
     "SFML/extlibs/libs-msvc-universal/x64/flac.lib",
