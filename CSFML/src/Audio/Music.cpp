@@ -17,7 +17,7 @@ extern "C" void sfMusic_del(sf::Music *music) {
 }
 
 extern "C" bool sfMusic_openFromFile(sf::Music *music, const char *filename) {
-    return music->openFromFile(filename);
+    return music->openFromFile(std::filesystem::path(filename));
 }
 
 extern "C" bool sfMusic_openFromMemory(sf::Music *music, const uint8_t *data, size_t sizeInBytes) {
@@ -28,12 +28,12 @@ extern "C" bool sfMusic_openFromStream(sf::Music *music, sfInputStreamHelper *st
     return music->openFromStream(*stream);
 }
 
-extern "C" void sfMusic_setLoop(sf::Music *music, bool loop) {
-    music->setLoop(loop != 0);
+extern "C" void sfMusic_setLooping(sf::Music *music, bool loop) {
+    music->setLooping(loop != 0);
 }
 
-extern "C" bool sfMusic_getLoop(const sf::Music *music) {
-    return music->getLoop();
+extern "C" bool sfMusic_isLooping(const sf::Music *music) {
+    return music->isLooping();
 }
 
 extern "C" int64_t sfMusic_getDuration(const sf::Music *music) {
@@ -46,8 +46,8 @@ extern "C" sfTimeSpan sfMusic_getLoopPoints(const sf::Music *music) {
 }
 
 extern "C" void sfMusic_setLoopPoints(sf::Music *music, sfTimeSpan timePoints) {
-    music->setLoopPoints(sf::Music::TimeSpan(sf::microseconds(timePoints.offset),
-                                             sf::microseconds(timePoints.length)));
+    music->setLoopPoints({sf::microseconds(timePoints.offset),
+                          sf::microseconds(timePoints.length)});
 }
 
 extern "C" void sfMusic_play(sf::Music *music) {
@@ -87,8 +87,8 @@ extern "C" void sfMusic_setVolume(sf::Music *music, float volume) {
     music->setVolume(volume);
 }
 
-extern "C" void sfMusic_setPosition(sf::Music *music, sfVector3f position) {
-    music->setPosition(sf::Vector3f(position.x, position.y, position.z));
+extern "C" void sfMusic_setPosition(sf::Music *music, sf::Vector3f position) {
+    music->setPosition(position);
 }
 
 extern "C" void sfMusic_setRelativeToListener(sf::Music *music, bool relative) {

@@ -1,9 +1,11 @@
 #include "System/Vector3.hpp"
-#include <SFML/Audio.hpp>
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/System/Time.hpp>
+#include <chrono>
 #include <cstdint>
 
-extern "C" sf::Sound *sfSound_new(void) {
-    return new sf::Sound;
+extern "C" sf::Sound *sfSound_new(const sf::SoundBuffer *buffer) {
+    return new sf::Sound(*buffer);
 }
 
 extern "C" sf::Sound *sfSound_cpy(const sf::Sound *sound) {
@@ -31,16 +33,15 @@ extern "C" void sfSound_setBuffer(sf::Sound *sound, const sf::SoundBuffer *buffe
 }
 
 extern "C" const sf::SoundBuffer *sfSound_getBuffer(const sf::Sound *sound) {
-    const sf::Sound *s = sound;
-    return s->getBuffer();
+    return &sound->getBuffer();
 }
 
-extern "C" void sfSound_setLoop(sf::Sound *sound, bool loop) {
-    sound->setLoop(loop);
+extern "C" void sfSound_setLooping(sf::Sound *sound, bool loop) {
+    sound->setLooping(loop);
 }
 
-extern "C" bool sfSound_getLoop(const sf::Sound *sound) {
-    return sound->getLoop();
+extern "C" bool sfSound_isLooping(const sf::Sound *sound) {
+    return sound->isLooping();
 }
 
 extern "C" sf::Sound::Status sfSound_getStatus(const sf::Sound *sound) {
@@ -72,7 +73,7 @@ extern "C" void sfSound_setAttenuation(sf::Sound *sound, float attenuation) {
 }
 
 extern "C" void sfSound_setPlayingOffset(sf::Sound *sound, int64_t timeOffset) {
-    sound->setPlayingOffset(sf::microseconds(timeOffset));
+    sound->setPlayingOffset(std::chrono::microseconds(timeOffset));
 }
 
 extern "C" float sfSound_getPitch(const sf::Sound *sound) {

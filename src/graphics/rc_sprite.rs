@@ -1,4 +1,5 @@
 use {
+    super::Rect,
     crate::{
         cpp::FBox,
         ffi::graphics as ffi,
@@ -34,20 +35,6 @@ pub struct RcSprite {
 }
 
 impl RcSprite {
-    /// Create a new sprite
-    ///
-    /// # Panics
-    ///
-    /// Panics if for some reason a `Sprite` can't be created.
-    #[must_use]
-    pub fn new() -> Self {
-        let sp = unsafe { ffi::sfSprite_new() };
-        Self {
-            handle: NonNull::new(sp).expect("Failed to create Sprite"),
-            texture: Weak::new(),
-        }
-    }
-
     fn texture_exists(&self) -> bool {
         self.texture.strong_count() != 0
     }
@@ -59,17 +46,23 @@ impl RcSprite {
     /// Create a new sprite with a texture
     #[must_use]
     pub fn with_texture(texture: &RcTexture) -> RcSprite {
-        let mut sprite = Self::new();
-        sprite.set_texture(texture, true);
-        sprite
+        Self::with_texture_and_rect(
+            texture,
+            Rect {
+                position: Default::default(),
+                size: texture.size().as_other(),
+            },
+        )
     }
 
     /// Create a new sprite with a texture and a source rectangle
     #[must_use]
     pub fn with_texture_and_rect(texture: &RcTexture, rect: IntRect) -> RcSprite {
-        let mut sprite = Self::with_texture(texture);
-        sprite.set_texture_rect(rect);
-        sprite
+        let sp = unsafe { ffi::sfSprite_new(texture.raw_texture(), rect) };
+        RcSprite {
+            handle: NonNull::new(sp).expect("Failed to create Sprite"),
+            texture: texture.downgrade(),
+        }
     }
 
     /// Change the source texture of a sprite
@@ -226,12 +219,6 @@ impl RcSprite {
 
     pub(super) fn raw(&self) -> *const ffi::sfSprite {
         self.handle.as_ptr()
-    }
-}
-
-impl Default for RcSprite {
-    fn default() -> Self {
-        Self::new()
     }
 }
 

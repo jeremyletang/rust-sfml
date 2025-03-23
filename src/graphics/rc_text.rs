@@ -48,11 +48,13 @@ impl RcText {
     /// * font - The [`RcFont`] to display the `RcText`
     /// * characterSize - The size of the `RcText`
     pub fn new<S: SfStrConv>(string: S, font: &RcFont, character_size: u32) -> Self {
-        let mut text = Self::default();
-        text.set_string(string);
-        text.set_font(font);
-        text.set_character_size(character_size);
-        text
+        let text = string.with_as_sfstr(|sfstr| unsafe {
+            ffi::sfText_new(font.raw_font(), sfstr.as_ptr(), character_size)
+        });
+        RcText {
+            handle: NonNull::new(text).expect("Failed to create Text"),
+            font: font.downgrade(),
+        }
     }
 
     fn font_exists(&self) -> bool {
@@ -307,16 +309,6 @@ impl RcText {
 
     pub(super) fn raw(&self) -> *const ffi::sfText {
         self.handle.as_ptr()
-    }
-}
-
-impl Default for RcText {
-    fn default() -> Self {
-        let text = unsafe { ffi::sfText_new() };
-        Self {
-            handle: NonNull::new(text).expect("Failed to create Text"),
-            font: Weak::new(),
-        }
     }
 }
 

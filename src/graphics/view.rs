@@ -41,10 +41,12 @@ impl View {
     ///
     /// # Arguments
     /// * rectangle - The rectangle defining the zone to display
-    pub fn from_rect(rectangle: FloatRect) -> SfResult<FBox<View>> {
-        let mut new = Self::new()?;
-        new.reset(rectangle);
-        Ok(new)
+    pub fn from_rect(rectangle: FloatRect) -> FBox<View> {
+        let mut view: FBox<View> = Default::default();
+        view.set_center(rectangle.center());
+        view.set_size(rectangle.size);
+
+        view
     }
 }
 
@@ -155,16 +157,6 @@ impl View {
     /// * viewport - New viewport rectangle
     pub fn set_viewport(&mut self, viewport: FloatRect) {
         unsafe { ffi::sfView_setViewport(self, viewport) }
-    }
-
-    /// Reset a view to the given rectangle
-    ///
-    /// Note that this function resets the rotation angle to 0.
-    ///
-    /// # Arguments
-    /// * rectangle - Rectangle defining the zone to display
-    pub fn reset(&mut self, rectangle: FloatRect) {
-        unsafe { ffi::sfView_reset(self, rectangle) }
     }
 }
 

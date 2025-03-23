@@ -19,6 +19,7 @@ pub mod listener;
 mod music;
 mod sound;
 mod sound_buffer;
+pub mod sound_channel;
 mod sound_source;
 mod sound_status;
 mod sound_stream;

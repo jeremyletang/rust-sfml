@@ -1,6 +1,7 @@
 use crate::{
     cpp::{CppVector, CppVectorItem},
     ffi::window as ffi,
+    system::{Vector2, Vector2u},
     window::thread_safety,
 };
 
@@ -24,12 +25,10 @@ use crate::{
 /// the desktop: [`VideoMode::desktop_mode`]. This allows to build windows with the same size or
 /// pixel depth as the current resolution.
 #[repr(C)]
-#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub struct VideoMode {
-    /// Video mode width, in pixels
-    pub width: std::ffi::c_uint,
-    /// Video mode height, in pixels
-    pub height: std::ffi::c_uint,
+    /// Video mode size, in pixels
+    pub size: Vector2<std::ffi::c_uint>,
     /// Video mode pixel depth, in bits per pixels
     pub bits_per_pixel: std::ffi::c_uint,
 }
@@ -37,10 +36,9 @@ pub struct VideoMode {
 impl VideoMode {
     /// Constructs a new `VideoMode` from the given parameters.
     #[must_use]
-    pub const fn new(width: u32, height: u32, bits_per_pixel: u32) -> Self {
+    pub const fn new(size: Vector2u, bits_per_pixel: u32) -> Self {
         Self {
-            width,
-            height,
+            size,
             bits_per_pixel,
         }
     }
@@ -84,23 +82,30 @@ impl VideoMode {
     }
 }
 
-impl From<(u32, u32)> for VideoMode {
-    /// Constructs a `VideoMode` from `(w, h)`. Bit depth is 32.
-    fn from((w, h): (u32, u32)) -> Self {
-        Self::new(w, h, 32)
+impl From<Vector2u> for VideoMode {
+    /// Constructs a `VideoMode` from `Vector2<u32>`. Bit depth is 32.
+    fn from(size: Vector2u) -> Self {
+        Self::new(size, 32)
     }
 }
 
 impl From<[u32; 2]> for VideoMode {
     /// Constructs a `VideoMode` from `[w, h]`. Bit depth is 32.
     fn from([w, h]: [u32; 2]) -> Self {
-        Self::new(w, h, 32)
+        Self::new(Vector2::new(w, h), 32)
+    }
+}
+
+impl From<(u32, u32)> for VideoMode {
+    /// Constructs a `VideoMode` from `(w, h)`. Bit depth is 32.
+    fn from(size: (u32, u32)) -> Self {
+        Self::new(size.into(), 32)
     }
 }
 
 impl Default for VideoMode {
     fn default() -> Self {
-        Self::new(0, 0, 0)
+        Self::new(Vector2::new(0, 0), 0)
     }
 }
 

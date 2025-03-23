@@ -1,9 +1,9 @@
 #ifndef SFML_VIDEOMODE_H
 #define SFML_VIDEOMODE_H
 
+#include "System/Vector2.hpp"
 struct sfVideoMode {
-    unsigned int width;
-    unsigned int height;
+    sfVector2u size;
     unsigned int bitsPerPixel;
 };
 

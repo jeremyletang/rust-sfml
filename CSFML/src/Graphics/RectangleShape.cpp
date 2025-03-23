@@ -1,5 +1,6 @@
 #include "Graphics/Color.hpp"
 #include "Graphics/Rect.hpp"
+#include "SFML/System/Vector2.hpp"
 #include "System/Vector2.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -18,19 +19,19 @@ extern "C" void sfRectangleShape_del(sf::RectangleShape *shape) {
 }
 
 extern "C" void sfRectangleShape_setPosition(sf::RectangleShape *shape, sfVector2f position) {
-    shape->setPosition(position.x, position.y);
+    shape->setPosition(sf::Vector2f(position.x, position.y));
 }
 
 extern "C" void sfRectangleShape_setRotation(sf::RectangleShape *shape, float angle) {
-    shape->setRotation(angle);
+    shape->setRotation(sf::degrees(angle));
 }
 
 extern "C" void sfRectangleShape_setScale(sf::RectangleShape *shape, sfVector2f scale) {
-    shape->setScale(scale.x, scale.y);
+    shape->setScale(sf::Vector2f(scale.x, scale.y));
 }
 
 extern "C" void sfRectangleShape_setOrigin(sf::RectangleShape *shape, sfVector2f origin) {
-    shape->setOrigin(origin.x, origin.y);
+    shape->setOrigin(sf::Vector2f(origin.x, origin.y));
 }
 
 extern "C" sfVector2f sfRectangleShape_getPosition(const sf::RectangleShape *shape) {
@@ -39,7 +40,7 @@ extern "C" sfVector2f sfRectangleShape_getPosition(const sf::RectangleShape *sha
 }
 
 extern "C" float sfRectangleShape_getRotation(const sf::RectangleShape *shape) {
-    return shape->getRotation();
+    return shape->getRotation().asDegrees();
 }
 
 extern "C" sfVector2f sfRectangleShape_getScale(const sf::RectangleShape *shape) {
@@ -53,15 +54,15 @@ extern "C" sfVector2f sfRectangleShape_getOrigin(const sf::RectangleShape *shape
 }
 
 extern "C" void sfRectangleShape_move(sf::RectangleShape *shape, sfVector2f offset) {
-    shape->move(offset.x, offset.y);
+    shape->move(sf::Vector2f(offset.x, offset.y));
 }
 
 extern "C" void sfRectangleShape_rotate(sf::RectangleShape *shape, float angle) {
-    shape->rotate(angle);
+    shape->rotate(sf::degrees(angle));
 }
 
 extern "C" void sfRectangleShape_scale(sf::RectangleShape *shape, sfVector2f factors) {
-    shape->scale(factors.x, factors.y);
+    shape->scale(sf::Vector2f(factors.x, factors.y));
 }
 
 extern "C" sf::Transform const *sfRectangleShape_getTransform(const sf::RectangleShape *shape) {
@@ -77,7 +78,7 @@ extern "C" void sfRectangleShape_setTexture(sf::RectangleShape *shape, const sf:
 }
 
 extern "C" void sfRectangleShape_setTextureRect(sf::RectangleShape *shape, sfIntRect rect) {
-    shape->setTextureRect(sf::IntRect(rect.left, rect.top, rect.width, rect.height));
+    shape->setTextureRect({{rect.position.x, rect.position.y}, {rect.size.x, rect.size.y}});
 }
 
 extern "C" void sfRectangleShape_setFillColor(sf::RectangleShape *shape, sfColor color) {
@@ -98,7 +99,7 @@ extern "C" const sf::Texture *sfRectangleShape_getTexture(const sf::RectangleSha
 
 extern "C" sfIntRect sfRectangleShape_getTextureRect(const sf::RectangleShape *shape) {
     sf::IntRect rect = shape->getTextureRect();
-    return {rect.left, rect.top, rect.width, rect.height};
+    return {rect.position.x, rect.position.y, rect.size.x, rect.size.y};
 }
 
 extern "C" sfColor sfRectangleShape_getFillColor(const sf::RectangleShape *shape) {
@@ -125,7 +126,7 @@ extern "C" sfVector2f sfRectangleShape_getPoint(const sf::RectangleShape *shape,
 }
 
 extern "C" void sfRectangleShape_setSize(sf::RectangleShape *shape, sfVector2f size) {
-    shape->setSize(sf::Vector2f(size.x, size.y));
+    shape->setSize(sf::Vector2f({size.x, size.y}));
 }
 
 extern "C" sfVector2f sfRectangleShape_getSize(const sf::RectangleShape *shape) {
@@ -135,10 +136,10 @@ extern "C" sfVector2f sfRectangleShape_getSize(const sf::RectangleShape *shape) 
 
 extern "C" sfFloatRect sfRectangleShape_getLocalBounds(const sf::RectangleShape *shape) {
     sf::FloatRect rect = shape->getLocalBounds();
-    return {rect.left, rect.top, rect.width, rect.height};
+    return {rect.position.x, rect.position.y, rect.size.x, rect.size.y};
 }
 
 extern "C" sfFloatRect sfRectangleShape_getGlobalBounds(const sf::RectangleShape *shape) {
     sf::FloatRect rect = shape->getGlobalBounds();
-    return {rect.left, rect.top, rect.width, rect.height};
+    return {rect.position.x, rect.position.y, rect.size.x, rect.size.y};
 }

@@ -71,8 +71,14 @@ impl Context {
 fn test_settings() {
     use {crate::window::Window, std::thread};
 
-    let window =
-        Window::new_open((32, 32), "test", Default::default(), &Default::default()).unwrap();
+    let window = Window::new_open(
+        (32, 32),
+        "test",
+        Default::default(),
+        Default::default(),
+        &Default::default(),
+    )
+    .unwrap();
     let win_settings = *window.settings();
     thread::spawn(move || {
         let context = Context::new().unwrap();

@@ -26,8 +26,8 @@ extern "C" bool sfSoundBuffer_loadFromStream(sf::SoundBuffer *buffer, sfInputStr
     return buffer->loadFromStream(*stream);
 }
 
-extern "C" bool sfSoundBuffer_loadFromSamples(sf::SoundBuffer *buffer, const int16_t *samples, uint64_t sampleCount, unsigned int channelCount, unsigned int sampleRate) {
-    return buffer->loadFromSamples(samples, sampleCount, channelCount, sampleRate);
+extern "C" bool sfSoundBuffer_loadFromSamples(sf::SoundBuffer *buffer, const int16_t *samples, uint64_t sampleCount, unsigned int channelCount, unsigned int sampleRate, const std::vector<sf::SoundChannel> *channelMap) {
+    return buffer->loadFromSamples(samples, sampleCount, channelCount, sampleRate, *channelMap);
 }
 
 extern "C" bool sfSoundBuffer_saveToFile(const sf::SoundBuffer *soundBuffer, const char *filename) {

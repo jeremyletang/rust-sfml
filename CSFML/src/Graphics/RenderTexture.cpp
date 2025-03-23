@@ -19,8 +19,8 @@ extern "C" void sfRenderTexture_del(sf::RenderTexture *renderTexture) {
     delete renderTexture;
 }
 
-extern "C" bool sfRenderTexture_create(sf::RenderTexture *renderTexture, unsigned int width, unsigned int height, const sf::ContextSettings *settings) {
-    return renderTexture->create(width, height, *settings);
+extern "C" bool sfRenderTexture_resize(sf::RenderTexture *texture, sfVector2u size, const sf::ContextSettings *settings) {
+    return texture->resize({size.x, size.y}, *settings);
 }
 
 extern "C" sfVector2u sfRenderTexture_getSize(const sf::RenderTexture *renderTexture) {
@@ -58,26 +58,26 @@ extern "C" const sf::View *sfRenderTexture_getDefaultView(const sf::RenderTextur
 
 extern "C" sfIntRect sfRenderTexture_getViewport(const sf::RenderTexture *renderTexture, const sf::View *view) {
     sf::IntRect rect = renderTexture->getViewport(*view);
-    return {rect.left, rect.top, rect.width, rect.height};
+    return {rect.position.x, rect.position.y, rect.size.x, rect.size.y};
 }
 
 extern "C" sfVector2f sfRenderTexture_mapPixelToCoords(const sf::RenderTexture *renderTexture, sfVector2i point) {
-    sf::Vector2f result = renderTexture->mapPixelToCoords(sf::Vector2i(point.x, point.y));
+    sf::Vector2f result = renderTexture->mapPixelToCoords(sf::Vector2i({point.x, point.y}));
     return {result.x, result.y};
 }
 
 extern "C" sfVector2f sfRenderTexture_mapPixelToCoords_View(const sf::RenderTexture *renderTexture, sfVector2i point, const sf::View *targetView) {
-    sf::Vector2f result = renderTexture->mapPixelToCoords(sf::Vector2i(point.x, point.y), *targetView);
+    sf::Vector2f result = renderTexture->mapPixelToCoords(sf::Vector2i({point.x, point.y}), *targetView);
     return {result.x, result.y};
 }
 
 extern "C" sfVector2i sfRenderTexture_mapCoordsToPixel(const sf::RenderTexture *renderTexture, sfVector2f point) {
-    sf::Vector2i result = renderTexture->mapCoordsToPixel(sf::Vector2f(point.x, point.y));
+    sf::Vector2i result = renderTexture->mapCoordsToPixel(sf::Vector2f({point.x, point.y}));
     return {result.x, result.y};
 }
 
 extern "C" sfVector2i sfRenderTexture_mapCoordsToPixel_View(const sf::RenderTexture *renderTexture, sfVector2f point, const sf::View *targetView) {
-    sf::Vector2i result = renderTexture->mapCoordsToPixel(sf::Vector2f(point.x, point.y), *targetView);
+    sf::Vector2i result = renderTexture->mapCoordsToPixel(sf::Vector2f({point.x, point.y}), *targetView);
     return {result.x, result.y};
 }
 
@@ -130,7 +130,7 @@ extern "C" void sfRenderTexture_setSmooth(sf::RenderTexture *renderTexture, bool
 }
 
 extern "C" unsigned int sfRenderTexture_getMaximumAntialiasingLevel() {
-    return sf::RenderTexture::getMaximumAntialiasingLevel();
+    return sf::RenderTexture::getMaximumAntiAliasingLevel();
 }
 
 extern "C" bool sfRenderTexture_isSmooth(const sf::RenderTexture *renderTexture) {

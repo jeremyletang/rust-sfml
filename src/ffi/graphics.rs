@@ -27,6 +27,7 @@ type sfImage = crate::graphics::Image;
 type sfRenderWindow = crate::graphics::RenderWindow;
 type sfRenderTexture = crate::graphics::RenderTexture;
 type sfVertexBuffer = crate::graphics::VertexBuffer;
+pub(crate) type sfState = crate::window::window_enums::State;
 
 /// Enumeration of the blending factors.
 ///

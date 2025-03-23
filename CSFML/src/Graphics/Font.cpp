@@ -22,23 +22,23 @@ extern "C" sf::Font *sfFont_cpy(const sf::Font *font) {
 }
 
 extern "C" bool sfFont_loadFromFile(sf::Font *font, const char *filename) {
-    return font->loadFromFile(filename);
+    return font->openFromFile(filename);
 }
 
 extern "C" bool sfFont_loadFromMemory(sf::Font *font, const uint8_t *data, size_t sizeInBytes) {
-    return font->loadFromMemory(data, sizeInBytes);
+    return font->openFromMemory(data, sizeInBytes);
 }
 
 extern "C" bool sfFont_loadFromStream(sf::Font *font, sfInputStreamHelper *stream) {
-    return font->loadFromStream(*stream);
+    return font->openFromStream(*stream);
 }
 
 extern "C" sfGlyph sfFont_getGlyph(const sf::Font *font, uint32_t codePoint, unsigned int characterSize, bool bold, float outlineThickness) {
     sf::Glyph glyph = font->getGlyph(codePoint, characterSize, bold, outlineThickness);
     return {
         glyph.advance,
-        {glyph.bounds.left, glyph.bounds.top, glyph.bounds.width, glyph.bounds.height},
-        {glyph.textureRect.left, glyph.textureRect.top, glyph.textureRect.width, glyph.textureRect.height}};
+        {glyph.bounds.position.x, glyph.bounds.position.y, glyph.bounds.size.x, glyph.bounds.size.y},
+        {glyph.textureRect.position.x, glyph.textureRect.position.y, glyph.textureRect.size.x, glyph.textureRect.size.y}};
 }
 
 extern "C" float sfFont_getKerning(const sf::Font *font, uint32_t first, uint32_t second, unsigned int characterSize) {

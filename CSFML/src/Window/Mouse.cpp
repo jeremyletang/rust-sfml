@@ -1,9 +1,10 @@
+#include "Window/Mouse.hpp"
 #include "System/Vector2.hpp"
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Window/Window.hpp>
 
-extern "C" bool sfMouse_isButtonPressed(sf::Mouse::Button button) {
-    return sf::Mouse::isButtonPressed(button);
+extern "C" bool sfMouse_isButtonPressed(sfMouseButton button) {
+    return sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(button));
 }
 
 extern "C" sfVector2i sfMouse_getPosition() {
