@@ -30,7 +30,7 @@ Platform support
 Prerequisites
 =============
 
-- Rust 1.85 or later
+- Rust 1.86 or later
 - [CMake](https://cmake.org/), and a C++ toolchain for building SFML
 - 🐧 On Linux, you need the following dependencies installed:
    - Window module: `libGL libX11 libXcursor libXrandr`

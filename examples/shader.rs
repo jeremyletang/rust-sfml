@@ -18,7 +18,6 @@ include!("../example_common.rs");
 trait Effect: Drawable {
     fn update(&mut self, t: f32, x: f32, y: f32) -> SfResult<()>;
     fn name(&self) -> &str;
-    fn as_drawable(&self) -> &dyn Drawable;
 }
 
 struct Pixelate<'t> {
@@ -56,9 +55,6 @@ impl Effect for Pixelate<'_> {
     }
     fn name(&self) -> &str {
         "pixelate"
-    }
-    fn as_drawable(&self) -> &dyn Drawable {
-        self
     }
 }
 
@@ -121,9 +117,6 @@ impl Effect for WaveBlur<'_> {
     fn name(&self) -> &str {
         "wave + blur"
     }
-    fn as_drawable(&self) -> &dyn Drawable {
-        self
-    }
 }
 
 struct StormBlink {
@@ -177,9 +170,6 @@ impl Effect for StormBlink {
     }
     fn name(&self) -> &str {
         "storm + blink"
-    }
-    fn as_drawable(&self) -> &dyn Drawable {
-        self
     }
 }
 
@@ -249,9 +239,6 @@ impl Effect for Edge<'_> {
         }
         self.surface.display();
         Ok(())
-    }
-    fn as_drawable(&self) -> &dyn Drawable {
-        self
     }
     fn name(&self) -> &str {
         "edge post-effect"
@@ -324,10 +311,6 @@ impl Effect for Geometry<'_> {
 
     fn name(&self) -> &str {
         "Geometry Shader Billboards"
-    }
-
-    fn as_drawable(&self) -> &dyn Drawable {
-        self as _
     }
 }
 
@@ -405,7 +388,7 @@ fn main() -> SfResult<()> {
         effects[current].update(clock.elapsed_time().as_seconds(), x, y)?;
 
         window.clear(Color::rgb(255, 128, 0));
-        window.draw(effects[current].as_drawable());
+        window.draw(effects[current]);
         window.draw(&text_bg);
         window.draw(&instructions);
         window.draw(&desc);
