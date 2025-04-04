@@ -1,3 +1,5 @@
+#include "Graphics/PrimitiveType.hpp"
+#include "SFML/Graphics/PrimitiveType.hpp"
 #include "SFML/Graphics/RenderTarget.hpp"
 #include <SFML/Graphics/VertexBuffer.hpp>
 #include <cstddef>
@@ -38,12 +40,12 @@ extern "C" unsigned int sfVertexBuffer_getNativeHandle(const sf::VertexBuffer *v
     return vertexBuffer->getNativeHandle();
 }
 
-extern "C" void sfVertexBuffer_setPrimitiveType(sf::VertexBuffer *vertexBuffer, sf::PrimitiveType type) {
-    vertexBuffer->setPrimitiveType(type);
+extern "C" void sfVertexBuffer_setPrimitiveType(sf::VertexBuffer *vertexBuffer, sfPrimitiveType type) {
+    vertexBuffer->setPrimitiveType(static_cast<sf::PrimitiveType>(type));
 }
 
-extern "C" sf::PrimitiveType sfVertexBuffer_getPrimitiveType(const sf::VertexBuffer *vertexBuffer) {
-    return vertexBuffer->getPrimitiveType();
+extern "C" sfPrimitiveType sfVertexBuffer_getPrimitiveType(const sf::VertexBuffer *vertexBuffer) {
+    return static_cast<sfPrimitiveType>(vertexBuffer->getPrimitiveType());
 }
 
 extern "C" void sfVertexBuffer_setUsage(sf::VertexBuffer *vertexBuffer, sf::VertexBuffer::Usage usage) {
