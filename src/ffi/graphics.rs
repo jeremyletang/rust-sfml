@@ -272,8 +272,6 @@ pub enum sfPrimitiveType {
     TriangleStrip,
     /// List of connected triangles, a point uses the common center and the previous point to form a triangle
     TriangleFan,
-    /// List of individual quads
-    Quads,
 }
 
 type sfColor = Color;

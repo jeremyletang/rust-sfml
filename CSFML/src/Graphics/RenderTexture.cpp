@@ -1,5 +1,7 @@
+#include "Graphics/PrimitiveType.hpp"
 #include "Graphics/Rect.hpp"
 #include "Graphics/Color.hpp"
+#include "SFML/Graphics/PrimitiveType.hpp"
 #include "SFML/Window/ContextSettings.hpp"
 #include "System/Vector2.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -105,8 +107,8 @@ extern "C" void sfRenderTexture_drawVertexBuffer(sf::RenderTexture *renderTextur
 
 extern "C" void sfRenderTexture_drawPrimitives(sf::RenderTexture *renderTexture,
                                                const sf::Vertex *vertices, size_t vertexCount,
-                                               sf::PrimitiveType type, const sf::RenderStates *states) {
-    renderTexture->draw(vertices, vertexCount, type, *states);
+                                               sfPrimitiveType type, const sf::RenderStates *states) {
+    renderTexture->draw(vertices, vertexCount, static_cast<sf::PrimitiveType>(type), *states);
 }
 
 extern "C" void sfRenderTexture_pushGLStates(sf::RenderTexture *renderTexture) {

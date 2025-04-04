@@ -1,5 +1,7 @@
+#include "Graphics/PrimitiveType.hpp"
 #include "Graphics/Rect.hpp"
 #include "Graphics/Color.hpp"
+#include "SFML/Graphics/PrimitiveType.hpp"
 #include "System/Vector2.hpp"
 #include "Window/Event.hpp"
 #include "Window/VideoMode.hpp"
@@ -15,6 +17,8 @@
 #include <SFML/Window/Touch.hpp>
 #include <chrono>
 #include <cstddef>
+// Debug ONLY
+#include <iostream>
 
 extern "C" sf::RenderWindow *sfRenderWindow_new_mtsss(sfVideoMode mode, const uint32_t *title, uint32_t style, sfState state, const sf::ContextSettings *settings) {
     // Convert video mode
@@ -189,6 +193,8 @@ extern "C" void sfRenderWindow_drawConvexShape(sf::RenderWindow *renderWindow, c
     renderWindow->draw(*object, *states);
 }
 extern "C" void sfRenderWindow_drawRectangleShape(sf::RenderWindow *renderWindow, const sf::RectangleShape *object, const sf::RenderStates *states) {
+    std::cout << static_cast<int>(states->blendMode) << std::endl;
+    std::cout << object->getSize().x << " " << object->getSize().y << std::endl;
     renderWindow->draw(*object, *states);
 }
 extern "C" void sfRenderWindow_drawVertexBuffer(sf::RenderWindow *renderWindow, const sf::VertexBuffer *object, const sf::RenderStates *states) {
@@ -197,8 +203,8 @@ extern "C" void sfRenderWindow_drawVertexBuffer(sf::RenderWindow *renderWindow, 
 
 extern "C" void sfRenderWindow_drawPrimitives(sf::RenderWindow *renderWindow,
                                               const sf::Vertex *vertices, size_t vertexCount,
-                                              sf::PrimitiveType type, const sf::RenderStates *states) {
-    renderWindow->draw(vertices, vertexCount, type, *states);
+                                              sfPrimitiveType type, const sf::RenderStates *states) {
+    renderWindow->draw(vertices, vertexCount, static_cast<sf::PrimitiveType>(type), *states);
 }
 
 extern "C" void sfRenderWindow_pushGLStates(sf::RenderWindow *renderWindow) {
