@@ -1,6 +1,8 @@
 use {
+    super::sound_channel::SoundChannel,
     crate::{
         audio::{SoundSource, SoundStatus},
+        cpp::CppVector,
         ffi::audio::*,
         system::{Time, Vector3f},
     },
@@ -23,6 +25,11 @@ pub trait SoundStream: Send {
     fn channel_count(&self) -> u32;
     /// Get the stream sample rate of the stream.
     fn sample_rate(&self) -> u32;
+    /// This is used to map a sample in the sample stream to a
+    /// position during spatialization.
+    ///
+    /// Return Map of position in sample frame to sound channel}
+    fn get_channel_map(&self) -> Vec<SoundChannel>;
 }
 
 /// Player for custom streamed audio sources. See [`SoundStream`].
@@ -81,6 +88,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     pub fn new(sound_stream: &'a mut S) -> Self {
         let channel_count = sound_stream.channel_count();
         let sample_rate = sound_stream.sample_rate();
+        let channel_map = sound_stream.get_channel_map();
         let sound_stream: *mut S = sound_stream;
         Self {
             handle: unsafe {
@@ -89,6 +97,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
                     Some(seek_callback::<S>),
                     channel_count,
                     sample_rate,
+                    channel_map.as_ptr().cast(),
                     sound_stream.cast(),
                 ))
                 .expect("Failed to create SoundStreamPlayer")
@@ -159,10 +168,18 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     pub fn sample_rate(&self) -> u32 {
         unsafe { sfCustomSoundStream_getSampleRate(self.handle.as_ptr()) }
     }
+    /// This is used to map a sample in the sample stream to a
+    /// position during spatialization.
+    ///
+    /// Return Map of position in sample frame to sound channel
+    #[must_use]
+    pub fn channel_map(&self) -> &'static CppVector<SoundChannel> {
+        unsafe { &*sfCustomSoundStream_getChannelMap(self.handle.as_ptr()) }
+    }
     /// Tell whether or not the stream is in loop mode.
     #[must_use]
     pub fn is_looping(&self) -> bool {
-        unsafe { sfCustomSoundStream_getLoop(self.handle.as_ptr()) }
+        unsafe { sfCustomSoundStream_isLooping(self.handle.as_ptr()) }
     }
     /// Set whether or not the stream should loop after reaching the end.
     ///
@@ -170,7 +187,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     /// until it is stopped or `set_looping(false)` is called.
     /// The default looping state for streams is false.
     pub fn set_looping(&mut self, looping: bool) {
-        unsafe { sfCustomSoundStream_setLoop(self.handle.as_ptr(), looping) }
+        unsafe { sfCustomSoundStream_setLooping(self.handle.as_ptr(), looping) }
     }
 }
 

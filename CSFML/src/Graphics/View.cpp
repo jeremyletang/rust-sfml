@@ -15,23 +15,19 @@ extern "C" sf::View *sfView_cpy(const sf::View *view) {
 }
 
 extern "C" void sfView_setCenter(sf::View *view, sfVector2f center) {
-    view->setCenter(center.x, center.y);
+    view->setCenter({center.x, center.y});
 }
 
 extern "C" void sfView_setSize(sf::View *view, sfVector2f size) {
-    view->setSize(size.x, size.y);
+    view->setSize({size.x, size.y});
 }
 
 extern "C" void sfView_setRotation(sf::View *view, float angle) {
-    view->setRotation(angle);
+    view->setRotation(sf::degrees(angle));
 }
 
 extern "C" void sfView_setViewport(sf::View *view, sfFloatRect viewport) {
-    view->setViewport(sf::FloatRect(viewport.left, viewport.top, viewport.width, viewport.height));
-}
-
-extern "C" void sfView_reset(sf::View *view, sfFloatRect rectangle) {
-    view->reset(sf::FloatRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height));
+    view->setViewport({{viewport.position.x, viewport.position.y}, {viewport.size.x, viewport.size.y}});
 }
 
 extern "C" sfVector2f sfView_getCenter(const sf::View *view) {
@@ -45,20 +41,20 @@ extern "C" sfVector2f sfView_getSize(const sf::View *view) {
 }
 
 extern "C" float sfView_getRotation(const sf::View *view) {
-    return view->getRotation();
+    return view->getRotation().asDegrees();
 }
 
 extern "C" sfFloatRect sfView_getViewport(const sf::View *view) {
     sf::FloatRect rect = view->getViewport();
-    return {rect.left, rect.top, rect.width, rect.height};
+    return {{rect.position.x, rect.position.y}, {rect.size.x, rect.size.y}};
 }
 
 extern "C" void sfView_move(sf::View *view, sfVector2f offset) {
-    view->move(offset.x, offset.y);
+    view->move({offset.x, offset.y});
 }
 
 extern "C" void sfView_rotate(sf::View *view, float angle) {
-    view->rotate(angle);
+    view->rotate(sf::degrees(angle));
 }
 
 extern "C" void sfView_zoom(sf::View *view, float factor) {

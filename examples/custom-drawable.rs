@@ -43,6 +43,7 @@ fn main() -> SfResult<()> {
         [800, 600],
         "Custom drawable",
         Style::CLOSE,
+        Default::default(),
         &Default::default(),
     )?;
     window.set_vertical_sync_enabled(true);

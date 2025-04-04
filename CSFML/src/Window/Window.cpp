@@ -1,8 +1,26 @@
+#include "SFML/System/Time.hpp"
+#include "SFML/System/Vector2.hpp"
 #include "System/Vector2.hpp"
 #include "Window/VideoMode.hpp"
+#include "Window/Window.hpp"
+#include "Window/Event.hpp"
+#include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/Window.hpp>
 #include <SFML/Window/Touch.hpp>
+#include <chrono>
 #include <cstdint>
+#include <stdexcept>
+
+sf::State to_state(const sfState state) {
+    switch (state) {
+    case sfState::Windowed:
+        return sf::State::Windowed;
+    case sfState::Fullscreen:
+        return sf::State::Fullscreen;
+    default:
+        throw std::invalid_argument("Unreachable Pattern");
+    }
+}
 
 extern "C" sf::Window *sfWindow_new() {
     return new sf::Window;
@@ -13,10 +31,10 @@ extern "C" void sfWindow_del(sf::Window *window) {
 }
 
 // Create with (mode, title, style, settings)
-extern "C" void sfWindow_create_mtss(sf::Window *window, sfVideoMode mode, const uint32_t *title, uint32_t style, const sf::ContextSettings *settings) {
+extern "C" void sfWindow_create_mtsss(sf::Window *window, sfVideoMode mode, const uint32_t *title, uint32_t style, sfState state, const sf::ContextSettings *settings) {
     // Convert video mode
-    sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);
-    window->create(videoMode, title, style, *settings);
+    sf::VideoMode videoMode(sf::Vector2u(mode.size.x, mode.size.y), mode.bitsPerPixel);
+    window->create(videoMode, (char32_t *)title, style, to_state(state), *settings);
 }
 
 extern "C" void sfWindow_create_handle_settings(sf::Window *window, sf::WindowHandle handle, const sf::ContextSettings *settings) {
@@ -35,12 +53,12 @@ extern "C" const sf::ContextSettings *sfWindow_getSettings(const sf::Window *win
     return &window->getSettings();
 }
 
-extern "C" bool sfWindow_pollEvent(sf::Window *window, sf::Event *event) {
-    return window->pollEvent(*event);
+extern "C" bool sfWindow_pollEvent(sf::Window *window, sfEvent *event) {
+    return convertEvent(window->pollEvent(), *event);
 }
 
-extern "C" bool sfWindow_waitEvent(sf::Window *window, sf::Event *event) {
-    return window->waitEvent(*event);
+extern "C" bool sfWindow_waitEvent(sf::Window *window, sfEvent *event, const int64_t timeout) {
+    return convertEvent(window->waitEvent(sf::Time(std::chrono::microseconds(timeout))), *event);
 }
 
 extern "C" sfVector2i sfWindow_getPosition(const sf::Window *window) {
@@ -58,15 +76,15 @@ extern "C" sfVector2u sfWindow_getSize(const sf::Window *window) {
 }
 
 extern "C" void sfWindow_setSize(sf::Window *window, sfVector2u size) {
-    window->setSize(sf::Vector2u(size.x, size.y));
+    window->setSize(sf::Vector2u({size.x, size.y}));
 }
 
 extern "C" void sfWindow_setUnicodeTitle(sf::Window *window, const uint32_t *title) {
-    window->setTitle(title);
+    window->setTitle((char32_t *)title);
 }
 
-extern "C" void sfWindow_setIcon(sf::Window *window, unsigned int width, unsigned int height, const uint8_t *pixels) {
-    window->setIcon(width, height, pixels);
+extern "C" void sfWindow_setIcon(sf::Window *window, sfVector2u size, const uint8_t *pixels) {
+    window->setIcon(sf::Vector2u({size.x, size.y}), pixels);
 }
 
 extern "C" void sfWindow_setVisible(sf::Window *window, bool visible) {
@@ -118,6 +136,6 @@ extern "C" void sfWindow_setJoystickThreshold(sf::Window *window, float threshol
     window->setJoystickThreshold(threshold);
 }
 
-extern "C" sf::WindowHandle sfWindow_getSystemHandle(const sf::Window *window) {
-    return window->getSystemHandle();
+extern "C" sf::WindowHandle sfWindow_getNativeHandle(const sf::Window *window) {
+    return window->getNativeHandle();
 }

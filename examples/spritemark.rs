@@ -7,8 +7,8 @@ use {
     sfml::{
         SfResult,
         graphics::{
-            Color, Font, PrimitiveType, Rect, RenderStates, RenderTarget, RenderWindow, Text,
-            Texture, Transform, Vertex, View,
+            Color, Font, PrimitiveType, RenderStates, RenderTarget, RenderWindow, Text, Texture,
+            Transform, Vertex, View,
         },
         system::{Clock, Vector2, Vector2f, Vector2i},
         window::{ContextSettings, Event, Key, Style, VideoMode, mouse::Button},
@@ -67,6 +67,7 @@ fn main() -> SfResult<()> {
         native_mode,
         "Spritemark",
         Style::default(),
+        Default::default(),
         &ContextSettings::default(),
     )?;
     window.set_position(Vector2::new(0, 0));
@@ -85,7 +86,6 @@ fn main() -> SfResult<()> {
     let mut sec_clock = Clock::start()?;
     let mut fps = 0;
     let mut lmb_down = false;
-    let mut view = View::new()?;
 
     while window.is_open() {
         while let Some(event) = window.poll_event() {
@@ -107,8 +107,8 @@ fn main() -> SfResult<()> {
                 } => {
                     lmb_down = false;
                 }
-                Event::Resized { width, height } => {
-                    view.reset(Rect::new(0., 0., width as f32, height as f32));
+                Event::Resized { size } => {
+                    let view = View::with_center_and_size(Vector2::new(0., 0.), size.as_other());
                     window.set_view(&view);
                 }
                 _ => {}
@@ -132,8 +132,8 @@ fn main() -> SfResult<()> {
             let size = f32::from(SUBIMAGE_SIZE);
             let tex_x = f32::from(obj.image_id) * size;
             let mut tf = Transform::default();
-            tf.translate(obj.position.x, obj.position.y);
-            tf.rotate_with_center(obj.angle, size / 2.0, size / 2.0);
+            tf.translate(obj.position);
+            tf.rotate_with_center(obj.angle, Vector2::new(size / 2., size / 2.));
             buf.push(Vertex {
                 color: Color::WHITE,
                 position: tf.transform_point(Vector2f::new(0., 0.)),
@@ -158,7 +158,7 @@ fn main() -> SfResult<()> {
         }
         window.clear(Color::BLACK);
         rs.texture = Some(&texture);
-        window.draw_primitives(&buf, PrimitiveType::QUADS, &rs);
+        window.draw_primitives(&buf, PrimitiveType::TRIANGLE_STRIP, &rs);
         rs.texture = None;
         text.set_string(&format!("{} sprites\n{fps} fps", objects.len()));
         window.draw_text(&text, &rs);

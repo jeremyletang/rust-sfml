@@ -4,8 +4,8 @@
 #include <SFML/System/InputStream.hpp>
 #include <cstdint>
 
-typedef int64_t (*sfInputStreamHelperReadCb)(void *data, int64_t size, void *userData);
-typedef int64_t (*sfInputStreamHelperSeekCb)(int64_t position, void *userData);
+typedef int64_t (*sfInputStreamHelperReadCb)(void *data, size_t size, void *userData);
+typedef int64_t (*sfInputStreamHelperSeekCb)(size_t position, void *userData);
 typedef int64_t (*sfInputStreamHelperTellCb)(void *userData);
 typedef int64_t (*sfInputStreamHelperGetSizeCb)(void *userData);
 
@@ -14,19 +14,19 @@ struct sfInputStreamHelper final : public sf::InputStream {
                         sfInputStreamHelperSeekCb seek,
                         sfInputStreamHelperTellCb tell,
                         sfInputStreamHelperGetSizeCb getSize, void *userData);
-    virtual sf::Int64 read(void *data, sf::Int64 size) final {
+    virtual std::optional<std::size_t> read(void *data, std::size_t size) final {
         return readCb(data, size, userData);
     }
 
-    virtual sf::Int64 seek(sf::Int64 position) final {
+    virtual std::optional<std::size_t> seek(std::size_t position) final {
         return seekCb(position, userData);
     }
 
-    virtual sf::Int64 tell() final {
+    virtual std::optional<std::size_t> tell() final {
         return tellCb(userData);
     }
 
-    virtual sf::Int64 getSize() final {
+    virtual std::optional<std::size_t> getSize() final {
         return getSizeCb(userData);
     }
     sfInputStreamHelperReadCb readCb;

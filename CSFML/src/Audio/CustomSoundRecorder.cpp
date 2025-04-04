@@ -18,16 +18,13 @@ class sfCustomSoundRecorder final : public sf::SoundRecorder {
                                             myStopCb(onStop),
                                             myUserData(userData) {
     }
-    virtual void setProcessingInterval(int64_t interval) final {
-        sf::SoundRecorder::setProcessingInterval(sf::microseconds(interval));
-    }
 
   private:
     virtual bool onStart() final {
         return myStartCb(myUserData);
     }
 
-    virtual bool onProcessSamples(const sf::Int16 *samples, std::size_t sampleCount) final {
+    virtual bool onProcessSamples(const std::int16_t *samples, std::size_t sampleCount) final {
         return myProcessCb(samples, sampleCount, myUserData);
     }
 
@@ -62,10 +59,6 @@ extern "C" void sfCustomSoundRecorder_stop(sfCustomSoundRecorder *soundRecorder)
 
 extern "C" unsigned int sfCustomSoundRecorder_getSampleRate(const sfCustomSoundRecorder *soundRecorder) {
     return soundRecorder->getSampleRate();
-}
-
-extern "C" void sfCustomSoundRecorder_setProcessingInterval(sfCustomSoundRecorder *soundRecorder, int64_t interval) {
-    soundRecorder->setProcessingInterval(interval);
 }
 
 extern "C" bool sfCustomSoundRecorder_setDevice(sfCustomSoundRecorder *soundRecorder, const char *name) {

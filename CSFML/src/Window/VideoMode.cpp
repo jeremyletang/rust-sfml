@@ -5,7 +5,7 @@
 
 extern "C" sfVideoMode sfVideoMode_getDesktopMode(void) {
     sf::VideoMode vm = sf::VideoMode::getDesktopMode();
-    return {vm.width, vm.height, vm.bitsPerPixel};
+    return {{vm.size.x, vm.size.y}, vm.bitsPerPixel};
 }
 
 extern "C" const std::vector<sf::VideoMode> *sfVideoMode_getFullscreenModes() {
@@ -13,7 +13,7 @@ extern "C" const std::vector<sf::VideoMode> *sfVideoMode_getFullscreenModes() {
 }
 
 extern "C" bool sfVideoMode_isValid(sfVideoMode mode) {
-    return sf::VideoMode(mode.width, mode.height, mode.bitsPerPixel).isValid();
+    return sf::VideoMode(sf::Vector2<unsigned int>(mode.size.x, mode.size.y), mode.bitsPerPixel).isValid();
 }
 
 extern "C" std::size_t sfVideoModeVector_getLength(const std::vector<sf::VideoMode> *vec) {

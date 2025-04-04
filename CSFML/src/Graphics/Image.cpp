@@ -17,12 +17,12 @@ extern "C" void sfImage_del(sf::Image *image) {
     delete image;
 }
 
-extern "C" void sfImage_create_w_h_color(sf::Image *image, unsigned int width, unsigned int height, sfColor color) {
-    image->create(width, height, sf::Color(color.r, color.g, color.b, color.a));
+extern "C" void sfImage_resizeWithColor(sf::Image *image, sfVector2u size, sfColor color) {
+    image->resize({size.x, size.y}, sf::Color(color.r, color.g, color.b, color.a));
 }
 
-extern "C" void sfImage_create_w_h_pixels(sf::Image *image, unsigned int width, unsigned int height, const uint8_t *data) {
-    image->create(width, height, data);
+extern "C" void sfImage_resizeWithPixels(sf::Image *image, sfVector2u size, const uint8_t *pixels) {
+    image->resize({size.x, size.y}, pixels);
 }
 
 extern "C" bool sfImage_loadFromFile(sf::Image *image, const char *filename) {
@@ -45,17 +45,17 @@ extern "C" void sfImage_createMaskFromColor(sf::Image *image, sfColor colorKey, 
     image->createMaskFromColor(sf::Color(colorKey.r, colorKey.g, colorKey.b, colorKey.a), alpha);
 }
 
-extern "C" void sfImage_copy(sf::Image *image, const sf::Image *source, unsigned int destX, unsigned int destY, sfIntRect sourceRect, bool applyAlpha) {
-    sf::IntRect sfmlRect(sourceRect.left, sourceRect.top, sourceRect.width, sourceRect.height);
-    image->copy(*source, destX, destY, sfmlRect, applyAlpha);
+extern "C" bool sfImage_copy(sf::Image *image, const sf::Image *source, sfVector2u dest, sfIntRect sourceRect, bool applyAlpha) {
+    sf::IntRect sfmlRect = {{sourceRect.position.x, sourceRect.position.y}, {sourceRect.size.x, sourceRect.size.y}};
+    return image->copy(*source, sf::Vector2u(dest.x, dest.y), sfmlRect, applyAlpha);
 }
 
-extern "C" void sfImage_setPixel(sf::Image *image, unsigned int x, unsigned int y, sfColor color) {
-    image->setPixel(x, y, sf::Color(color.r, color.g, color.b, color.a));
+extern "C" void sfImage_setPixel(sf::Image *image, sfVector2u coords, sfColor color) {
+    image->setPixel(sf::Vector2u(coords.x, coords.y), sf::Color(color.r, color.g, color.b, color.a));
 }
 
-extern "C" sfColor sfImage_getPixel(const sf::Image *image, unsigned int x, unsigned int y) {
-    sf::Color color = image->getPixel(x, y);
+extern "C" sfColor sfImage_getPixel(const sf::Image *image, sfVector2u coords) {
+    sf::Color color = image->getPixel(sf::Vector2u(coords.x, coords.y));
     return sfColor{color.r, color.g, color.b, color.a};
 }
 

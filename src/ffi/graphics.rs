@@ -27,6 +27,7 @@ type sfImage = crate::graphics::Image;
 type sfRenderWindow = crate::graphics::RenderWindow;
 type sfRenderTexture = crate::graphics::RenderTexture;
 type sfVertexBuffer = crate::graphics::VertexBuffer;
+pub(crate) type sfState = crate::window::window_enums::State;
 
 /// Enumeration of the blending factors.
 ///
@@ -271,8 +272,6 @@ pub enum sfPrimitiveType {
     TriangleStrip,
     /// List of connected triangles, a point uses the common center and the previous point to form a triangle
     TriangleFan,
-    /// List of individual quads
-    Quads,
 }
 
 type sfColor = Color;

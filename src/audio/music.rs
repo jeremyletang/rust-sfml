@@ -168,7 +168,7 @@ impl Music<'_> {
     /// Return true if the music is looping, false otherwise
     #[must_use]
     pub fn is_looping(&self) -> bool {
-        unsafe { ffi::audio::sfMusic_getLoop(self.music) }
+        unsafe { ffi::audio::sfMusic_isLooping(self.music) }
     }
     /// Get the total duration of a music
     ///
@@ -240,7 +240,7 @@ impl Music<'_> {
     ///
     /// By default, the music will *not* loop.
     pub fn set_looping(&mut self, looping: bool) {
-        unsafe { ffi::audio::sfMusic_setLoop(self.music, looping) }
+        unsafe { ffi::audio::sfMusic_setLooping(self.music, looping) }
     }
     /// Change the current playing position of a music
     ///

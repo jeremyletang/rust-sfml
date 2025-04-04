@@ -50,8 +50,8 @@ impl<'buf> Sound<'buf> {
     ///
     /// Panics on allocation failure
     #[must_use]
-    pub fn new() -> Self {
-        let s = unsafe { ffi::audio::sfSound_new() };
+    pub fn new(sound_buffer: &'buf SoundBuffer) -> Self {
+        let s = unsafe { ffi::audio::sfSound_new(sound_buffer) };
         Sound {
             handle: NonNull::new(s).expect("Failed to create Sound"),
             buffer: PhantomData,
@@ -61,7 +61,7 @@ impl<'buf> Sound<'buf> {
     /// Create a new `Sound` with a buffer
     #[must_use]
     pub fn with_buffer(buffer: &'buf SoundBuffer) -> Self {
-        let mut s = Sound::new();
+        let mut s = Sound::new(buffer);
         s.set_buffer(buffer);
         s
     }
@@ -105,7 +105,7 @@ impl<'buf> Sound<'buf> {
     /// Return true if the sound is looping, false otherwise
     #[must_use]
     pub fn is_looping(&self) -> bool {
-        unsafe { ffi::audio::sfSound_getLoop(self.handle.as_ptr()) }
+        unsafe { ffi::audio::sfSound_isLooping(self.handle.as_ptr()) }
     }
 
     /// Get the current status of a sound (stopped, paused, playing)
@@ -136,7 +136,7 @@ impl<'buf> Sound<'buf> {
 impl<'buf> Sound<'buf> {
     /// Sets whether this sound should loop or not.
     pub fn set_looping(&mut self, looping: bool) {
-        unsafe { ffi::audio::sfSound_setLoop(self.handle.as_ptr(), looping) }
+        unsafe { ffi::audio::sfSound_setLooping(self.handle.as_ptr(), looping) }
     }
 
     /// Change the current playing position of a sound
@@ -156,12 +156,6 @@ impl<'buf> Sound<'buf> {
     /// * buffer - Sound buffer to attach to the sound
     pub fn set_buffer(&mut self, buffer: &'buf SoundBuffer) {
         unsafe { ffi::audio::sfSound_setBuffer(self.handle.as_ptr(), buffer) }
-    }
-}
-
-impl Default for Sound<'_> {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
