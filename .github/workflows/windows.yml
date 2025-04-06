@@ -46,7 +46,7 @@ jobs:
        cargo test --release --features=ci-headless --verbose &&
        # Also test non-default feature combinations
        cargo test --no-default-features --features=ci-headless --verbose &&
-       cargo test --no-default-features --features=ci-headless,audio --verbose &&
+       cargo test --no-default-features --features=ci-headless,audio,build-flac-ogg --verbose &&
        cargo test --no-default-features --features=ci-headless,window --verbose &&
        cargo test --no-default-features --features=ci-headless,graphics --verbose &&
        # Test packaging (building from .crate archive, without SFML submodule) (allow dirty because of openal32.dll)

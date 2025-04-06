@@ -3,12 +3,32 @@ use std::{
     path::{Path, PathBuf},
 };
 
+#[derive(Copy, Clone)]
+enum LinkageKind {
+    Static,
+    Dynamic,
+}
+
+impl LinkageKind {
+    fn link(self, library: &str) {
+        match self {
+            LinkageKind::Static => {
+                println!("cargo:rustc-link-lib=static={library}");
+            }
+            LinkageKind::Dynamic => {
+                println!("cargo:rustc-link-lib=dylib={library}");
+            }
+        }
+    }
+}
+
 fn static_link_windows(
     feat_window: bool,
     feat_audio: bool,
     feat_graphics: bool,
     env: WinEnv,
     build_lib_path: &Path,
+    flac_ogg_linkage: LinkageKind,
 ) {
     let arch = match env::var("CARGO_CFG_TARGET_ARCH").as_deref() {
         Ok("x86") => "x86",
@@ -42,15 +62,20 @@ fn static_link_windows(
     }
     if feat_audio {
         println!("cargo:rustc-link-lib=static=openal32");
-        println!("cargo:rustc-link-lib=static=FLAC");
+        flac_ogg_linkage.link("FLAC");
         println!("cargo:rustc-link-lib=static=vorbisenc");
         println!("cargo:rustc-link-lib=static=vorbisfile");
         println!("cargo:rustc-link-lib=static=vorbis");
-        println!("cargo:rustc-link-lib=static=ogg");
+        flac_ogg_linkage.link("ogg");
     }
 }
 
-fn static_link_linux(feat_window: bool, feat_audio: bool, feat_graphics: bool) {
+fn static_link_linux(
+    feat_window: bool,
+    feat_audio: bool,
+    feat_graphics: bool,
+    flac_ogg_linkage: LinkageKind,
+) {
     println!("cargo:rustc-link-lib=dylib=udev");
     if feat_window {
         println!("cargo:rustc-link-lib=dylib=GL");
@@ -64,7 +89,7 @@ fn static_link_linux(feat_window: bool, feat_audio: bool, feat_graphics: bool) {
     if feat_audio {
         // We link openal separately because Mac Os has its own OpenAL framework
         pkgconfig_probe_with_fallback("openal", "rustc-link-lib=dylib=openal");
-        unix_audio_link_support_libs();
+        unix_audio_link_support_libs(flac_ogg_linkage);
     }
 }
 
@@ -80,13 +105,13 @@ fn unix_graphics_link_support_libs() {
     pkgconfig_probe_with_fallback("freetype2", "rustc-link-lib=dylib=freetype");
 }
 
-fn unix_audio_link_support_libs() {
+fn unix_audio_link_support_libs(flac_ogg_linkage: LinkageKind) {
     pkgconfig_probe_with_fallback("vorbisenc", "rustc-link-lib=dylib=vorbisenc");
     pkgconfig_probe_with_fallback("vorbisfile", "rustc-link-lib=dylib=vorbisfile");
     pkgconfig_probe_with_fallback("vorbis", "rustc-link-lib=dylib=vorbis");
     // Odd that we have to do this, I thought that libflac-sys would do this for us
-    println!("cargo:rustc-link-lib=static=FLAC");
-    println!("cargo:rustc-link-lib=static=ogg");
+    flac_ogg_linkage.link("FLAC");
+    flac_ogg_linkage.link("ogg");
 }
 
 enum WinEnv {
@@ -131,6 +156,11 @@ fn main() {
     let feat_audio = env::var("CARGO_FEATURE_AUDIO").is_ok();
     let feat_window = env::var("CARGO_FEATURE_WINDOW").is_ok();
     let feat_graphics = env::var("CARGO_FEATURE_GRAPHICS").is_ok();
+    let flac_ogg_linkage = if env::var("CARGO_FEATURE_BUILD_FLAC_OGG").is_ok() {
+        LinkageKind::Static
+    } else {
+        LinkageKind::Dynamic
+    };
     let mut cmake = cmake::Config::new("SFML");
     let win_env = WinEnv::get();
     let release_profile = env::var("PROFILE").is_ok_and(|prof| prof == "release");
@@ -159,21 +189,22 @@ fn main() {
             }
             _ => ("/lib", "/build/src/libFLAC"),
         };
-        match env::var("DEP_FLAC_ROOT") {
-            Ok(libflac_root) => {
+        match (env::var("DEP_FLAC_ROOT"), flac_ogg_linkage) {
+            (Ok(libflac_root), LinkageKind::Static) => {
                 cmake.define(
                     "CMAKE_PREFIX_PATH",
                     // We add both the path to libogg and libFLAC. Two separate paths, separated by `;`.
                     [&libflac_root, libogg_loc, ";", &libflac_root, libflac_loc].concat(),
                 );
             }
-            Err(e) => {
+            (Err(e), LinkageKind::Static) => {
                 println!(
                     "cargo:warning=Failed to get DEP_FLAC_ROOT: {e}.\n\
                           Now the build will horribly break.\n\
                           Except maybe on CI. ;)"
                 );
             }
+            (_, LinkageKind::Dynamic) => (),
         }
     }
     if !feat_window {
@@ -286,11 +317,18 @@ fn main() {
     println!("cargo:rustc-link-lib=static=rcsfml");
     link_sfml_subsystem("system");
     if is_unix && is_linux {
-        static_link_linux(feat_window, feat_audio, feat_graphics);
+        static_link_linux(feat_window, feat_audio, feat_graphics, flac_ogg_linkage);
     } else if is_windows {
         match win_env {
             Some(env) => {
-                static_link_windows(feat_window, feat_audio, feat_graphics, env, &build_lib_path);
+                static_link_windows(
+                    feat_window,
+                    feat_audio,
+                    feat_graphics,
+                    env,
+                    &build_lib_path,
+                    flac_ogg_linkage,
+                );
             }
             None => {
                 panic!("Failed to determine windows environment (MSVC/Mingw)");
@@ -302,7 +340,7 @@ fn main() {
             unix_graphics_link_support_libs();
         }
         if feat_audio {
-            unix_audio_link_support_libs();
+            unix_audio_link_support_libs(flac_ogg_linkage);
         }
         // SFML contains Objective-C source files on OSX
         // https://github.com/SFML/SFML/issues/2920

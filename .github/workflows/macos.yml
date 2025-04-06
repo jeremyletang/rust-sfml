@@ -35,7 +35,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Install deps
       run: |
-        brew install freetype libvorbis
+        brew install freetype libvorbis flac libogg
     - name: Build
       run: |
        git submodule update --init
@@ -47,7 +47,9 @@ jobs:
        cargo test --release --features=ci-headless --verbose
        # Also test non-default feature combinations
        cargo test --no-default-features --features=ci-headless --verbose
-       cargo test --no-default-features --features=ci-headless,audio --verbose
+       # Specify search paths for dynamically-linked FLAC and ogg
+       LIBRARY_PATH=/opt/homebrew/lib cargo test --no-default-features --features=ci-headless,audio --verbose
+       cargo test --no-default-features --features=ci-headless,audio,build-flac-ogg --verbose
        cargo test --no-default-features --features=ci-headless,window --verbose
        cargo test --no-default-features --features=ci-headless,graphics --verbose
        # Test packaging (building from .crate archive, without SFML submodule)
