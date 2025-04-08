@@ -36,7 +36,7 @@ jobs:
     - name: Install deps
       run: |
        sudo apt-get update
-       sudo apt-get install libpthread-stubs0-dev libgl1-mesa-dev libx11-dev libx11-xcb-dev libxcb-image0-dev libxrandr-dev libxcb-randr0-dev libudev-dev libfreetype6-dev libglew-dev libjpeg8-dev libgpgme11-dev libsndfile1-dev libopenal-dev libjpeg62 libxcursor-dev cmake libclang-dev clang
+       sudo apt-get install libpthread-stubs0-dev libgl1-mesa-dev libx11-dev libx11-xcb-dev libxcb-image0-dev libxrandr-dev libxcb-randr0-dev libudev-dev libfreetype6-dev libglew-dev libjpeg8-dev libgpgme11-dev libsndfile1-dev libopenal-dev libjpeg62 libxcursor-dev cmake libclang-dev clang libflac-dev
     - name: Build
       run: |
        git submodule update --init
@@ -49,6 +49,7 @@ jobs:
        # Also test non-default feature combinations
        cargo test --no-default-features --features=ci-headless --verbose
        cargo test --no-default-features --features=ci-headless,audio --verbose
+       cargo test --no-default-features --features=ci-headless,audio,build-flac-ogg --verbose
        cargo test --no-default-features --features=ci-headless,window --verbose
        cargo test --no-default-features --features=ci-headless,graphics --verbose
        # Test packaging (building from .crate archive, without SFML submodule)

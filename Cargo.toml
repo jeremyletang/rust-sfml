@@ -39,13 +39,16 @@ cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]
 rustdoc-args = ["-Zunstable-options", "--generate-link-to-definition"]
 
 [features]
-default = ["graphics", "audio"]
+default = ["graphics", "audio", "build-flac-ogg"]
 window = ["dep:bitflags"]
 graphics = ["window"]
 audio = ["dep:libflac-sys"]
 serde = ["dep:serde"]
 # Used to skip running certain tests on CI, since it's running in a headless environment.
 ci-headless = []
+# When enabled, libFLAC and libogg will be built from source and statically linked
+# Otherwise, they will be dynamically linked
+build-flac-ogg = ["libflac-sys?/build-flac", "libflac-sys?/build-ogg"]
 
 [dependencies]
 link-cplusplus = "1.0.9"
@@ -65,6 +68,7 @@ optional = true
 
 [dependencies.libflac-sys]
 version = "0.3"
+default-features = false
 optional = true
 
 [build-dependencies]
