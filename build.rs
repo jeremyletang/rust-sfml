@@ -80,6 +80,7 @@ fn static_link_linux(
     if feat_window {
         println!("cargo:rustc-link-lib=dylib=GL");
         println!("cargo:rustc-link-lib=dylib=X11");
+        println!("cargo:rustc-link-lib=Xi");
         println!("cargo:rustc-link-lib=dylib=Xcursor");
         println!("cargo:rustc-link-lib=dylib=Xrandr");
     }
@@ -242,6 +243,7 @@ fn main() {
                 "CSFML/src/Audio/Listener.cpp",
                 "CSFML/src/Audio/Music.cpp",
                 "CSFML/src/Audio/Sound.cpp",
+                "CSFML/src/Audio/SoundChannel.cpp",
                 "CSFML/src/Audio/SoundBuffer.cpp",
                 "CSFML/src/Audio/SoundBufferRecorder.cpp",
                 "CSFML/src/Audio/SoundRecorder.cpp",

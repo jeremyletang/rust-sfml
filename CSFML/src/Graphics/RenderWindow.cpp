@@ -1,7 +1,11 @@
+#include "Graphics/PrimitiveType.hpp"
 #include "Graphics/Rect.hpp"
 #include "Graphics/Color.hpp"
+#include "SFML/Graphics/PrimitiveType.hpp"
 #include "System/Vector2.hpp"
+#include "Window/Event.hpp"
 #include "Window/VideoMode.hpp"
+#include "Window/Window.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/ConvexShape.hpp>
@@ -11,12 +15,15 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Window/Touch.hpp>
+#include <chrono>
 #include <cstddef>
+// Debug ONLY
+#include <iostream>
 
-extern "C" sf::RenderWindow *sfRenderWindow_new_mtss(sfVideoMode mode, const uint32_t *title, uint32_t style, const sf::ContextSettings *settings) {
+extern "C" sf::RenderWindow *sfRenderWindow_new_mtsss(sfVideoMode mode, const uint32_t *title, uint32_t style, sfState state, const sf::ContextSettings *settings) {
     // Convert video mode
-    sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);
-    return new sf::RenderWindow(videoMode, title, style, *settings);
+    sf::VideoMode videoMode(sf::Vector2u(mode.size.x, mode.size.y), mode.bitsPerPixel);
+    return new sf::RenderWindow(videoMode, (char32_t *)title, style, to_state(state), *settings);
 }
 
 extern "C" sf::RenderWindow *sfRenderWindow_new_handle_settings(sf::WindowHandle handle, const sf::ContextSettings *settings) {
@@ -25,13 +32,6 @@ extern "C" sf::RenderWindow *sfRenderWindow_new_handle_settings(sf::WindowHandle
 
 extern "C" void sfRenderWindow_del(sf::RenderWindow *renderWindow) {
     delete renderWindow;
-}
-
-extern "C" void sfRenderWindow_create_mtss(sf::RenderWindow *renderWindow, sfVideoMode mode, const uint32_t *title, uint32_t style, const sf::ContextSettings *settings) {
-    // Convert video mode
-    sf::VideoMode videoMode(mode.width, mode.height, mode.bitsPerPixel);
-    // Create the window
-    renderWindow->create(videoMode, title, style, *settings);
 }
 
 extern "C" void sfRenderWindow_close(sf::RenderWindow *renderWindow) {
@@ -46,12 +46,12 @@ extern "C" const sf::ContextSettings *sfRenderWindow_getSettings(const sf::Rende
     return &renderWindow->getSettings();
 }
 
-extern "C" bool sfRenderWindow_pollEvent(sf::RenderWindow *renderWindow, sf::Event *event) {
-    return renderWindow->pollEvent(*event);
+extern "C" bool sfRenderWindow_pollEvent(sf::RenderWindow *renderWindow, sfEvent *event) {
+    return convertEvent(renderWindow->pollEvent(), *event);
 }
 
-extern "C" bool sfRenderWindow_waitEvent(sf::RenderWindow *renderWindow, sf::Event *event) {
-    return renderWindow->waitEvent(*event);
+extern "C" bool sfRenderWindow_waitEvent(sf::RenderWindow *renderWindow, sfEvent *event, const int64_t timeout) {
+    return convertEvent(renderWindow->waitEvent(sf::Time(std::chrono::microseconds(timeout))), *event);
 }
 
 extern "C" sfVector2i sfRenderWindow_getPosition(const sf::RenderWindow *renderWindow) {
@@ -69,7 +69,7 @@ extern "C" sfVector2u sfRenderWindow_getSize(const sf::RenderWindow *renderWindo
 }
 
 extern "C" void sfRenderWindow_setSize(sf::RenderWindow *renderWindow, sfVector2u size) {
-    renderWindow->setSize(sf::Vector2u(size.x, size.y));
+    renderWindow->setSize(sf::Vector2u({size.x, size.y}));
 }
 
 extern "C" bool sfRenderWindow_isSrgb(const sf::RenderWindow *renderWindow) {
@@ -77,11 +77,11 @@ extern "C" bool sfRenderWindow_isSrgb(const sf::RenderWindow *renderWindow) {
 }
 
 extern "C" void sfRenderWindow_setUnicodeTitle(sf::RenderWindow *renderWindow, const uint32_t *title) {
-    renderWindow->setTitle(title);
+    renderWindow->setTitle((char32_t *)title);
 }
 
-extern "C" void sfRenderWindow_setIcon(sf::RenderWindow *renderWindow, unsigned int width, unsigned int height, const uint8_t *pixels) {
-    renderWindow->setIcon(width, height, pixels);
+extern "C" void sfRenderWindow_setIcon(sf::RenderWindow *renderWindow, sfVector2u size, const uint8_t *pixels) {
+    renderWindow->setIcon(sf::Vector2u({size.x, size.y}), pixels);
 }
 
 extern "C" void sfRenderWindow_setVisible(sf::RenderWindow *renderWindow, bool visible) {
@@ -132,8 +132,8 @@ extern "C" void sfRenderWindow_setJoystickThreshold(sf::RenderWindow *renderWind
     renderWindow->setJoystickThreshold(threshold);
 }
 
-extern "C" sf::WindowHandle sfRenderWindow_getSystemHandle(const sf::RenderWindow *renderWindow) {
-    return renderWindow->getSystemHandle();
+extern "C" sf::WindowHandle sfRenderWindow_getNativeHandle(const sf::RenderWindow *renderWindow) {
+    return renderWindow->getNativeHandle();
 }
 
 extern "C" void sfRenderWindow_clear(sf::RenderWindow *renderWindow, sfColor color) {
@@ -154,26 +154,26 @@ extern "C" const sf::View *sfRenderWindow_getDefaultView(const sf::RenderWindow 
 
 extern "C" sfIntRect sfRenderWindow_getViewport(const sf::RenderWindow *renderWindow, const sf::View *view) {
     sf::IntRect rect = renderWindow->getViewport(*view);
-    return {rect.left, rect.top, rect.width, rect.height};
+    return {rect.position.x, rect.position.y, rect.size.x, rect.size.y};
 }
 
 extern "C" sfVector2f sfRenderWindow_mapPixelToCoords(const sf::RenderWindow *renderWindow, sfVector2i point) {
-    sf::Vector2f vec2 = renderWindow->mapPixelToCoords(sf::Vector2i(point.x, point.y));
+    sf::Vector2f vec2 = renderWindow->mapPixelToCoords(sf::Vector2i({point.x, point.y}));
     return {vec2.x, vec2.y};
 }
 
 extern "C" sfVector2f sfRenderWindow_mapPixelToCoords_View(const sf::RenderWindow *renderWindow, sfVector2i point, const sf::View *targetView) {
-    sf::Vector2f vec2 = renderWindow->mapPixelToCoords(sf::Vector2i(point.x, point.y), *targetView);
+    sf::Vector2f vec2 = renderWindow->mapPixelToCoords(sf::Vector2i({point.x, point.y}), *targetView);
     return {vec2.x, vec2.y};
 }
 
 extern "C" sfVector2i sfRenderWindow_mapCoordsToPixel(const sf::RenderWindow *renderWindow, sfVector2f point) {
-    sf::Vector2i vec2 = renderWindow->mapCoordsToPixel(sf::Vector2f(point.x, point.y));
+    sf::Vector2i vec2 = renderWindow->mapCoordsToPixel(sf::Vector2f({point.x, point.y}));
     return {vec2.x, vec2.y};
 }
 
 extern "C" sfVector2i sfRenderWindow_mapCoordsToPixel_View(const sf::RenderWindow *renderWindow, sfVector2f point, const sf::View *targetView) {
-    sf::Vector2i vec2 = renderWindow->mapCoordsToPixel(sf::Vector2f(point.x, point.y), *targetView);
+    sf::Vector2i vec2 = renderWindow->mapCoordsToPixel(sf::Vector2f({point.x, point.y}), *targetView);
     return {vec2.x, vec2.y};
 }
 
@@ -201,8 +201,8 @@ extern "C" void sfRenderWindow_drawVertexBuffer(sf::RenderWindow *renderWindow, 
 
 extern "C" void sfRenderWindow_drawPrimitives(sf::RenderWindow *renderWindow,
                                               const sf::Vertex *vertices, size_t vertexCount,
-                                              sf::PrimitiveType type, const sf::RenderStates *states) {
-    renderWindow->draw(vertices, vertexCount, type, *states);
+                                              sfPrimitiveType type, const sf::RenderStates *states) {
+    renderWindow->draw(vertices, vertexCount, static_cast<sf::PrimitiveType>(type), *states);
 }
 
 extern "C" void sfRenderWindow_pushGLStates(sf::RenderWindow *renderWindow) {

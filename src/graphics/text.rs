@@ -37,11 +37,13 @@ impl<'s> Text<'s> {
     /// * font - The font to display the Text
     /// * characterSize - The size of the Text
     pub fn new<S: SfStrConv>(string: S, font: &'s Font, character_size: u32) -> Text<'s> {
-        let mut text = Text::default();
-        text.set_string(string);
-        text.set_font(font);
-        text.set_character_size(character_size);
-        text
+        let text = string.with_as_sfstr(|sfstr| unsafe {
+            ffi::sfText_new(font, sfstr.as_ptr(), character_size)
+        });
+        Text {
+            handle: NonNull::new(text).expect("Failed to create Text"),
+            font: PhantomData,
+        }
     }
 
     /// Set the string of a text
@@ -244,16 +246,6 @@ impl<'s> Text<'s> {
     }
     pub(super) fn raw(&self) -> *const ffi::sfText {
         self.handle.as_ptr()
-    }
-}
-
-impl Default for Text<'_> {
-    fn default() -> Self {
-        let text = unsafe { ffi::sfText_new() };
-        Self {
-            handle: NonNull::new(text).expect("Failed to create Text"),
-            font: PhantomData,
-        }
     }
 }
 

@@ -55,8 +55,8 @@ impl<'s> RectangleShape<'s> {
     #[must_use]
     pub fn from_rect(rect: FloatRect) -> Self {
         let mut shape = Self::new();
-        shape.set_size((rect.width, rect.height));
-        shape.set_position((rect.left, rect.top));
+        shape.set_size(rect.size);
+        shape.set_position(rect.position);
         shape
     }
 

@@ -1,4 +1,5 @@
 use {
+    super::sound_channel::SoundChannel,
     crate::{
         IntoSfResult, SfResult,
         cpp::FBox,
@@ -83,9 +84,10 @@ impl SoundBuffer {
         samples: &[i16],
         channel_count: u32,
         sample_rate: u32,
+        channel_map: &[SoundChannel],
     ) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
-        new.load_from_samples(samples, channel_count, sample_rate)?;
+        new.load_from_samples(samples, channel_count, sample_rate, channel_map)?;
         Ok(new)
     }
     /// Load sound data from a file.
@@ -119,6 +121,7 @@ impl SoundBuffer {
         samples: &[i16],
         channel_count: u32,
         sample_rate: u32,
+        channel_map: &[SoundChannel],
     ) -> SfResult<()> {
         unsafe {
             ffi::audio::sfSoundBuffer_loadFromSamples(
@@ -127,6 +130,7 @@ impl SoundBuffer {
                 samples.len() as _,
                 channel_count,
                 sample_rate,
+                channel_map.as_ptr().cast(),
             )
         }
         .into_sf_result()

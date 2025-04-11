@@ -1,5 +1,7 @@
 //! 2D graphics module: sprites, text, shapes..
 
+use crate::system::Vector2f;
+
 #[doc(inline)]
 pub use self::blend_mode::BlendMode;
 pub use {
@@ -100,7 +102,10 @@ pub fn vertex_array_bounds(vertices: &[Vertex]) -> FloatRect {
                 bottom = pos.y
             }
         }
-        FloatRect::new(left, top, right - left, bottom - top)
+        FloatRect::new(
+            Vector2f::new(left, top),
+            Vector2f::new(right - left, bottom - top),
+        )
     } else {
         FloatRect::default()
     }

@@ -1,4 +1,7 @@
-use crate::graphics::{BlendMode, Shader, Texture, Transform};
+use crate::{
+    ffi::graphics::{CoordinateType, StencilMode},
+    graphics::{BlendMode, Shader, Texture, Transform},
+};
 
 /// Define the states used for drawing to a [`RenderTarget`].
 ///
@@ -53,8 +56,12 @@ use crate::graphics::{BlendMode, Shader, Texture, Transform};
 pub struct RenderStates<'texture, 'shader, 'shader_texture: 'shader> {
     /// The blending mode
     pub blend_mode: BlendMode,
+    /// The Stencil mode
+    pub stencil_mode: StencilMode,
     /// The transform
     pub transform: Transform,
+    /// Texture coordinate type    
+    pub coordinate_type: CoordinateType,
     /// The texture that will be bound
     pub texture: Option<&'texture Texture>,
     /// The shader that will be used
@@ -67,7 +74,9 @@ impl RenderStates<'_, '_, '_> {
     /// This can be used in a const context, unlike the [`Default`] implementation.
     pub const DEFAULT: Self = Self {
         blend_mode: BlendMode::ALPHA,
+        stencil_mode: StencilMode::DEFAULT,
         transform: Transform::IDENTITY,
+        coordinate_type: CoordinateType::sfCoordinateTypePixels,
         texture: None,
         shader: None,
     };

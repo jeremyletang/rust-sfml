@@ -10,6 +10,7 @@ pub(super) type sfWindow = crate::window::Window;
 pub(super) type sfCursor = crate::window::Cursor;
 pub(crate) type sfVideoModeVector = crate::cpp::CppVector<sfVideoMode>;
 pub(super) type sfContext = crate::window::Context;
+pub(crate) type sfState = crate::window::window_enums::State;
 
 /// Enumeration of the native system cursor types.
 ///
@@ -132,8 +133,7 @@ pub struct sfContextSettings {
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) struct SizeEvent {
-    pub(crate) width: c_uint,
-    pub(crate) height: c_uint,
+    pub(crate) size: sfVector2u,
 }
 
 #[repr(C)]
@@ -156,24 +156,27 @@ pub(crate) struct TextEvent {
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) struct MouseMoveEvent {
-    pub(crate) x: c_int,
-    pub(crate) y: c_int,
+    pub(crate) position: sfVector2i,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) struct MouseMoveRawEvent {
+    pub(crate) delta: sfVector2i,
 }
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) struct MouseButtonEvent {
     pub(crate) button: MouseButton,
-    pub(crate) x: c_int,
-    pub(crate) y: c_int,
+    pub(crate) position: sfVector2i,
 }
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) struct MouseWheelEvent {
     pub(crate) delta: c_int,
-    pub(crate) x: c_int,
-    pub(crate) y: c_int,
+    pub(crate) position: sfVector2i,
 }
 
 #[repr(C)]
@@ -181,8 +184,7 @@ pub(crate) struct MouseWheelEvent {
 pub(crate) struct MouseWheelScrollEvent {
     pub(crate) wheel: MouseWheel,
     pub(crate) delta: f32,
-    pub(crate) x: c_int,
-    pub(crate) y: c_int,
+    pub(crate) position: sfVector2i,
 }
 
 #[repr(C)]
@@ -210,17 +212,14 @@ pub(crate) struct JoystickButtonEvent {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) struct TouchEvent {
     pub(crate) finger: c_uint,
-    pub(crate) x: c_int,
-    pub(crate) y: c_int,
+    pub(crate) position: sfVector2i,
 }
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub(crate) struct SensorEvent {
     pub(crate) type_: crate::ffi::window::sfSensorType,
-    pub(crate) x: f32,
-    pub(crate) y: f32,
-    pub(crate) z: f32,
+    pub(crate) value: sfVector3f,
 }
 
 #[repr(C)]
@@ -229,16 +228,16 @@ pub(crate) struct SensorEvent {
 pub(crate) enum EventType {
     Closed,
     Resized,
-    LostFocus,
-    GainedFocus,
+    FocusLost,
+    FocusGained,
     TextEntered,
     KeyPressed,
     KeyReleased,
-    MouseWheelMoved,
     MouseWheelScrolled,
     MouseButtonPressed,
     MouseButtonReleased,
     MouseMoved,
+    MouseMovedRaw,
     MouseEntered,
     MouseLeft,
     JoystickButtonPressed,
@@ -268,6 +267,7 @@ pub(crate) union EventUnion {
     pub(crate) key: KeyEvent,
     pub(crate) text: TextEvent,
     pub(crate) mouse_move: MouseMoveEvent,
+    pub(crate) mouse_move_raw: MouseMoveRawEvent,
     pub(crate) mouse_button: MouseButtonEvent,
     pub(crate) mouse_wheel: MouseWheelEvent,
     pub(crate) mouse_wheel_scroll: MouseWheelScrollEvent,
@@ -319,8 +319,8 @@ pub enum MouseButton {
     Left,
     Right,
     Middle,
-    XButton1,
-    XButton2,
+    Extra1,
+    Extra2,
 }
 
 type sfMouseButton = MouseButton;
@@ -383,10 +383,10 @@ pub enum Key {
     Semicolon,
     Comma,
     Period,
-    Quote,
+    Apostrophe,
     Slash,
     Backslash,
-    Tilde,
+    Grave,
     Equal,
     Hyphen,
     Space,
@@ -589,7 +589,6 @@ pub enum Scancode {
     LaunchApplication2,
     LaunchMail,
     LaunchMediaSelect,
-    ScancodeCount,
 }
 
 type sfKeyboardKey = Key;
@@ -619,9 +618,6 @@ pub enum sfSensorType {
     UserAcceleration,
     ///< Measures the absolute 3D orientation (degrees)
     Orientation,
-
-    ///< Keep last -- the total number of sensor types
-    Count,
 }
 
 type sfGlFunctionPointer = *const c_void;

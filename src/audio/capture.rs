@@ -4,7 +4,6 @@ use {
         audio::SoundBuffer,
         cpp::{CppString, CppVector, FBox},
         ffi::audio as ffi,
-        system::Time,
     },
     std::{ffi::CString, os::raw::c_void, ptr::NonNull},
 };
@@ -192,22 +191,6 @@ impl<'a, R: SoundRecorder> SoundRecorderDriver<'a, R> {
     #[must_use]
     pub fn channel_count(&self) -> u32 {
         unsafe { ffi::sfCustomSoundRecorder_getChannelCount(self.handle.as_ptr()) }
-    }
-    /// Set the processing interval.
-    ///
-    /// The processing interval controls the period between calls to
-    /// [`SoundRecorder::on_process_samples`].
-    /// You may want to use a small interval if you want to process the recorded data in real time,
-    /// for example.
-    ///
-    /// Note: this is only a hint, the actual period may vary.
-    /// So don't rely on this parameter to implement precise timing.
-    ///
-    /// The default processing interval is 100 ms.
-    pub fn set_processing_interval(&mut self, interval: Time) {
-        unsafe {
-            ffi::sfCustomSoundRecorder_setProcessingInterval(self.handle.as_ptr(), interval.raw())
-        }
     }
     /// Get the name of the current audio capture device.
     #[must_use]

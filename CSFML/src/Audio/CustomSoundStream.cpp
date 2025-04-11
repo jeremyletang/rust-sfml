@@ -1,3 +1,4 @@
+#include "SFML/Audio/SoundChannel.hpp"
 #include "System/Vector3.hpp"
 #include <SFML/Audio/SoundStream.hpp>
 #include <cstdint>
@@ -11,10 +12,11 @@ class sfCustomSoundStream final : public sf::SoundStream {
                         sfCustomSoundStreamSeekCb onSeek,
                         unsigned int channelCount,
                         unsigned int sampleRate,
+                        const std::vector<sf::SoundChannel> *channel,
                         void *userData) : myGetDataCb(onGetData),
                                           mySeekCallCb(onSeek),
                                           myUserData(userData) {
-        initialize(channelCount, sampleRate);
+        initialize(channelCount, sampleRate, *channel);
     }
 
   private:
@@ -35,8 +37,9 @@ extern "C" sfCustomSoundStream *sfCustomSoundStream_new(sfCustomSoundStreamGetDa
                                                         sfCustomSoundStreamSeekCb onSeek,
                                                         unsigned int channelCount,
                                                         unsigned int sampleRate,
+                                                        const std::vector<sf::SoundChannel> *channel,
                                                         void *userData) {
-    return new sfCustomSoundStream(onGetData, onSeek, channelCount, sampleRate, userData);
+    return new sfCustomSoundStream(onGetData, onSeek, channelCount, sampleRate, channel, userData);
 }
 
 extern "C" void sfCustomSoundStream_del(sfCustomSoundStream *soundStream) {
@@ -68,6 +71,10 @@ extern "C" unsigned int sfCustomSoundStream_getSampleRate(const sfCustomSoundStr
     return soundStream->getSampleRate();
 }
 
+extern "C" const std::vector<sf::SoundChannel> *sfCustomSoundStream_getChannelMap(const sfCustomSoundStream *soundStream) {
+    return new std::vector(soundStream->getChannelMap());
+}
+
 extern "C" void sfCustomSoundStream_setPitch(sfCustomSoundStream *soundStream, float pitch) {
     soundStream->setPitch(pitch);
 }
@@ -76,8 +83,8 @@ extern "C" void sfCustomSoundStream_setVolume(sfCustomSoundStream *soundStream, 
     soundStream->setVolume(volume);
 }
 
-extern "C" void sfCustomSoundStream_setPosition(sfCustomSoundStream *soundStream, sfVector3f position) {
-    soundStream->setPosition(position.x, position.y, position.z);
+extern "C" void sfCustomSoundStream_setPosition(sfCustomSoundStream *soundStream, sf::Vector3f position) {
+    soundStream->setPosition(position);
 }
 
 extern "C" void sfCustomSoundStream_setRelativeToListener(sfCustomSoundStream *soundStream, bool relative) {
@@ -96,8 +103,8 @@ extern "C" void sfCustomSoundStream_setPlayingOffset(sfCustomSoundStream *soundS
     soundStream->setPlayingOffset(sf::microseconds(timeOffset));
 }
 
-extern "C" void sfCustomSoundStream_setLoop(sfCustomSoundStream *soundStream, bool loop) {
-    soundStream->setLoop(loop);
+extern "C" void sfCustomSoundStream_setLooping(sfCustomSoundStream *soundStream, bool loop) {
+    soundStream->setLooping(loop);
 }
 
 extern "C" float sfCustomSoundStream_getPitch(const sfCustomSoundStream *soundStream) {
@@ -125,8 +132,8 @@ extern "C" float sfCustomSoundStream_getAttenuation(const sfCustomSoundStream *s
     return soundStream->getAttenuation();
 }
 
-extern "C" bool sfCustomSoundStream_getLoop(const sfCustomSoundStream *soundStream) {
-    return soundStream->getLoop();
+extern "C" bool sfCustomSoundStream_isLooping(const sfCustomSoundStream *soundStream) {
+    return soundStream->isLooping();
 }
 
 extern "C" int64_t sfCustomSoundStream_getPlayingOffset(const sfCustomSoundStream *soundStream) {

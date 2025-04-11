@@ -1,6 +1,7 @@
 pub use crate::ffi::*;
 use {
     super::system::sfInputStreamHelper,
+    crate::audio::sound_channel::SoundChannel as sfSoundChannel,
     crate::cpp::{CppString as sfStdString, CppStringVector as sfStdStringVector},
 };
 
@@ -13,6 +14,7 @@ decl_opaque! {
 }
 
 pub type sfSoundBuffer = crate::audio::SoundBuffer;
+pub(crate) type sfSoundChannelVector = crate::cpp::CppVector<sfSoundChannel>;
 
 #[repr(C)]
 pub struct sfSoundStreamChunk {

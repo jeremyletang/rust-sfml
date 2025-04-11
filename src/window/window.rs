@@ -2,9 +2,11 @@ use crate::{
     IntoSfResult, SfResult,
     cpp::FBox,
     ffi::window as ffi,
-    system::{SfStrConv, Vector2i, Vector2u},
+    system::{SfStrConv, Time, Vector2i, Vector2u},
     window::{ContextSettings, Cursor, Event, Style, VideoMode, thread_safety},
 };
+
+use super::window_enums::State;
 
 /// The system native window handle type. Can be used to create an SFML Window
 /// from an existing system window.
@@ -40,10 +42,11 @@ impl Window {
         mode: V,
         title: S,
         style: Style,
+        state: State,
         settings: &ContextSettings,
     ) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
-        new.open(mode, title, style, settings);
+        new.open(mode, title, style, state, settings);
         Ok(new)
     }
     /// Open the window with the specified parameters
@@ -69,11 +72,19 @@ impl Window {
         mode: V,
         title: S,
         style: Style,
+        state: State,
         settings: &ContextSettings,
     ) {
         thread_safety::set_window_thread();
         title.with_as_sfstr(|sfstr| unsafe {
-            ffi::sfWindow_create_mtss(self, mode.into(), sfstr.as_ptr(), style.bits(), settings)
+            ffi::sfWindow_create_mtsss(
+                self,
+                mode.into(),
+                sfstr.as_ptr(),
+                style.bits(),
+                state,
+                settings,
+            )
         })
     }
 
@@ -106,7 +117,7 @@ impl Window {
     /// doesn't support, or implement a temporary workaround until a bug is fixed.
     #[must_use]
     pub fn system_handle(&self) -> Handle {
-        unsafe { ffi::sfWindow_getSystemHandle(self) }
+        unsafe { ffi::sfWindow_getNativeHandle(self) }
     }
 
     ///  Pop the event on top of event queue, if any, and return it
@@ -138,9 +149,10 @@ impl Window {
     /// sleep as long as no new event is received.
     ///
     /// Returns `Some(event)` or `None` if an error has occured
-    pub fn wait_event(&mut self) -> Option<Event> {
+    pub fn wait_event(&mut self, timeout: Time) -> Option<Event> {
         let mut event = std::mem::MaybeUninit::uninit();
-        let have_event = unsafe { ffi::sfWindow_waitEvent(self, event.as_mut_ptr()) };
+        let have_event =
+            unsafe { ffi::sfWindow_waitEvent(self, event.as_mut_ptr(), timeout.as_microseconds()) };
         if have_event {
             unsafe { Event::from_raw(&event.assume_init()) }
         } else {
@@ -161,8 +173,8 @@ impl Window {
     /// `pixels` not being at least `width * height * 4` will likely cause undefined behavior.
     ///
     /// Platform-specific behavior is also unclear (limits on max size, etc).
-    pub unsafe fn set_icon(&mut self, width: u32, height: u32, pixels: &[u8]) {
-        unsafe { ffi::sfWindow_setIcon(self, width, height, pixels.as_ptr()) }
+    pub unsafe fn set_icon(&mut self, size: Vector2u, pixels: &[u8]) {
+        unsafe { ffi::sfWindow_setIcon(self, size, pixels.as_ptr()) }
     }
 
     /// Close a window and destroy all the attached resources
@@ -206,7 +218,11 @@ impl Window {
     /// # Arguments
     /// * title - New title
     pub fn set_title<S: SfStrConv>(&mut self, title: S) {
-        title.with_as_sfstr(|sfstr| unsafe { ffi::sfWindow_setUnicodeTitle(self, sfstr.as_ptr()) })
+        unsafe {
+            title.with_as_sfstr(|sfstr| {
+                ffi::sfWindow_setUnicodeTitle(self, sfstr.as_ptr());
+            })
+        }
     }
 
     /// Show or hide a window

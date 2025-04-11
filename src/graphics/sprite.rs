@@ -1,4 +1,5 @@
 use {
+    super::Rect,
     crate::{
         ffi::graphics as ffi,
         graphics::{
@@ -27,34 +28,26 @@ pub struct Sprite<'s> {
 }
 
 impl<'s> Sprite<'s> {
-    /// Create a new sprite
-    ///
-    /// # Panics
-    ///
-    /// Panics if a new `Sprite` can't be created for some reason.
-    #[must_use]
-    pub fn new() -> Sprite<'s> {
-        let sp = unsafe { ffi::sfSprite_new() };
-        Sprite {
-            handle: NonNull::new(sp).expect("Failed to create Sprite"),
-            texture: PhantomData,
-        }
-    }
-
     /// Create a new sprite with a texture
     #[must_use]
     pub fn with_texture(texture: &'s Texture) -> Sprite<'s> {
-        let mut sprite = Sprite::new();
-        sprite.set_texture(texture, true);
-        sprite
+        Self::with_texture_and_rect(
+            texture,
+            Rect {
+                position: Default::default(),
+                size: texture.size().as_other(),
+            },
+        )
     }
 
     /// Create a new sprite with a texture and a source rectangle
     #[must_use]
     pub fn with_texture_and_rect(texture: &'s Texture, rect: IntRect) -> Self {
-        let mut sprite = Sprite::with_texture(texture);
-        sprite.set_texture_rect(rect);
-        sprite
+        let sp = unsafe { ffi::sfSprite_new(texture, rect) };
+        Sprite {
+            handle: NonNull::new(sp).expect("Failed to create Sprite"),
+            texture: PhantomData,
+        }
     }
 
     /// Change the source texture of a sprite
@@ -160,12 +153,6 @@ impl<'s> Sprite<'s> {
     }
     pub(super) fn raw(&self) -> *const ffi::sfSprite {
         self.handle.as_ptr()
-    }
-}
-
-impl Default for Sprite<'_> {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
