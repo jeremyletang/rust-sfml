@@ -315,8 +315,7 @@ impl Texture {
 
     /// Update a part of the texture from an array of pixels.
     ///
-    /// The size of the pixel array must match the width and height arguments,
-    /// and it must contain 32-bits RGBA pixels.
+    /// `pixels` must contain at least `width * height` 32 bit RGBA pixels.
     ///
     /// This function does nothing if the texture was not previously created.
     ///
@@ -328,7 +327,7 @@ impl Texture {
         assert!(
             x + width <= my_dims.x
                 && y + height <= my_dims.y
-                && pixels.len() == (width * height * 4) as usize
+                && pixels.len() >= (width * height * 4) as usize
         );
         unsafe { ffi::sfTexture_updateFromPixels(self, pixels.as_ptr(), width, height, x, y) }
     }
