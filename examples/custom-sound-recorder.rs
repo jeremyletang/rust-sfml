@@ -1,6 +1,6 @@
 use {
     sfml::{
-        audio::{Sound, SoundBuffer, SoundRecorder, SoundRecorderDriver, capture},
+        audio::{Sound, SoundBuffer, SoundChannel, SoundRecorder, SoundRecorderDriver, capture},
         graphics::{Color, Font, RectangleShape, RenderTarget, RenderWindow, Text, Transformable},
         window::{Event, Key, Style},
     },
@@ -75,6 +75,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         (800, 600),
         "Custom sound recorder",
         Style::CLOSE,
+        Default::default(),
         &Default::default(),
     )?;
     rw.set_vertical_sync_enabled(true);
@@ -85,7 +86,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut started = false;
     let mut snd_buf = SoundBuffer::new()?;
     let mut samp_accum = Vec::new();
-    let mut sound = Some(Sound::new());
+    let mut sound = Some(Sound::new(&snd_buf));
     let mut selected_dev_idx = 0;
     let mut mode = Mode::Main;
     let mut input_buf = String::new();
@@ -106,6 +107,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                                     &samp_accum[..],
                                     desired_channel_count,
                                     desired_sample_rate,
+                                    &[SoundChannel::Mono],
                                 )?;
                                 samp_accum.clear();
                                 started = false;

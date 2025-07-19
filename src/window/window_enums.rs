@@ -26,3 +26,14 @@ impl Default for Style {
         Self::DEFAULT
     }
 }
+
+#[repr(C)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Default)]
+/// Available window state of your window
+pub enum State {
+    #[default]
+    /// Windowed mode
+    Windowed,
+    /// Fullscreen mode
+    Fullscreen,
+}

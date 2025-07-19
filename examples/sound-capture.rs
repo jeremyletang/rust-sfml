@@ -1,6 +1,9 @@
 use {
     sfml::{
-        audio::{Sound, SoundBufferRecorder, SoundStatus, capture},
+        audio::{
+            Sound, SoundBufferRecorder, capture,
+            sound_source::{self, SoundSource},
+        },
         system::{Time, sleep},
     },
     std::{
@@ -110,7 +113,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
         sound.play();
 
-        while sound.status() == SoundStatus::PLAYING {
+        while sound.status() == sound_source::Status::Playing {
             // Display the playing position
             print!(
                 "\rPlaying... {:.2} sec",

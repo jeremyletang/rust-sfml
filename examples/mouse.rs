@@ -9,6 +9,7 @@ fn main() -> SfResult<()> {
         (800, 600),
         "Mouse events",
         Style::CLOSE,
+        Default::default(),
         &Default::default(),
     )?;
     window.set_mouse_cursor_visible(false);
@@ -32,21 +33,47 @@ fn main() -> SfResult<()> {
         while let Some(ev) = window.poll_event() {
             match ev {
                 Event::Closed => break 'mainloop,
-                Event::MouseWheelScrolled { wheel, delta, x, y } => {
-                    push_text!(x, y, "Scroll: {:?}, {}, {}, {}", wheel, delta, x, y);
+                Event::MouseWheelScrolled {
+                    wheel,
+                    delta,
+                    position,
+                } => {
+                    push_text!(
+                        position.x,
+                        position.y,
+                        "Scroll: {:?}, {}, {}, {}",
+                        wheel,
+                        delta,
+                        position.x,
+                        position.y
+                    );
                 }
-                Event::MouseButtonPressed { button, x, y } => {
-                    push_text!(x, y, "Press: {:?}, {}, {}", button, x, y);
+                Event::MouseButtonPressed { button, position } => {
+                    push_text!(
+                        position.x,
+                        position.y,
+                        "Press: {:?}, {}, {}",
+                        button,
+                        position.x,
+                        position.y
+                    );
                 }
-                Event::MouseButtonReleased { button, x, y } => {
-                    push_text!(x, y, "Release: {:?}, {}, {}", button, x, y);
+                Event::MouseButtonReleased { button, position } => {
+                    push_text!(
+                        position.x,
+                        position.y,
+                        "Release: {:?}, {}, {}",
+                        button,
+                        position.x,
+                        position.y
+                    );
                 }
                 Event::KeyPressed { code, .. } => {
                     if code == Key::W {
                         window.set_mouse_position(Vector2i::new(400, 300));
                     } else if code == Key::D {
                         let dm = VideoMode::desktop_mode();
-                        let center = Vector2i::new(dm.width as i32 / 2, dm.height as i32 / 2);
+                        let center = Vector2i::new(dm.size.x as i32 / 2, dm.size.y as i32 / 2);
                         mouse::set_desktop_position(center);
                     } else if code == Key::V {
                         cursor_visible = !cursor_visible;
@@ -87,7 +114,7 @@ fn main() -> SfResult<()> {
                     .global_bounds()
                     .intersection(&texts[j].global_bounds())
                 {
-                    texts[j].move_((0., -intersect.height));
+                    texts[j].move_((0., -intersect.size.y));
                 }
             }
         }

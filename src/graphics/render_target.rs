@@ -1,4 +1,5 @@
 use crate::{
+    ffi::graphics::StencilValue,
     graphics::{
         CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType, RcSprite,
         RcText, RectangleShape, RenderStates, Sprite, Text, Vertex, VertexBuffer, View,
@@ -30,6 +31,17 @@ pub trait RenderTarget {
     /// clear the screen
     fn clear(&mut self, color: Color);
 
+    /// Clear the stencil buffer to a specific value
+    ///
+    /// The specified value is truncated to the bit width of the current stencil buffer.
+    fn clear_stencil(&mut self, stencil_value: StencilValue);
+
+    /// \brief Clear the entire target with a single color and stencil value
+    ///
+    /// The specified stencil value is truncated to the bit
+    /// width of the current stencil buffer.
+    fn clear_color_and_stencil(&mut self, stencil_value: StencilValue, color: Color);
+
     /// return the current view
     fn view(&self) -> &View;
 
@@ -41,6 +53,14 @@ pub trait RenderTarget {
 
     /// get the viewport of the render target
     fn viewport(&self, view: &View) -> IntRect;
+
+    /// \brief Get the scissor rectangle of a view, applied to this render target
+    ///
+    /// The scissor rectangle is defined in the view as a ratio. This
+    /// function simply applies this ratio to the current dimensions
+    /// of the render target to calculate the pixels rectangle
+    /// that the scissor rectangle actually covers in the target.
+    fn scissor(&self, view: &View) -> IntRect;
 
     /// Convert a point from window coordinates to world coordinates
     ///

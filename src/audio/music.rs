@@ -1,12 +1,14 @@
 use {
+    super::{sound_channel::SoundChannel, sound_source::SoundSource},
     crate::{
         IntoSfResult, SfResult,
-        audio::{SoundSource, SoundStatus, TimeSpan},
-        ffi::{self},
+        audio::TimeSpan,
+        cpp::CppVector,
+        ffi,
         system::{InputStream, Time, Vector3f},
     },
     std::{
-        ffi::CString,
+        ffi::{CString, c_uint, c_void},
         io::{Read, Seek},
         marker::PhantomData,
     },
@@ -168,7 +170,7 @@ impl Music<'_> {
     /// Return true if the music is looping, false otherwise
     #[must_use]
     pub fn is_looping(&self) -> bool {
-        unsafe { ffi::audio::sfMusic_getLoop(self.music) }
+        unsafe { ffi::audio::sfMusic_isLooping(self.music) }
     }
     /// Get the total duration of a music
     ///
@@ -197,12 +199,15 @@ impl Music<'_> {
         unsafe { ffi::audio::sfMusic_getSampleRate(self.music) }
     }
 
-    /// Get the current status of a music (stopped, paused, playing)
+    /// Get the map of position in sample frame to sound channel
     ///
-    /// Return current status
+    /// This is used to map a sample in the sample stream to a
+    /// position during spatialization.
+    ///
+    /// Return Map of position in sample frame to sound channel
     #[must_use]
-    pub fn status(&self) -> SoundStatus {
-        unsafe { SoundStatus(ffi::audio::sfMusic_getStatus(self.music)) }
+    pub fn channel_map(&self) -> &'static CppVector<SoundChannel> {
+        unsafe { &*ffi::audio::sfMusic_getChannelMap(self.music) }
     }
 
     /// Get the current playing position of a music
@@ -240,7 +245,7 @@ impl Music<'_> {
     ///
     /// By default, the music will *not* loop.
     pub fn set_looping(&mut self, looping: bool) {
-        unsafe { ffi::audio::sfMusic_setLoop(self.music, looping) }
+        unsafe { ffi::audio::sfMusic_setLooping(self.music, looping) }
     }
     /// Change the current playing position of a music
     ///
@@ -303,6 +308,90 @@ impl SoundSource for Music<'_> {
     }
     fn attenuation(&self) -> f32 {
         unsafe { ffi::audio::sfMusic_getAttenuation(self.music) }
+    }
+    fn set_pan(&mut self, pan: f32) {
+        unsafe { ffi::audio::sfMusic_setPan(self.music, pan) }
+    }
+    fn set_spatialization_enabled(&mut self, enabled: bool) {
+        unsafe { ffi::audio::sfMusic_setSpatializationEnabled(self.music, enabled) }
+    }
+    fn set_direction<P: Into<Vector3f>>(&mut self, direction: P) {
+        unsafe { ffi::audio::sfMusic_setDirection(self.music, direction.into()) }
+    }
+    fn set_cone(&mut self, cone: super::sound_source::Cone) {
+        unsafe { ffi::audio::sfMusic_setCone(self.music, cone.into()) }
+    }
+    fn set_velocity<P: Into<Vector3f>>(&mut self, velocity: P) {
+        unsafe { ffi::audio::sfMusic_setVelocity(self.music, velocity.into()) }
+    }
+    fn set_doppler_factor(&mut self, factor: f32) {
+        unsafe { ffi::audio::sfMusic_setDopplerFactor(self.music, factor) }
+    }
+    fn set_directional_attenuation_factor(&mut self, factor: f32) {
+        unsafe { ffi::audio::sfMusic_setDirectionalAttenuationFactor(self.music, factor) }
+    }
+    fn set_max_distance(&mut self, distance: f32) {
+        unsafe { ffi::audio::sfMusic_setMaxDistance(self.music, distance) }
+    }
+    fn set_min_gain(&mut self, gain: f32) {
+        unsafe { ffi::audio::sfMusic_setMinGain(self.music, gain) }
+    }
+    fn set_max_gain(&mut self, gain: f32) {
+        unsafe { ffi::audio::sfMusic_setMaxGain(self.music, gain) }
+    }
+    fn set_effect_processor(&mut self, effect_processor: super::sound_source::EffectProcessor) {
+        let (cb, user_data) = match effect_processor {
+            Some(cb) => {
+                let boxed = Box::new(cb);
+                let trampoline: unsafe extern "C" fn(
+                    *const f32,
+                    *mut c_uint,
+                    *mut f32,
+                    *mut c_uint,
+                    c_uint,
+                    *mut c_void,
+                ) = ffi::audio::effect_processor_trampoline;
+                (Some(trampoline), Box::into_raw(boxed).cast::<c_void>())
+            }
+            None => (None, std::ptr::null_mut()),
+        };
+
+        unsafe {
+            ffi::audio::sfMusic_setEffectProcessor(self.music, cb, user_data);
+        }
+    }
+    fn pan(&self) -> f32 {
+        unsafe { ffi::audio::sfMusic_getPan(self.music) }
+    }
+    fn is_spatialization_enabled(&self) -> bool {
+        unsafe { ffi::audio::sfMusic_isSpatializationEnabled(self.music) }
+    }
+    fn direction(&self) -> Vector3f {
+        unsafe { ffi::audio::sfMusic_getDirection(self.music) }
+    }
+    fn cone(&self) -> super::sound_source::Cone {
+        unsafe { ffi::audio::sfMusic_getCone(self.music).into() }
+    }
+    fn velocity(&self) -> Vector3f {
+        unsafe { ffi::audio::sfMusic_getVelocity(self.music) }
+    }
+    fn doppler_factor(&self) -> f32 {
+        unsafe { ffi::audio::sfMusic_getDopplerFactor(self.music) }
+    }
+    fn directional_attenuation_factor(&self) -> f32 {
+        unsafe { ffi::audio::sfMusic_getDirectionalAttenuationFactor(self.music) }
+    }
+    fn get_max_distance(&self) -> f32 {
+        unsafe { ffi::audio::sfMusic_getMaxDistance(self.music) }
+    }
+    fn get_min_gain(&self) -> f32 {
+        unsafe { ffi::audio::sfMusic_getMinGain(self.music) }
+    }
+    fn get_max_gain(&self) -> f32 {
+        unsafe { ffi::audio::sfMusic_getMaxGain(self.music) }
+    }
+    fn status(&self) -> super::sound_source::Status {
+        unsafe { ffi::audio::sfMusic_getStatus(self.music) }
     }
 }
 

@@ -1,5 +1,8 @@
 use sfml::{
-    audio::{SoundStatus, SoundStream, SoundStreamPlayer},
+    audio::{
+        SoundChannel, SoundStream, SoundStreamPlayer,
+        sound_source::{self, SoundSource},
+    },
     system::Time,
 };
 
@@ -42,6 +45,10 @@ impl SoundStream for BitMelody {
     fn sample_rate(&self) -> u32 {
         44_100
     }
+
+    fn get_channel_map(&self) -> Vec<SoundChannel> {
+        [SoundChannel::Mono].to_vec()
+    }
 }
 
 impl BitMelody {
@@ -62,7 +69,7 @@ fn main() {
     let total_dur = stream.total_duration_samples() as f32 / stream.sample_rate() as f32;
     let mut player = SoundStreamPlayer::new(&mut stream);
     player.play();
-    while player.status() == SoundStatus::PLAYING {
+    while player.status() == sound_source::Status::Playing {
         let current = player.playing_offset().as_seconds();
         eprint!("Playing custom sound stream: {current:06.03}/{total_dur:06.03}\r");
         std::thread::sleep(std::time::Duration::from_millis(100));

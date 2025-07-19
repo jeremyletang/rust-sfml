@@ -24,6 +24,4 @@ impl PrimitiveType {
     /// List of connected triangles, a point uses the common center
     /// and the previous point to form a triangle.
     pub const TRIANGLE_FAN: Self = Self(ffi::graphics::sfPrimitiveType::TriangleFan);
-    /// List of individual quads (deprecated, don't work with OpenGL ES)
-    pub const QUADS: Self = Self(ffi::graphics::sfPrimitiveType::Quads);
 }

@@ -51,6 +51,11 @@ pub trait Shape<'texture>: Drawable + Transformable {
     fn outline_thickness(&self) -> f32;
     /// Gets the total number of points of the shape.
     fn point_count(&self) -> usize;
+    /// Get the geometric center of the shape
+    ///
+    /// The returned poinst is in local coordinates, that is, the shape's transforms
+    /// (position, rotation, scale\) are not taken into account.
+    fn geometric_center(&self) -> Vector2f;
     /// Gets a point of the shape.
     ///
     /// The returned point is in local coordinates, that is, the shape's transforms

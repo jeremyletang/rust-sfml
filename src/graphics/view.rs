@@ -4,7 +4,7 @@ use {
         cpp::{FBox, RawDefault},
         ffi::graphics as ffi,
         graphics::FloatRect,
-        system::Vector2f,
+        system::{Angle, Vector2f},
     },
     std::ptr::NonNull,
 };
@@ -41,10 +41,13 @@ impl View {
     ///
     /// # Arguments
     /// * rectangle - The rectangle defining the zone to display
-    pub fn from_rect(rectangle: FloatRect) -> SfResult<FBox<View>> {
-        let mut new = Self::new()?;
-        new.reset(rectangle);
-        Ok(new)
+    #[must_use]
+    pub fn from_rect(rectangle: FloatRect) -> FBox<View> {
+        let mut view: FBox<View> = Default::default();
+        view.set_center(rectangle.center());
+        view.set_size(rectangle.size);
+
+        view
     }
 }
 
@@ -80,6 +83,14 @@ impl View {
     pub fn viewport(&self) -> FloatRect {
         unsafe { ffi::sfView_getViewport(self) }
     }
+
+    /// Get the scissor rectangle of the view
+    ///
+    /// Return the scissor rectangle, expressed as a factor of the target size
+    #[must_use]
+    pub fn scissor(&self) -> FloatRect {
+        unsafe { ffi::sfView_getScissor(self) }
+    }
 }
 
 /// Set properties
@@ -89,17 +100,17 @@ impl View {
     /// The default rotation of a view is 0 degree.
     ///
     /// # Arguments
-    /// * angle - New angle, in degrees
-    pub fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfView_setRotation(self, angle) }
+    /// * angle - New angle
+    pub fn set_rotation(&mut self, angle: Angle) {
+        unsafe { ffi::sfView_setRotation(self, angle.as_degrees()) }
     }
 
     /// Rotate a view relatively to its current orientation
     ///
     /// # Arguments
-    /// * angle - Angle to rotate, in degrees
-    pub fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfView_rotate(self, angle) }
+    /// * angle - Angle to rotate
+    pub fn rotate(&mut self, angle: Angle) {
+        unsafe { ffi::sfView_rotate(self, angle.as_degrees()) }
     }
 
     /// Resize a view rectangle relatively to its current size
@@ -157,14 +168,27 @@ impl View {
         unsafe { ffi::sfView_setViewport(self, viewport) }
     }
 
-    /// Reset a view to the given rectangle
+    /// Set the target scissor rectangle
     ///
-    /// Note that this function resets the rotation angle to 0.
+    /// The scissor rectangle, expressed as a factor (between 0 and 1) of
+    /// the `RenderTarget`, specifies the region of the `RenderTarget` whose
+    /// pixels are able to be modified by draw or clear operations.
+    /// Any pixels which lie outside of the scissor rectangle will
+    /// not be modified by draw or clear operations.
+    /// For example, a scissor rectangle which only allows modifications
+    /// to the right side of the target would be defined
+    /// with `sfView_setScissor(view, (sfFloatRect){{0.5f, 0.f}, {0.5f, 1.f}})`.
+    /// By default, a view has a scissor rectangle which allows
+    /// modifications to the entire target. This is equivalent to
+    /// disabling the scissor test entirely. Passing the default
+    /// scissor rectangle to this function will also disable
+    /// scissor testing.
     ///
     /// # Arguments
-    /// * rectangle - Rectangle defining the zone to display
-    pub fn reset(&mut self, rectangle: FloatRect) {
-        unsafe { ffi::sfView_reset(self, rectangle) }
+    /// * view - View object
+    /// * scissor - New scissor rectangle
+    pub fn set_scissor(&mut self, scissor: FloatRect) {
+        unsafe { ffi::sfView_setScissor(self, scissor) }
     }
 }
 

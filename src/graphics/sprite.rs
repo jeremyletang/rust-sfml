@@ -1,11 +1,12 @@
 use {
+    super::Rect,
     crate::{
         ffi::graphics as ffi,
         graphics::{
             Color, Drawable, FloatRect, IntRect, RenderStates, RenderTarget, Texture, Transform,
             Transformable,
         },
-        system::Vector2f,
+        system::{Angle, Vector2f},
     },
     std::{marker::PhantomData, ptr::NonNull},
 };
@@ -27,34 +28,31 @@ pub struct Sprite<'s> {
 }
 
 impl<'s> Sprite<'s> {
-    /// Create a new sprite
+    /// Create a new sprite with a texture
+    #[must_use]
+    pub fn with_texture(texture: &'s Texture) -> Sprite<'s> {
+        Self::with_texture_and_rect(
+            texture,
+            Rect {
+                position: Default::default(),
+                size: texture.size().as_other(),
+            },
+        )
+    }
+
+    /// Create a new sprite with a texture and a source rectangle
     ///
     /// # Panics
-    ///
-    /// Panics if a new `Sprite` can't be created for some reason.
+    /// Panics during const evaluation.
+    /// This method will panic during const evaluation if the pointer cannot be
+    /// determined to be null or not.
     #[must_use]
-    pub fn new() -> Sprite<'s> {
-        let sp = unsafe { ffi::sfSprite_new() };
+    pub fn with_texture_and_rect(texture: &'s Texture, rect: IntRect) -> Self {
+        let sp = unsafe { ffi::sfSprite_new(texture, rect) };
         Sprite {
             handle: NonNull::new(sp).expect("Failed to create Sprite"),
             texture: PhantomData,
         }
-    }
-
-    /// Create a new sprite with a texture
-    #[must_use]
-    pub fn with_texture(texture: &'s Texture) -> Sprite<'s> {
-        let mut sprite = Sprite::new();
-        sprite.set_texture(texture, true);
-        sprite
-    }
-
-    /// Create a new sprite with a texture and a source rectangle
-    #[must_use]
-    pub fn with_texture_and_rect(texture: &'s Texture, rect: IntRect) -> Self {
-        let mut sprite = Sprite::with_texture(texture);
-        sprite.set_texture_rect(rect);
-        sprite
     }
 
     /// Change the source texture of a sprite
@@ -163,12 +161,6 @@ impl<'s> Sprite<'s> {
     }
 }
 
-impl Default for Sprite<'_> {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 impl<'s> Clone for Sprite<'s> {
     /// Return a new Sprite or panic! if there is not enough memory
     fn clone(&self) -> Sprite<'s> {
@@ -194,8 +186,8 @@ impl Transformable for Sprite<'_> {
     fn set_position<P: Into<Vector2f>>(&mut self, position: P) {
         unsafe { ffi::sfSprite_setPosition(self.handle.as_ptr(), position.into()) }
     }
-    fn set_rotation(&mut self, angle: f32) {
-        unsafe { ffi::sfSprite_setRotation(self.handle.as_ptr(), angle) }
+    fn set_rotation(&mut self, angle: Angle) {
+        unsafe { ffi::sfSprite_setRotation(self.handle.as_ptr(), angle.as_degrees()) }
     }
     fn set_scale<S: Into<Vector2f>>(&mut self, scale: S) {
         unsafe { ffi::sfSprite_setScale(self.handle.as_ptr(), scale.into()) }
@@ -206,8 +198,8 @@ impl Transformable for Sprite<'_> {
     fn position(&self) -> Vector2f {
         unsafe { ffi::sfSprite_getPosition(self.handle.as_ptr()) }
     }
-    fn rotation(&self) -> f32 {
-        unsafe { ffi::sfSprite_getRotation(self.handle.as_ptr()) }
+    fn rotation(&self) -> Angle {
+        Angle::degrees(unsafe { ffi::sfSprite_getRotation(self.handle.as_ptr()) })
     }
     fn get_scale(&self) -> Vector2f {
         unsafe { ffi::sfSprite_getScale(self.handle.as_ptr()) }
@@ -218,8 +210,8 @@ impl Transformable for Sprite<'_> {
     fn move_<O: Into<Vector2f>>(&mut self, offset: O) {
         unsafe { ffi::sfSprite_move(self.handle.as_ptr(), offset.into()) }
     }
-    fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfSprite_rotate(self.handle.as_ptr(), angle) }
+    fn rotate(&mut self, angle: Angle) {
+        unsafe { ffi::sfSprite_rotate(self.handle.as_ptr(), angle.as_degrees()) }
     }
     fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
         unsafe { ffi::sfSprite_scale(self.handle.as_ptr(), factors.into()) }

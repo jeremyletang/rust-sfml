@@ -3,7 +3,7 @@ use sfml::{
     graphics::{
         Color, Font, Rect, RectangleShape, RenderTarget, RenderWindow, Shape, Text, Transformable,
     },
-    system::Vector2,
+    system::{Vector2, Vector2i},
     window::{ContextSettings, Cursor, CursorType, Event, Style, mouse},
 };
 
@@ -21,8 +21,8 @@ fn gridindex(
     grid.get_mut(y * DRAW_GRID_WH as usize + x)
 }
 
-fn mouse_over(rect: &Rect<i32>, mouse_x: i32, mouse_y: i32) -> bool {
-    rect.contains(Vector2::new(mouse_x, mouse_y))
+fn mouse_over(rect: &Rect<i32>, mouse_position: Vector2i) -> bool {
+    rect.contains(mouse_position)
 }
 
 enum ButtonStyle {
@@ -40,8 +40,8 @@ fn draw_button(
     render_window: &mut RenderWindow,
     style: ButtonStyle,
 ) {
-    shape.set_position((rect.left as f32, rect.top as f32));
-    shape.set_size((rect.width as f32, rect.height as f32));
+    shape.set_position(rect.position.as_other());
+    shape.set_size(rect.size.as_other());
     let (rect_fill, rect_outline, text_fill) = match style {
         ButtonStyle::Normal => (Color::TRANSPARENT, Color::WHITE, Color::WHITE),
         ButtonStyle::Highlighted => (Color::WHITE, Color::WHITE, Color::BLACK),
@@ -50,7 +50,7 @@ fn draw_button(
     };
     shape.set_outline_color(rect_outline);
     shape.set_fill_color(rect_fill);
-    text.set_position((rect.left as f32 + 12.0, rect.top as f32 + 8.0));
+    text.set_position((rect.position.x as f32 + 12.0, rect.position.y as f32 + 8.0));
     text.set_fill_color(text_fill);
     text.set_string(string);
     render_window.draw(shape);
@@ -71,21 +71,20 @@ fn bstyle(highlighted: bool, selected: bool, error: bool) -> ButtonStyle {
 
 fn main() -> SfResult<()> {
     example_ensure_right_working_dir();
-
-    let mut cursor = Cursor::from_system(CursorType::Arrow)?;
     let mut rw = RenderWindow::new(
         (800, 800),
         "SFML cursor example",
         Style::CLOSE,
+        Default::default(),
         &ContextSettings::default(),
     )?;
     rw.set_vertical_sync_enabled(true);
     let font = Font::from_file("sansation.ttf")?;
     let mut failed_index = usize::MAX;
     let mut selected_index = usize::MAX;
-    let set_button = Rect::new(348, 500, 100, 32);
-    let hotspot_button = Rect::new(458, 500, 100, 32);
-    let clear_button = Rect::new(568, 500, 100, 32);
+    let set_button = Rect::new(Vector2::new(348, 500), Vector2::new(100, 32));
+    let hotspot_button = Rect::new(Vector2::new(458, 500), Vector2::new(100, 32));
+    let clear_button = Rect::new(Vector2::new(568, 500), Vector2::new(100, 32));
     let mut pixel_grid = [false; DRAW_GRID_WH as usize * DRAW_GRID_WH as usize];
     let mut hotspot_selection = false;
     let mut hotspot_selected = false;
@@ -117,7 +116,10 @@ fn main() -> SfResult<()> {
         CursorType::NotAllowed,
     ];
     for i in 0..cursor_types.len() {
-        buttons.push(Rect::new(16, 16 + i as i32 * 36, 250, 32));
+        buttons.push(Rect::new(
+            Vector2::new(16, 16 + i as i32 * 36),
+            Vector2::new(250, 32),
+        ));
     }
 
     while rw.is_open() {
@@ -126,13 +128,12 @@ fn main() -> SfResult<()> {
                 Event::Closed => rw.close(),
                 Event::MouseButtonPressed {
                     button: mouse::Button::Left,
-                    x,
-                    y,
+                    position,
                 } => {
                     for (i, b) in buttons.iter().enumerate() {
-                        if mouse_over(b, x, y) {
-                            match cursor.load_from_system(cursor_types[i]) {
-                                Ok(()) => {
+                        if mouse_over(b, position) {
+                            match Cursor::from_system(cursor_types[i]) {
+                                Ok(cursor) => {
                                     unsafe {
                                         rw.set_mouse_cursor(&cursor);
                                     }
@@ -145,7 +146,7 @@ fn main() -> SfResult<()> {
                             }
                         }
                     }
-                    if mouse_over(&set_button, x, y) {
+                    if mouse_over(&set_button, position) {
                         let mut pixels = [0; DRAW_GRID_WH as usize * DRAW_GRID_WH as usize * 4];
                         for (i, px) in pixel_grid.iter().enumerate() {
                             let offset = i * 4;
@@ -157,12 +158,12 @@ fn main() -> SfResult<()> {
                             }
                         }
                         unsafe {
-                            match cursor.load_from_pixels(
+                            match Cursor::from_pixels(
                                 &pixels,
                                 Vector2::new(DRAW_GRID_WH as u32, DRAW_GRID_WH as u32),
                                 hotspot,
                             ) {
-                                Ok(()) => {
+                                Ok(cursor) => {
                                     rw.set_mouse_cursor(&cursor);
                                 }
                                 Err(e) => {
@@ -172,13 +173,13 @@ fn main() -> SfResult<()> {
                         }
                         modif = false;
                     }
-                    if mouse_over(&clear_button, x, y) {
+                    if mouse_over(&clear_button, position) {
                         for px in pixel_grid.iter_mut() {
                             *px = false;
                         }
                         modif = true;
                     }
-                    if mouse_over(&hotspot_button, x, y) {
+                    if mouse_over(&hotspot_button, position) {
                         hotspot_selection = true;
                     }
                 }
@@ -201,17 +202,17 @@ fn main() -> SfResult<()> {
         let mp = rw.mouse_position();
         let mut highlight_index = usize::MAX;
         for (i, b) in buttons.iter().enumerate() {
-            if mouse_over(b, mp.x, mp.y) {
+            if mouse_over(b, mp) {
                 highlight_index = i;
             }
         }
-        if mouse_over(&set_button, mp.x, mp.y) {
+        if mouse_over(&set_button, mp) {
             set_button_highlighted = true;
         }
-        if mouse_over(&hotspot_button, mp.x, mp.y) {
+        if mouse_over(&hotspot_button, mp) {
             hotspot_button_highlighted = true;
         }
-        if mouse_over(&clear_button, mp.x, mp.y) {
+        if mouse_over(&clear_button, mp) {
             clear_button_highlighted = true;
         }
         // Grid interactions

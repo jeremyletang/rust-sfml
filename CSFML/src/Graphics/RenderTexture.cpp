@@ -1,5 +1,7 @@
+#include "Graphics/PrimitiveType.hpp"
 #include "Graphics/Rect.hpp"
 #include "Graphics/Color.hpp"
+#include "SFML/Graphics/PrimitiveType.hpp"
 #include "SFML/Window/ContextSettings.hpp"
 #include "System/Vector2.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -9,6 +11,7 @@
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include "Graphics/StencilMode.hpp"
 #include <cstddef>
 
 extern "C" sf::RenderTexture *sfRenderTexture_new() {
@@ -19,13 +22,12 @@ extern "C" void sfRenderTexture_del(sf::RenderTexture *renderTexture) {
     delete renderTexture;
 }
 
-extern "C" bool sfRenderTexture_create(sf::RenderTexture *renderTexture, unsigned int width, unsigned int height, const sf::ContextSettings *settings) {
-    return renderTexture->create(width, height, *settings);
+extern "C" bool sfRenderTexture_resize(sf::RenderTexture *texture, sfVector2u size, const sf::ContextSettings *settings) {
+    return texture->resize(convertVector2(size), *settings);
 }
 
 extern "C" sfVector2u sfRenderTexture_getSize(const sf::RenderTexture *renderTexture) {
-    sf::Vector2u size = renderTexture->getSize();
-    return {size.x, size.y};
+    return convertVector2(renderTexture->getSize());
 }
 
 extern "C" bool sfRenderTexture_isSrgb(const sf::RenderTexture *renderTexture) {
@@ -41,7 +43,15 @@ extern "C" void sfRenderTexture_display(sf::RenderTexture *renderTexture) {
 }
 
 extern "C" void sfRenderTexture_clear(sf::RenderTexture *renderTexture, sfColor color) {
-    renderTexture->clear(sf::Color(color.r, color.g, color.b, color.a));
+    renderTexture->clear(convertColor(color));
+}
+
+extern "C" void sfRenderTexture_clearStencil(sf::RenderTexture *renderTexture, sfStencilValue stencilValue) {
+    renderTexture->clearStencil(convertStencilValue(stencilValue));
+}
+
+extern "C" void sfRenderTexture_clearColorAndStencil(sf::RenderTexture *renderTexture, sfColor color, sfStencilValue stencilValue) {
+    renderTexture->clear(convertColor(color), convertStencilValue(stencilValue));
 }
 
 extern "C" void sfRenderTexture_setView(sf::RenderTexture *renderTexture, const sf::View *view) {
@@ -57,28 +67,27 @@ extern "C" const sf::View *sfRenderTexture_getDefaultView(const sf::RenderTextur
 }
 
 extern "C" sfIntRect sfRenderTexture_getViewport(const sf::RenderTexture *renderTexture, const sf::View *view) {
-    sf::IntRect rect = renderTexture->getViewport(*view);
-    return {rect.left, rect.top, rect.width, rect.height};
+    return convertRect(renderTexture->getViewport(*view));
+}
+
+extern "C" sfIntRect sfRenderTexture_getScissor(const sf::RenderTexture *renderTexture, const sf::View *view) {
+    return convertRect(renderTexture->getScissor(*view));
 }
 
 extern "C" sfVector2f sfRenderTexture_mapPixelToCoords(const sf::RenderTexture *renderTexture, sfVector2i point) {
-    sf::Vector2f result = renderTexture->mapPixelToCoords(sf::Vector2i(point.x, point.y));
-    return {result.x, result.y};
+    return convertVector2(renderTexture->mapPixelToCoords(convertVector2(point)));
 }
 
 extern "C" sfVector2f sfRenderTexture_mapPixelToCoords_View(const sf::RenderTexture *renderTexture, sfVector2i point, const sf::View *targetView) {
-    sf::Vector2f result = renderTexture->mapPixelToCoords(sf::Vector2i(point.x, point.y), *targetView);
-    return {result.x, result.y};
+    return convertVector2(renderTexture->mapPixelToCoords(convertVector2(point), *targetView));
 }
 
 extern "C" sfVector2i sfRenderTexture_mapCoordsToPixel(const sf::RenderTexture *renderTexture, sfVector2f point) {
-    sf::Vector2i result = renderTexture->mapCoordsToPixel(sf::Vector2f(point.x, point.y));
-    return {result.x, result.y};
+    return convertVector2(renderTexture->mapCoordsToPixel(convertVector2(point)));
 }
 
 extern "C" sfVector2i sfRenderTexture_mapCoordsToPixel_View(const sf::RenderTexture *renderTexture, sfVector2f point, const sf::View *targetView) {
-    sf::Vector2i result = renderTexture->mapCoordsToPixel(sf::Vector2f(point.x, point.y), *targetView);
-    return {result.x, result.y};
+    return convertVector2(renderTexture->mapCoordsToPixel(convertVector2(point), *targetView));
 }
 
 extern "C" void sfRenderTexture_drawSprite(sf::RenderTexture *renderTexture, const sf::Sprite *object, const sf::RenderStates *states) {
@@ -105,8 +114,8 @@ extern "C" void sfRenderTexture_drawVertexBuffer(sf::RenderTexture *renderTextur
 
 extern "C" void sfRenderTexture_drawPrimitives(sf::RenderTexture *renderTexture,
                                                const sf::Vertex *vertices, size_t vertexCount,
-                                               sf::PrimitiveType type, const sf::RenderStates *states) {
-    renderTexture->draw(vertices, vertexCount, type, *states);
+                                               sfPrimitiveType type, const sf::RenderStates *states) {
+    renderTexture->draw(vertices, vertexCount, static_cast<sf::PrimitiveType>(type), *states);
 }
 
 extern "C" void sfRenderTexture_pushGLStates(sf::RenderTexture *renderTexture) {
@@ -130,7 +139,7 @@ extern "C" void sfRenderTexture_setSmooth(sf::RenderTexture *renderTexture, bool
 }
 
 extern "C" unsigned int sfRenderTexture_getMaximumAntialiasingLevel() {
-    return sf::RenderTexture::getMaximumAntialiasingLevel();
+    return sf::RenderTexture::getMaximumAntiAliasingLevel();
 }
 
 extern "C" bool sfRenderTexture_isSmooth(const sf::RenderTexture *renderTexture) {

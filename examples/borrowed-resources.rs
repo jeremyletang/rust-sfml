@@ -16,6 +16,7 @@ fn main() -> SfResult<()> {
         (800, 600),
         "Borrowed resources",
         Style::CLOSE,
+        Default::default(),
         &Default::default(),
     )?;
     window.set_vertical_sync_enabled(true);
@@ -32,9 +33,8 @@ fn main() -> SfResult<()> {
     circle.set_position((100.0, 100.0));
 
     // Create a Sprite.
-    let mut sprite = Sprite::new();
+    let mut sprite = Sprite::with_texture(&frank);
     // Have it use the same texture as the circle.
-    sprite.set_texture(&frank, true);
     sprite.set_position((400.0, 300.0));
     sprite.set_scale(0.5);
 
@@ -50,19 +50,10 @@ fn main() -> SfResult<()> {
     // Create an initialized text using the font.
     let title = Text::new("Borrowed resources example!", &font, 50);
 
-    // Create a second text using the same font.
-    // This time, we create and initialize it separately.
-    let mut second_text = Text::default();
-    second_text.set_string("This text shares the same font with the title!");
-    second_text.set_font(&font);
-    second_text.set_fill_color(Color::GREEN);
-    second_text.set_position((10.0, 350.0));
-    second_text.set_character_size(20);
-
     // Create a third text using the same font.
-    let mut third_text = Text::new("This one too!", &font, 20);
-    third_text.set_position((300.0, 100.0));
-    third_text.set_fill_color(Color::RED);
+    let mut second_text = Text::new("This one too!", &font, 20);
+    second_text.set_position((300.0, 100.0));
+    second_text.set_fill_color(Color::RED);
 
     'mainloop: loop {
         while let Some(event) = window.poll_event() {
@@ -81,7 +72,6 @@ fn main() -> SfResult<()> {
         window.draw(&convex_shape);
         window.draw(&title);
         window.draw(&second_text);
-        window.draw(&third_text);
 
         // Little test here for `Shape::points`
         let mut circ = CircleShape::new(4.0, 30);

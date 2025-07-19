@@ -5,17 +5,20 @@ use sfml::{
         Shape, Sprite, Texture, Transformable,
     },
     system::Vector2f,
-    window::{Event, Key, Style, clipboard},
+    window::{Event, Key, Style, clipboard, window_enums::State},
 };
 
 include!("../example_common.rs");
 
+enum EitherResource {
+    Sprite(RcSprite),
+    Text(RcText),
+}
+
 struct FloatingResource {
     up: bool,
     left: bool,
-    render_sprite: bool,
-    sprite: RcSprite,
-    text: RcText,
+    either_resource: EitherResource,
     speed: f32,
 }
 
@@ -24,80 +27,76 @@ impl FloatingResource {
         Self {
             up,
             left,
-            sprite: RcSprite::with_texture(texture),
-            text: Default::default(),
+            either_resource: EitherResource::Sprite(RcSprite::with_texture(texture)),
             speed,
-            render_sprite: true,
         }
     }
 
     fn with_font(font: &RcFont, up: bool, left: bool, speed: f32) -> Self {
-        let mut self_ = Self {
+        let mut text = RcText::new("", font, 16);
+        text.scale(Vector2f::new(2., 2.));
+        Self {
             up,
             left,
-            sprite: Default::default(),
-            text: RcText::new("", font, 16),
+            either_resource: EitherResource::Text(text),
             speed,
-            render_sprite: false,
-        };
-        self_.text.scale(Vector2f::new(2., 2.));
-
-        self_
+        }
     }
 
     fn render(&self, window: &mut RenderWindow) {
-        if self.render_sprite {
-            window.draw(&self.sprite)
-        } else {
-            window.draw(&self.text)
+        match &self.either_resource {
+            EitherResource::Sprite(sprite) => window.draw(sprite),
+            EitherResource::Text(text) => window.draw(text),
         }
     }
 
     fn move_resources(&mut self, window_size: Vector2f) {
-        if self.render_sprite {
-            // Modify the sprite position freely
-            if self.sprite.position().y <= 0f32 {
-                self.up = false;
-            }
-            if self.sprite.position().y + self.sprite.global_bounds().height >= window_size.y {
-                self.up = true;
-            }
-            if self.sprite.position().x <= 0f32 {
-                self.left = false;
-            }
-            if self.sprite.position().x + self.sprite.global_bounds().width >= window_size.x {
-                self.left = true;
-            }
+        match &mut self.either_resource {
+            EitherResource::Sprite(sprite) => {
+                if sprite.position().y <= 0f32 {
+                    self.up = false;
+                }
+                if sprite.position().y + sprite.global_bounds().size.y >= window_size.y {
+                    self.up = true;
+                }
+                if sprite.position().x <= 0f32 {
+                    self.left = false;
+                }
+                if sprite.position().x + sprite.global_bounds().size.x >= window_size.x {
+                    self.left = true;
+                }
 
-            self.sprite.set_position(
-                self.sprite.position()
-                    + Vector2f::new(
-                        if self.left { -self.speed } else { self.speed },
-                        if self.up { -self.speed } else { self.speed },
-                    ),
-            );
-        } else {
-            // Modify the sprite position freely
-            if self.text.position().y <= 0f32 {
-                self.up = false;
+                sprite.set_position(
+                    sprite.position()
+                        + Vector2f::new(
+                            if self.left { -self.speed } else { self.speed },
+                            if self.up { -self.speed } else { self.speed },
+                        ),
+                );
             }
-            if self.text.position().y + self.text.global_bounds().height >= window_size.y {
-                self.up = true;
-            }
-            if self.text.position().x <= 0f32 {
-                self.left = false;
-            }
-            if self.text.position().x + self.text.global_bounds().width >= window_size.x {
-                self.left = true;
-            }
+            EitherResource::Text(text) => {
+                // Modify the sprite position freely
+                if text.position().y <= 0f32 {
+                    self.up = false;
+                }
+                if text.position().y + text.global_bounds().size.y >= window_size.y {
+                    self.up = true;
+                }
+                if text.position().x <= 0f32 {
+                    self.left = false;
+                }
+                if text.position().x + text.global_bounds().size.x >= window_size.x {
+                    self.left = true;
+                }
 
-            self.text.set_position(
-                self.text.position()
-                    + Vector2f::new(
-                        if self.left { -self.speed } else { self.speed },
-                        if self.up { -self.speed } else { self.speed },
-                    ),
-            );
+                text.set_position(
+                    text.position()
+                        + Vector2f::new(
+                            if self.left { -self.speed } else { self.speed },
+                            if self.up { -self.speed } else { self.speed },
+                        ),
+                );
+            }
         }
     }
 }
@@ -121,8 +120,13 @@ fn get_set_smooth_rc_text(font: &RcFont) -> RcText {
 fn main() -> SfResult<()> {
     example_ensure_right_working_dir();
 
-    let mut window =
-        RenderWindow::new((800, 600), "SFML window", Style::CLOSE, &Default::default())?;
+    let mut window = RenderWindow::new(
+        (800, 600),
+        "SFML window",
+        Style::CLOSE,
+        State::Windowed,
+        &Default::default(),
+    )?;
     window.set_framerate_limit(60);
 
     // Create a new texture.
@@ -189,7 +193,9 @@ fn main() -> SfResult<()> {
         // Update floating_resource positions so they move around on the screen
         for floating_resource in &mut floating_resources {
             floating_resource.move_resources(Vector2f::new(800f32, 600f32));
-            floating_resource.text.set_string(&text_buf);
+            if let EitherResource::Text(text) = &mut floating_resource.either_resource {
+                text.set_string(&text_buf);
+            }
         }
 
         window.clear(Color::BLACK);

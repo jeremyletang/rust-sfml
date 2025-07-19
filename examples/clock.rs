@@ -9,7 +9,8 @@ use {
 };
 
 fn main() -> Result<(), SfError> {
-    let clock = Clock::start()?;
+    let mut clock = Clock::new()?;
+    clock.start();
     while clock.elapsed_time().as_seconds() < 5.0 {
         print!("Elapsed time: {}\r", clock.elapsed_time().as_seconds());
         let _ = std::io::stdout().flush();

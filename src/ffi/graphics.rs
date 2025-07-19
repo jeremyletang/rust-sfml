@@ -1,3 +1,4 @@
+use crate::ffi::system::sfBuffer;
 pub use crate::ffi::*;
 use {
     super::system::sfInputStreamHelper,
@@ -27,6 +28,7 @@ type sfImage = crate::graphics::Image;
 type sfRenderWindow = crate::graphics::RenderWindow;
 type sfRenderTexture = crate::graphics::RenderTexture;
 type sfVertexBuffer = crate::graphics::VertexBuffer;
+pub(crate) type sfState = crate::window::window_enums::State;
 
 /// Enumeration of the blending factors.
 ///
@@ -70,6 +72,10 @@ pub enum BlendEquation {
     Subtract,
     /// `pixel = dst * dst_factor - src * src_factor`
     ReverseSubtract,
+    /// `pixel = min(Dst, Src)`
+    Min,
+    /// `pixel = max(Dst, Src)`
+    Max,
 }
 
 /// Blending modes for drawing.
@@ -133,6 +139,104 @@ pub struct BlendMode {
     pub alpha_dst_factor: BlendFactor,
     /// Blending equation for the alpha channel
     pub alpha_equation: BlendEquation,
+}
+
+/// Enumeration of the stencil test comparisons that can be performed
+/// The comparisons are mapped directly to their OpenGL equivalents,
+/// specified by `glStencilFunc()`.
+#[allow(dead_code)]
+#[repr(C)]
+#[derive(Clone, Copy, Default, Debug, PartialEq, Eq)]
+pub enum StencilComparison {
+    /// The stencil test never passes    
+    Never,
+    /// The stencil test passes if the new value is less than the value in the stencil buffer    
+    Less,
+    /// The stencil test passes if the new value is less than or equal to the value in the stencil buffer    
+    LessEqual,
+    /// The stencil test passes if the new value is greater than the value in the stencil buffer    
+    Greater,
+    /// The stencil test passes if the new value is greater than or equal to the value in the stencil buffer    
+    GreaterEqual,
+    /// The stencil test passes if the new value is strictly equal to the value in the stencil buffer    
+    Equal,
+    /// The stencil test passes if the new value is strictly unequal to the value in the stencil buffer    
+    NotEqual,
+    /// The stencil test always passes
+    #[default]
+    Always,
+}
+
+/// Enumeration of the stencil buffer update operations
+///
+/// The update operations are mapped directly to their OpenGL equivalents,
+/// specified by `glStencilOp()`.
+#[allow(dead_code)]
+#[repr(C)]
+#[derive(Clone, Copy, Default, Debug, PartialEq, Eq)]
+pub enum StencilUpdateOperation {
+    /// If the stencil test passes, the value in the stencil buffer is not modified
+    #[default]
+    Keep,
+    /// If the stencil test passes, the value in the stencil buffer is set to zero    
+    Zero,
+    /// If the stencil test passes, the value in the stencil buffer is set to the new value    
+    Replace,
+    /// If the stencil test passes, the value in the stencil buffer is incremented and if required clamped    
+    Increment,
+    /// If the stencil test passes, the value in the stencil buffer is decremented and if required clamped    
+    Decrement,
+    /// If the stencil test passes, the value in the stencil buffer is bitwise inverted    
+    Invert,
+}
+
+/// Stencil value type (also used as a mask)
+#[repr(C)]
+#[derive(Clone, Copy, Default, Debug, PartialEq, Eq)]
+pub struct StencilValue {
+    /// The stored stencil value    
+    value: u32,
+}
+
+/// Stencil modes for drawing
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct StencilMode {
+    /// The comparison we're performing the stencil test with    
+    comparison: StencilComparison,
+    /// The update operation to perform if the stencil test passes     
+    update_operation: StencilUpdateOperation,
+    /// The reference value we're performing the stencil test with      
+    reference: StencilValue,
+    /// The mask to apply to both the reference value and the value in the stencil buffer     
+    mask: StencilValue,
+    /// Whether we should update the color buffer in addition to the stencil buffer     
+    only: bool,
+}
+
+impl StencilMode {
+    pub const DEFAULT: Self = Self {
+        comparison: StencilComparison::Always,
+        update_operation: StencilUpdateOperation::Keep,
+        reference: StencilValue { value: 0 },
+        mask: StencilValue { value: u32::MAX },
+        only: false,
+    };
+}
+
+impl Default for StencilMode {
+    fn default() -> Self {
+        Self::DEFAULT
+    }
+}
+/// Types of texture coordinates that can be used for rendering.
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum CoordinateType {
+    /// Texture coordinates in range [0 .. 1].
+    sfCoordinateTypeNormalized,
+    /// Texture coordinates in range [0 .. size].    
+    sfCoordinateTypePixels,
 }
 
 /// Types of shaders
@@ -271,10 +375,9 @@ pub enum sfPrimitiveType {
     TriangleStrip,
     /// List of connected triangles, a point uses the common center and the previous point to form a triangle
     TriangleFan,
-    /// List of individual quads
-    Quads,
 }
 
 type sfColor = Color;
+type sfStencilValue = StencilValue;
 
 include!("graphics_bindgen.rs");

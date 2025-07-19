@@ -15,50 +15,51 @@ extern "C" sf::View *sfView_cpy(const sf::View *view) {
 }
 
 extern "C" void sfView_setCenter(sf::View *view, sfVector2f center) {
-    view->setCenter(center.x, center.y);
+    view->setCenter(convertVector2(center));
 }
 
 extern "C" void sfView_setSize(sf::View *view, sfVector2f size) {
-    view->setSize(size.x, size.y);
+    view->setSize(convertVector2(size));
 }
 
 extern "C" void sfView_setRotation(sf::View *view, float angle) {
-    view->setRotation(angle);
+    view->setRotation(sf::degrees(angle));
 }
 
 extern "C" void sfView_setViewport(sf::View *view, sfFloatRect viewport) {
-    view->setViewport(sf::FloatRect(viewport.left, viewport.top, viewport.width, viewport.height));
+    view->setViewport(convertRect(viewport));
 }
 
-extern "C" void sfView_reset(sf::View *view, sfFloatRect rectangle) {
-    view->reset(sf::FloatRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height));
+extern "C" void sfView_setScissor(sf::View *view, sfFloatRect scissor) {
+    view->setScissor(convertRect(scissor));
 }
 
 extern "C" sfVector2f sfView_getCenter(const sf::View *view) {
-    sf::Vector2f vec2 = view->getCenter();
-    return {vec2.x, vec2.y};
+    return convertVector2(view->getCenter());
 }
 
 extern "C" sfVector2f sfView_getSize(const sf::View *view) {
-    sf::Vector2f vec2 = view->getSize();
-    return {vec2.x, vec2.y};
+    return convertVector2(view->getSize());
 }
 
 extern "C" float sfView_getRotation(const sf::View *view) {
-    return view->getRotation();
+    return view->getRotation().asDegrees();
 }
 
 extern "C" sfFloatRect sfView_getViewport(const sf::View *view) {
-    sf::FloatRect rect = view->getViewport();
-    return {rect.left, rect.top, rect.width, rect.height};
+    return convertRect(view->getViewport());
+}
+
+extern "C" sfFloatRect sfView_getScissor(const sf::View *view) {
+    return convertRect(view->getScissor());
 }
 
 extern "C" void sfView_move(sf::View *view, sfVector2f offset) {
-    view->move(offset.x, offset.y);
+    view->move(convertVector2(offset));
 }
 
 extern "C" void sfView_rotate(sf::View *view, float angle) {
-    view->rotate(angle);
+    view->rotate(sf::degrees(angle));
 }
 
 extern "C" void sfView_zoom(sf::View *view, float factor) {

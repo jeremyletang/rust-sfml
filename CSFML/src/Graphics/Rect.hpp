@@ -1,18 +1,33 @@
-#ifndef SFML_RECT_H
-#define SFML_RECT_H
+#pragma once
 
+#include <SFML/Graphics/Rect.hpp>
+#include "System/Vector2.hpp"
 struct sfFloatRect {
-    float left;
-    float top;
-    float width;
-    float height;
+    sfVector2f position;
+    sfVector2f size;
 };
 
 struct sfIntRect {
-    int left;
-    int top;
-    int width;
-    int height;
+    sfVector2i position;
+    sfVector2i size;
 };
 
-#endif // SFML_RECT_H
+////////////////////////////////////////////////////////////
+// Convert sf::Rect<T> to CSFML Rect
+////////////////////////////////////////////////////////////
+[[nodiscard]] inline sfFloatRect convertRect(const sf::FloatRect &rect) {
+    return {{rect.position.x, rect.position.y}, {rect.size.x, rect.size.y}};
+}
+[[nodiscard]] inline sfIntRect convertRect(const sf::IntRect &rect) {
+    return {{rect.position.x, rect.position.y}, {rect.size.x, rect.size.y}};
+}
+
+////////////////////////////////////////////////////////////
+// Convert CSFML Rect to sf::Rect<T>
+////////////////////////////////////////////////////////////
+[[nodiscard]] inline sf::FloatRect convertRect(const sfFloatRect &rect) {
+    return {{rect.position.x, rect.position.y}, {rect.size.x, rect.size.y}};
+}
+[[nodiscard]] inline sf::IntRect convertRect(const sfIntRect &rect) {
+    return {{rect.position.x, rect.position.y}, {rect.size.x, rect.size.y}};
+}

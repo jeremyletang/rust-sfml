@@ -1,11 +1,11 @@
 use {
     sfml::{
-        audio::{Music, SoundSource, listener},
+        audio::{Music, listener, sound_source::SoundSource},
         graphics::{
             CircleShape, Color, FloatRect, Font, RectangleShape, RenderStates, RenderTarget,
             RenderWindow, Shape, Text, Transformable,
         },
-        system::{Clock, Vector2, Vector2f, Vector3},
+        system::{Angle, Clock, Vector2, Vector2f, Vector3},
         window::{Event, Key, Style},
     },
     std::error::Error,
@@ -14,18 +14,16 @@ use {
 include!("../example_common.rs");
 
 /// Convert a line between two points to an equivalent rotated rectangle
-fn line_to_rect(x1: f32, y1: f32, x2: f32, y2: f32, thickness: f32) -> (FloatRect, f32) {
+fn line_to_rect(x1: f32, y1: f32, x2: f32, y2: f32, thickness: f32) -> (FloatRect, Angle) {
     let dx = x2 - x1;
     let dy = y2 - y1;
 
     (
         FloatRect {
-            left: x1,
-            top: y1 - thickness / 2.0,
-            width: (dx * dx + dy * dy).sqrt(),
-            height: thickness,
+            position: Vector2::new(x1, y1 - thickness / 2.),
+            size: Vector2::new((dx * dx + dy * dy).sqrt(), thickness),
         },
-        dy.atan2(dx).to_degrees(),
+        Angle::radians(dy.atan2(dx)),
     )
 }
 
@@ -50,6 +48,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         (800, 600),
         "Positional audio demo",
         Style::CLOSE,
+        sfml::window::window_enums::State::Windowed,
         &Default::default(),
     )?;
     rw.set_vertical_sync_enabled(true);
@@ -69,7 +68,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut listener_pos = Vector3::new(0.0, 0.0, 0.0);
     let center = Vector2::new(400., 300.);
     let [mut go_left, mut go_right, mut go_up, mut go_down] = [false; 4];
-    let clock = Clock::start()?;
+    let mut clock = Clock::new()?;
+    clock.start();
 
     while rw.is_open() {
         while let Some(ev) = rw.poll_event() {

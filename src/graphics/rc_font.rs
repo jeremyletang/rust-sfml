@@ -288,6 +288,17 @@ impl RcFont {
         self.font.borrow_mut().set_smooth(smooth)
     }
 
+    /// Get the source font of an [`RcFont`]
+    ///
+    /// It let's you temprorarily borrow the [`Font`] bieng held by [`RcFont`].
+    /// This may be useful for many things like using a temporary text object.
+    ///
+    /// Returns [`Font`]
+    #[must_use]
+    pub fn raw_font(&self) -> &Font {
+        unsafe { &*self.font.as_ptr() }
+    }
+
     /// INTERNAL FUNCTION ONLY
     /// Allows other rc variants to request a weak pointer to the texture
     pub(super) fn downgrade(&self) -> std::rc::Weak<RefCell<FBox<Font>>> {

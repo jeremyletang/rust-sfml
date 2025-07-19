@@ -113,16 +113,6 @@ impl RcTexture {
         })
     }
 
-    /// Create the texture.
-    ///
-    /// If this function fails, the texture is left unchanged.
-    ///
-    /// Returns whether creation was successful.
-    #[must_use = "Check if texture was created successfully"]
-    pub fn create(&mut self, width: u32, height: u32) -> SfResult<()> {
-        self.texture.borrow_mut().create(width, height)
-    }
-
     /// Get the source texture of an [`RcTexture`]
     ///
     /// It let's you temporarily borrow the [`Texture`] being held by an [`RcTexture`].
@@ -145,8 +135,8 @@ impl RcTexture {
     /// # Arguments
     /// * mem - Pointer to the file data in memory
     /// * area - Area of the image to load
-    pub fn load_from_memory(&mut self, mem: &[u8], area: IntRect) -> SfResult<()> {
-        self.texture.borrow_mut().load_from_memory(mem, area)
+    pub fn load_from_memory(&mut self, mem: &[u8], srgb: bool, area: IntRect) -> SfResult<()> {
+        self.texture.borrow_mut().load_from_memory(mem, srgb, area)
     }
 
     /// Load texture from a stream (a struct implementing Read + Seek)
@@ -162,17 +152,22 @@ impl RcTexture {
     pub fn load_from_stream<T: Read + Seek>(
         &mut self,
         stream: &mut T,
+        srgb: bool,
         area: IntRect,
     ) -> SfResult<()> {
-        self.texture.borrow_mut().load_from_stream(stream, area)
+        self.texture
+            .borrow_mut()
+            .load_from_stream(stream, srgb, area)
     }
 
     /// Load texture from a file
     ///
     /// # Arguments
     /// * filename - Path of the image file to load
-    pub fn load_from_file(&mut self, filename: &str, area: IntRect) -> SfResult<()> {
-        self.texture.borrow_mut().load_from_file(filename, area)
+    pub fn load_from_file(&mut self, filename: &str, srgb: bool, area: IntRect) -> SfResult<()> {
+        self.texture
+            .borrow_mut()
+            .load_from_file(filename, srgb, area)
     }
 
     /// Convenience method to easily create and load a `RcTexture` from a file.
@@ -194,8 +189,8 @@ impl RcTexture {
     ///
     /// # Arguments
     /// * image - Image to upload to the texture
-    pub fn load_from_image(&mut self, image: &Image, area: IntRect) -> SfResult<()> {
-        self.texture.borrow_mut().load_from_image(image, area)
+    pub fn load_from_image(&mut self, image: &Image, srgb: bool, area: IntRect) -> SfResult<()> {
+        self.texture.borrow_mut().load_from_image(image, srgb, area)
     }
 
     /// Update a part of the texture from the contents of a window.
@@ -205,8 +200,8 @@ impl RcTexture {
     /// # Safety
     /// No additional check is performed on the size of the window, passing an invalid combination
     /// of window size and offset will lead to an _undefined behavior_.
-    pub unsafe fn update_from_window(&mut self, window: &Window, x: u32, y: u32) {
-        unsafe { self.texture.borrow_mut().update_from_window(window, x, y) }
+    pub unsafe fn update_from_window(&mut self, window: &Window, dest: Vector2u) {
+        unsafe { self.texture.borrow_mut().update_from_window(window, dest) }
     }
 
     /// Update a part of the texture from the contents of a render window.
@@ -219,13 +214,12 @@ impl RcTexture {
     pub unsafe fn update_from_render_window(
         &mut self,
         render_window: &RenderWindow,
-        x: u32,
-        y: u32,
+        dest: Vector2u,
     ) {
         unsafe {
             self.texture
                 .borrow_mut()
-                .update_from_render_window(render_window, x, y)
+                .update_from_render_window(render_window, dest)
         }
     }
 
@@ -236,8 +230,8 @@ impl RcTexture {
     /// # Safety
     /// No additional check is performed on the size of the image, passing an invalid combination
     /// of image size and offset will lead to an _undefined behavior_.
-    pub unsafe fn update_from_image(&mut self, image: &Image, x: u32, y: u32) {
-        unsafe { self.texture.borrow_mut().update_from_image(image, x, y) }
+    pub unsafe fn update_from_image(&mut self, image: &Image, dest: Vector2u) {
+        unsafe { self.texture.borrow_mut().update_from_image(image, dest) }
     }
 
     /// Update a part of this texture from another texture.
@@ -248,8 +242,8 @@ impl RcTexture {
     /// No additional check is performed on the size of the texture,
     /// passing an invalid combination of texture size and offset will
     /// lead to an _undefined behavior_.
-    pub unsafe fn update_from_texture(&mut self, texture: &Texture, x: u32, y: u32) {
-        unsafe { self.texture.borrow_mut().update_from_texture(texture, x, y) }
+    pub unsafe fn update_from_texture(&mut self, texture: &Texture, dest: Vector2u) {
+        unsafe { self.texture.borrow_mut().update_from_texture(texture, dest) }
     }
 
     /// Update a part of the texture from an array of pixels.
@@ -262,10 +256,10 @@ impl RcTexture {
     /// # Panics
     ///
     /// Panics the provided parameters would result in out of bounds access.
-    pub fn update_from_pixels(&mut self, pixels: &[u8], width: u32, height: u32, x: u32, y: u32) {
+    pub fn update_from_pixels(&mut self, pixels: &[u8], size: Vector2u, dest: Vector2u) {
         self.texture
             .borrow_mut()
-            .update_from_pixels(pixels, width, height, x, y)
+            .update_from_pixels(pixels, size, dest)
     }
 
     /// Enable or disable the smooth filter on a texture
@@ -304,24 +298,6 @@ impl RcTexture {
     #[must_use]
     pub fn maximum_size() -> u32 {
         Texture::maximum_size()
-    }
-
-    /// Enable or disable conversion from sRGB.
-    ///
-    /// When providing texture data from an image file or memory, it can either be stored in a
-    /// linear color space or an sRGB color space. Most digital images account for gamma correction
-    /// already, so they would need to be "uncorrected" back to linear color space before being
-    /// processed by the hardware. The hardware can automatically convert it from the sRGB
-    /// color space to a linear color space when it gets sampled. When the rendered image gets
-    /// output to the final framebuffer, it gets converted back to sRGB.
-    ///
-    /// After enabling or disabling sRGB conversion, make sure to reload the texture data in
-    /// order for the setting to take effect.
-    ///
-    /// This option is only useful in conjunction with an sRGB capable framebuffer.
-    /// This can be requested during window creation.
-    pub fn set_srgb(&mut self, srgb: bool) {
-        self.texture.borrow_mut().set_srgb(srgb)
     }
 
     /// Generate a mipmap using the current texture data.

@@ -1,7 +1,7 @@
 use sfml::{
     SfResult,
     graphics::{Color, Font, RenderTarget, RenderWindow, Text, Transformable},
-    window::{ContextSettings, Event, Key, Style, VideoMode},
+    window::{ContextSettings, Event, Key, Style, VideoMode, window_enums::State},
 };
 
 struct WindowConfig {
@@ -33,6 +33,7 @@ fn main() -> SfResult<()> {
         configs[cfg_idx].mode,
         "Window test",
         Style::CLOSE,
+        State::Windowed,
         &ContextSettings::default(),
     )?;
     let font = Font::from_memory_static(include_bytes!("resources/sansation.ttf"))?;
@@ -51,15 +52,24 @@ fn main() -> SfResult<()> {
                     }
                     Key::Enter => match configs.get(cfg_idx) {
                         Some(cfg) => {
-                            rw.recreate(cfg.mode, cfg.title, cfg.style, &ContextSettings::default())
+                            rw = RenderWindow::new(
+                                cfg.mode,
+                                cfg.title,
+                                cfg.style,
+                                State::Windowed,
+                                &ContextSettings::default(),
+                            )?
                         }
                         None => match fs_modes.get(cfg_idx - configs.len()) {
-                            Some(mode) => rw.recreate(
-                                *mode,
-                                "Fullscreen",
-                                Style::FULLSCREEN,
-                                &ContextSettings::default(),
-                            ),
+                            Some(mode) => {
+                                rw = RenderWindow::new(
+                                    *mode,
+                                    "Fullscreen",
+                                    Default::default(),
+                                    State::Fullscreen,
+                                    &ContextSettings::default(),
+                                )?
+                            }
                             None => {
                                 eprintln!("Invalid index: {cfg_idx}");
                             }
@@ -113,7 +123,7 @@ fn main() -> SfResult<()> {
             txt.set_position((x, y));
             txt.set_string(&format!(
                 "{}x{}x{}",
-                mode.width, mode.height, mode.bits_per_pixel
+                mode.size.x, mode.size.y, mode.bits_per_pixel
             ));
             rw.draw(&txt);
             i += 1;

@@ -1,5 +1,7 @@
 #include "Graphics/Color.hpp"
 #include "Graphics/Rect.hpp"
+#include "SFML/System/Angle.hpp"
+#include "SFML/System/Vector2.hpp"
 #include "System/Vector2.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Shape.hpp>
@@ -23,7 +25,7 @@ class sfCustomShape final : public sf::Shape {
 
     virtual sf::Vector2f getPoint(std::size_t index) const final {
         sfVector2f point = myGetPointCb(index, myUserData);
-        return sf::Vector2f(point.x, point.y);
+        return convertVector2(point);
     }
 
     using sf::Shape::update;
@@ -45,50 +47,47 @@ extern "C" void sfCustomShape_del(sfCustomShape *shape) {
 }
 
 extern "C" void sfCustomShape_setPosition(sfCustomShape *shape, sfVector2f position) {
-    shape->setPosition(position.x, position.y);
+    shape->setPosition(convertVector2(position));
 }
 
 extern "C" void sfCustomShape_setRotation(sfCustomShape *shape, float angle) {
-    shape->setRotation(angle);
+    shape->setRotation(sf::degrees(angle));
 }
 
 extern "C" void sfCustomShape_setScale(sfCustomShape *shape, sfVector2f scale) {
-    shape->setScale(scale.x, scale.y);
+    shape->setScale(convertVector2(scale));
 }
 
 extern "C" void sfCustomShape_setOrigin(sfCustomShape *shape, sfVector2f origin) {
-    shape->setOrigin(origin.x, origin.y);
+    shape->setOrigin(convertVector2(origin));
 }
 
 extern "C" sfVector2f sfCustomShape_getPosition(const sfCustomShape *shape) {
-    sf::Vector2f vec2 = shape->getPosition();
-    return {vec2.x, vec2.y};
+    return convertVector2(shape->getPosition());
 }
 
 extern "C" float sfCustomShape_getRotation(const sfCustomShape *shape) {
-    return shape->getRotation();
+    return shape->getRotation().asDegrees();
 }
 
 extern "C" sfVector2f sfCustomShape_getScale(const sfCustomShape *shape) {
-    sf::Vector2f vec2 = shape->getScale();
-    return {vec2.x, vec2.y};
+    return convertVector2(shape->getScale());
 }
 
 extern "C" sfVector2f sfCustomShape_getOrigin(const sfCustomShape *shape) {
-    sf::Vector2f vec2 = shape->getOrigin();
-    return {vec2.x, vec2.y};
+    return convertVector2(shape->getOrigin());
 }
 
 extern "C" void sfCustomShape_move(sfCustomShape *shape, sfVector2f offset) {
-    shape->move(offset.x, offset.y);
+    shape->move(convertVector2(offset));
 }
 
 extern "C" void sfCustomShape_rotate(sfCustomShape *shape, float angle) {
-    shape->rotate(angle);
+    shape->rotate(sf::degrees(angle));
 }
 
 extern "C" void sfCustomShape_scale(sfCustomShape *shape, sfVector2f factors) {
-    shape->scale(factors.x, factors.y);
+    shape->scale(convertVector2(factors));
 }
 
 extern "C" sf::Transform const *sfCustomShape_getTransform(const sfCustomShape *shape) {
@@ -104,15 +103,15 @@ extern "C" void sfCustomShape_setTexture(sfCustomShape *shape, const sf::Texture
 }
 
 extern "C" void sfCustomShape_setTextureRect(sfCustomShape *shape, sfIntRect rect) {
-    shape->setTextureRect(sf::IntRect(rect.left, rect.top, rect.width, rect.height));
+    shape->setTextureRect(convertRect(rect));
 }
 
 extern "C" void sfCustomShape_setFillColor(sfCustomShape *shape, sfColor color) {
-    shape->setFillColor(sf::Color(color.r, color.g, color.b, color.a));
+    shape->setFillColor(convertColor(color));
 }
 
 extern "C" void sfCustomShape_setOutlineColor(sfCustomShape *shape, sfColor color) {
-    shape->setOutlineColor(sf::Color(color.r, color.g, color.b, color.a));
+    shape->setOutlineColor(convertColor(color));
 }
 
 extern "C" void sfCustomShape_setOutlineThickness(sfCustomShape *shape, float thickness) {
@@ -124,18 +123,15 @@ extern "C" const sf::Texture *sfCustomShape_getTexture(const sfCustomShape *shap
 }
 
 extern "C" sfIntRect sfCustomShape_getTextureRect(const sfCustomShape *shape) {
-    sf::IntRect rect = shape->getTextureRect();
-    return {rect.left, rect.top, rect.width, rect.height};
+    return convertRect(shape->getTextureRect());
 }
 
 extern "C" sfColor sfCustomShape_getFillColor(const sfCustomShape *shape) {
-    sf::Color color = shape->getFillColor();
-    return {color.r, color.g, color.b, color.a};
+    return convertColor(shape->getFillColor());
 }
 
 extern "C" sfColor sfCustomShape_getOutlineColor(const sfCustomShape *shape) {
-    sf::Color color = shape->getOutlineColor();
-    return {color.r, color.g, color.b, color.a};
+    return convertColor(shape->getOutlineColor());
 }
 
 extern "C" float sfCustomShape_getOutlineThickness(const sfCustomShape *shape) {
@@ -146,19 +142,20 @@ extern "C" size_t sfCustomShape_getPointCount(const sfCustomShape *shape) {
     return shape->getPointCount();
 }
 
+extern "C" sfVector2f sfCustomShape_getGeometricCenter(const sfCustomShape *shape) {
+    return convertVector2(shape->getGeometricCenter());
+}
+
 extern "C" sfVector2f sfCustomShape_getPoint(const sfCustomShape *shape, size_t index) {
-    sf::Vector2f vec2 = shape->getPoint(index);
-    return {vec2.x, vec2.y};
+    return convertVector2(shape->getPoint(index));
 }
 
 extern "C" sfFloatRect sfCustomShape_getLocalBounds(const sfCustomShape *shape) {
-    sf::FloatRect rect = shape->getLocalBounds();
-    return {rect.left, rect.top, rect.width, rect.height};
+    return convertRect(shape->getLocalBounds());
 }
 
 extern "C" sfFloatRect sfCustomShape_getGlobalBounds(const sfCustomShape *shape) {
-    sf::FloatRect rect = shape->getGlobalBounds();
-    return {rect.left, rect.top, rect.width, rect.height};
+    return convertRect(shape->getGlobalBounds());
 }
 
 extern "C" void sfCustomShape_update(sfCustomShape *shape) {

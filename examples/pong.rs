@@ -2,13 +2,13 @@ use {
     rand::{Rng as _, SeedableRng, rngs::SmallRng},
     sfml::{
         SfResult,
-        audio::{Sound, SoundBuffer, SoundSource},
+        audio::{Sound, SoundBuffer, sound_source::SoundSource},
         graphics::{
             CircleShape, Color, Font, RectangleShape, RenderTarget, RenderWindow, Shape, Text,
             Transformable,
         },
         system::{Clock, Time, Vector2f},
-        window::{ContextSettings, Event, Key, Scancode, Style},
+        window::{ContextSettings, Event, Key, Scancode, Style, window_enums::State},
     },
     std::{env, f32::consts::PI},
 };
@@ -48,6 +48,7 @@ fn main() -> SfResult<()> {
         [game_width, game_height],
         "SFML Pong",
         Style::CLOSE,
+        State::Windowed,
         &context_settings,
     )?;
     let context_settings = window.settings();
@@ -88,21 +89,24 @@ fn main() -> SfResult<()> {
     let font = Font::from_file("sansation.ttf")?;
 
     // Initialize the pause message
-    let mut pause_message = Text::default();
-    pause_message.set_font(&font);
-    pause_message.set_character_size(40);
+    let mut pause_message = Text::new(
+        "Welcome to SFML pong!\nPress space to start the game",
+        &font,
+        40,
+    );
     pause_message.set_position((170., 150.));
     pause_message.set_fill_color(Color::WHITE);
-    pause_message.set_string("Welcome to SFML pong!\nPress space to start the game");
 
     // Define the paddles properties
-    let mut ai_timer = Clock::start()?;
+    let mut ai_timer = Clock::new()?;
+    ai_timer.start();
     let paddle_speed = 400.;
     let mut right_paddle_speed = 0.;
     let mut ball_speed = 400.;
     let mut ball_angle = 0.;
 
-    let mut clock = Clock::start()?;
+    let mut clock = Clock::new()?;
+    clock.start();
     let mut is_playing = false;
     let mut up = false;
     let mut down = false;

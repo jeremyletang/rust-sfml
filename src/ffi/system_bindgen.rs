@@ -3,11 +3,19 @@
 
 unsafe extern "C" {
 
+// Buffer.cpp
+pub fn sfBuffer_destroy(buffer: *mut sfBuffer);
+pub fn sfBuffer_getData(buffer: *const sfBuffer) -> *const u8;
+pub fn sfBuffer_getSize(buffer: *const sfBuffer) -> usize;
 // Clock.cpp
 pub fn sfClock_new() -> *mut sfClock;
 pub fn sfClock_delete(clock: *mut sfClock);
 pub fn sfClock_getElapsedTime(clock: *const sfClock) -> i64;
+pub fn sfClock_isRunning(clock: *const sfClock) -> bool;
+pub fn sfClock_start(clock: *mut sfClock);
+pub fn sfClock_stop(clock: *mut sfClock);
 pub fn sfClock_restart(clock: *mut sfClock) -> i64;
+pub fn sfClock_reset(clock: *mut sfClock) -> i64;
 // InputStreamHelper.cpp
 pub fn sfInputStreamHelper_new(read: sfInputStreamHelperReadCb, seek: sfInputStreamHelperSeekCb, tell: sfInputStreamHelperTellCb, getSize: sfInputStreamHelperGetSizeCb, userData: *mut c_void) -> *mut sfInputStreamHelper;
 pub fn sfInputStreamHelper_del(stream: *mut sfInputStreamHelper);
