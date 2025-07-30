@@ -160,7 +160,7 @@ fn main() -> SfResult<()> {
                         unsafe {
                             match Cursor::from_pixels(
                                 &pixels,
-                                Vector2::new(DRAW_GRID_WH as u32, DRAW_GRID_WH as u32),
+                                Vector2::new(u32::from(DRAW_GRID_WH), u32::from(DRAW_GRID_WH)),
                                 hotspot,
                             ) {
                                 Ok(cursor) => {
@@ -174,9 +174,7 @@ fn main() -> SfResult<()> {
                         modif = false;
                     }
                     if mouse_over(&clear_button, position) {
-                        for px in pixel_grid.iter_mut() {
-                            *px = false;
-                        }
+                        pixel_grid.fill(false);
                         modif = true;
                     }
                     if mouse_over(&hotspot_button, position) {
@@ -216,9 +214,9 @@ fn main() -> SfResult<()> {
             clear_button_highlighted = true;
         }
         // Grid interactions
-        let rela_x = mp.x - DRAW_AREA_TOPLEFT.0 as i32;
-        let rela_y = mp.y - DRAW_AREA_TOPLEFT.1 as i32;
-        let (gx, gy) = (rela_x / DRAW_CELL_WH as i32, rela_y / DRAW_CELL_WH as i32);
+        let rela_x = mp.x - i32::from(DRAW_AREA_TOPLEFT.0);
+        let rela_y = mp.y - i32::from(DRAW_AREA_TOPLEFT.1);
+        let (gx, gy) = (rela_x / i32::from(DRAW_CELL_WH), rela_y / i32::from(DRAW_CELL_WH));
         if gx >= 0 && gy >= 0 {
             if let Some(cell) = gridindex(&mut pixel_grid, gx as usize, gy as usize) {
                 if hotspot_selection {
@@ -277,7 +275,7 @@ fn main() -> SfResult<()> {
         shape.set_fill_color(Color::TRANSPARENT);
         for y in 0..DRAW_GRID_WH {
             for x in 0..DRAW_GRID_WH {
-                if hotspot.x == x as u32 && hotspot.y == y as u32 {
+                if hotspot.x == u32::from(x) && hotspot.y == u32::from(y) {
                     shape.set_outline_color(Color::RED);
                 } else {
                     shape.set_outline_color(Color::rgb(180, 180, 180));
@@ -287,10 +285,10 @@ fn main() -> SfResult<()> {
                 } else {
                     shape.set_fill_color(Color::TRANSPARENT);
                 }
-                shape.set_size((DRAW_CELL_WH as f32, DRAW_CELL_WH as f32));
+                shape.set_size((f32::from(DRAW_CELL_WH), f32::from(DRAW_CELL_WH)));
                 shape.set_position((
-                    DRAW_AREA_TOPLEFT.0 as f32 + (x as f32 * DRAW_CELL_WH as f32),
-                    DRAW_AREA_TOPLEFT.1 as f32 + (y as f32 * DRAW_CELL_WH as f32),
+                    f32::from(DRAW_AREA_TOPLEFT.0) + (f32::from(x) * f32::from(DRAW_CELL_WH)),
+                    f32::from(DRAW_AREA_TOPLEFT.1) + (f32::from(y) * f32::from(DRAW_CELL_WH)),
                 ));
                 rw.draw(&shape);
             }

@@ -110,7 +110,7 @@ impl Texture {
     ) -> SfResult<()> {
         let mut input_stream = InputStream::new(stream);
         unsafe {
-            ffi::sfTexture_loadFromStream(self, &mut *input_stream.stream, srgb, area)
+            ffi::sfTexture_loadFromStream(self, &raw mut *input_stream.stream, srgb, area)
                 .into_sf_result()
         }
     }

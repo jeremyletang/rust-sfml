@@ -224,7 +224,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 for (i, &sample) in samp_buf.iter().enumerate() {
                     let ratio = samp_buf.len() as f32 / rw.size().x as f32;
                     rect.set_position((i as f32 / ratio, 300.0));
-                    rect.set_size((2.0, sample as f32 / 48.0));
+                    rect.set_size((2.0, f32::from(sample) / 48.0));
                     rw.draw(&rect);
                 }
             }

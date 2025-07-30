@@ -361,8 +361,20 @@ fn test_devices() {
     let mut recorder = SoundBufferRecorder::new();
     assert_eq!(*recorder.device(), *default);
     if let Some(device) = devices.last() {
-        recorder.set_device(device.to_str().unwrap()).unwrap();
-        assert_eq!(recorder.device().to_str().unwrap(), device);
+        recorder
+            .set_device(
+                device
+                    .to_str()
+                    .expect("Test code shall fail if this does not work"),
+            )
+            .expect("Test code shall fail if this does not work");
+        assert_eq!(
+            recorder
+                .device()
+                .to_str()
+                .expect("Test code shall fail if this does not work"),
+            device
+        );
     }
 }
 

@@ -28,7 +28,7 @@ fn main() -> SfResult<()> {
 
     println!("\nIterate over the vertices of a vertex array");
     for v in &vertex_array {
-        println!("Vertex Color: {:?} | Position: {:?}", v.color, v.position)
+        println!("Vertex Color: {:?} | Position: {:?}", v.color, v.position);
     }
 
     println!("\nMutable access to a vertex");
@@ -84,7 +84,7 @@ fn main() -> SfResult<()> {
         window.draw_primitives(&vertex_array, PrimitiveType::LINE_STRIP, &rs);
         window.draw(&bound_rect);
         // Display things on screen
-        window.display()
+        window.display();
     }
     Ok(())
 }

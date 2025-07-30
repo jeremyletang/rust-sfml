@@ -75,7 +75,9 @@ impl Transform {
 
         // Compute the inverse if the determinant is not zero
         // (don't use an epsilon because the determinant may *really* be tiny)
-        if det != 0. {
+        if det == 0. {
+            Self::IDENTITY
+        } else {
             Self::new(
                 (self.matrix[15] * self.matrix[5] - self.matrix[7] * self.matrix[13]) / det,
                 -(self.matrix[15] * self.matrix[4] - self.matrix[7] * self.matrix[12]) / det,
@@ -87,8 +89,6 @@ impl Transform {
                 -(self.matrix[7] * self.matrix[0] - self.matrix[3] * self.matrix[4]) / det,
                 (self.matrix[5] * self.matrix[0] - self.matrix[1] * self.matrix[4]) / det,
             )
-        } else {
-            Self::IDENTITY
         }
     }
 

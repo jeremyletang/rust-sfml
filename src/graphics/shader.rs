@@ -333,7 +333,7 @@ impl<'texture> Shader<'texture> {
     /// it mustn't be used when drawing SFML entities.
     /// It must be used only if you mix `Shader` with OpenGL code.
     pub fn bind(shader: Option<&Self>) {
-        unsafe { ffi::sfShader_bind(shader.map_or(ptr::null(), |s| s.raw())) }
+        unsafe { ffi::sfShader_bind(shader.map_or(ptr::null(), Shader::raw)) }
     }
 
     /// Tell whether or not the system supports shaders
@@ -532,7 +532,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         let value = value.into();
-        let ptr: *const _ = &value.0;
+        let ptr: *const _ = &raw const value.0;
         unsafe {
             ffi::sfShader_setMat3Uniform(self.raw_mut(), name, ptr.cast());
         }
@@ -547,7 +547,7 @@ impl<'texture> Shader<'texture> {
         let cstring = CString::new(name)?;
         let name = cstring.as_ptr();
         let value = value.into();
-        let ptr: *const _ = &value.0;
+        let ptr: *const _ = &raw const value.0;
         unsafe {
             ffi::sfShader_setMat4Uniform(self.raw_mut(), name, ptr.cast());
         }

@@ -279,7 +279,7 @@ fn main() -> SfResult<()> {
         }
 
         // Display things on screen
-        window.display()
+        window.display();
     }
     Ok(())
 }

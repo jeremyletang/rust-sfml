@@ -246,7 +246,7 @@ impl Rem for Time {
 
 impl RemAssign for Time {
     fn rem_assign(&mut self, rhs: Self) {
-        self.0 %= rhs.0
+        self.0 %= rhs.0;
     }
 }
 

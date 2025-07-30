@@ -34,7 +34,7 @@ impl Drawable for Bullet<'_> {
         _: &RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         render_target.draw(&self.head);
-        render_target.draw(&self.torso)
+        render_target.draw(&self.torso);
     }
 }
 
@@ -63,7 +63,7 @@ fn main() -> SfResult<()> {
 
         window.clear(Color::BLACK);
         window.draw(&bullet);
-        window.display()
+        window.display();
     }
     Ok(())
 }

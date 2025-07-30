@@ -19,7 +19,7 @@ const BUF_SIZE: usize = 2048;
 
 impl SoundStream for BitMelody {
     fn get_data(&mut self) -> (&[i16], bool) {
-        for buf_sample in self.buf.iter_mut() {
+        for buf_sample in &mut self.buf {
             self.t = self.t.wrapping_add(1);
             let t = self.t;
             let melody = b"36364689";
@@ -60,7 +60,7 @@ impl BitMelody {
         }
     }
     fn total_duration_samples(&self) -> usize {
-        (FULLVOL_DURATION + INIT_VOL as i32 * 4096) as usize
+        (FULLVOL_DURATION + i32::from(INIT_VOL) * 4096) as usize
     }
 }
 

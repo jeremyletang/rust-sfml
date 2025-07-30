@@ -322,7 +322,7 @@ impl RenderWindow {
     pub fn set_title<S: SfStrConv>(&mut self, title: S) {
         title.with_as_sfstr(|sfstr| unsafe {
             ffi::sfRenderWindow_setUnicodeTitle(self, sfstr.as_ptr());
-        })
+        });
     }
 
     /// Show or hide a window.
@@ -494,7 +494,7 @@ impl RenderTarget for RenderWindow {
         render_states: &RenderStates,
     ) {
         unsafe {
-            ffi::sfRenderWindow_drawRectangleShape(self, rectangle_shape.raw(), render_states)
+            ffi::sfRenderWindow_drawRectangleShape(self, rectangle_shape.raw(), render_states);
         }
     }
     fn draw_convex_shape(&mut self, convex_shape: &ConvexShape, render_states: &RenderStates) {

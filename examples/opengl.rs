@@ -61,7 +61,7 @@ fn main() -> SfResult<()> {
             gl::glViewport(0, 0, window.size().x as _, window.size().y as _);
             gl::glMatrixMode(gl::GL_PROJECTION);
             gl::glLoadIdentity();
-            let ratio = (window.size().x / window.size().y) as gl::GLdouble;
+            let ratio = gl::GLdouble::from(window.size().x / window.size().y);
             gl::glFrustum(-ratio, ratio, -1., 1., 1., 500.);
             gl::glEnable(gl::GL_TEXTURE_2D);
             Texture::bind(&texture);
@@ -88,13 +88,13 @@ fn main() -> SfResult<()> {
                 3,
                 gl::GL_FLOAT,
                 5 * size_of::<gl::GLfloat>() as i32,
-                cube.as_ptr() as *const c_void,
+                cube.as_ptr().cast::<c_void>(),
             );
             gl::glTexCoordPointer(
                 2,
                 gl::GL_FLOAT,
                 5 * size_of::<gl::GLfloat>() as i32,
-                cube.as_ptr().offset(3) as *const c_void,
+                cube.as_ptr().offset(3).cast::<c_void>(),
             );
 
             // Disable normal and color vertex components

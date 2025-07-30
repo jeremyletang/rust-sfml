@@ -285,7 +285,7 @@ impl RcFont {
     /// # Arguments
     /// * `smooth` - True to enable smoothing, false to disable smoothing
     pub fn set_smooth(&mut self, smooth: bool) {
-        self.font.borrow_mut().set_smooth(smooth)
+        self.font.borrow_mut().set_smooth(smooth);
     }
 
     /// Get the source font of an [`RcFont`]

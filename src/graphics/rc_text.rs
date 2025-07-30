@@ -79,7 +79,7 @@ impl RcText {
     pub fn set_string<S: SfStrConv>(&mut self, string: S) {
         string.with_as_sfstr(|sfstr| unsafe {
             ffi::sfText_setUnicodeString(self.handle.as_ptr(), sfstr.as_ptr());
-        })
+        });
     }
 
     /// Get the string of a `RcText`
@@ -116,7 +116,7 @@ impl RcText {
                     .0
                     .as_ptr()
                     .cast_const(),
-            )
+            );
         }
     }
 
@@ -335,7 +335,7 @@ impl Drawable for RcText {
         states: &RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         if self.font_exists() {
-            target.draw_rc_text(self, states)
+            target.draw_rc_text(self, states);
         }
     }
 }
@@ -466,18 +466,14 @@ impl Transformable for RcText {
     ///
     /// Panics if font doesn't exist
     fn transform(&self) -> &Transform {
-        if !self.font_exists() {
-            panic!("{}", PANIC_ERROR_MSG);
-        }
+        assert!(self.font_exists(), "{}", PANIC_ERROR_MSG);
         unsafe { &*ffi::sfText_getTransform(self.handle.as_ptr()) }
     }
     /// Reference [`Transformable::inverse_transform`] for additional information
     ///
     /// Panics if font doesn't exist
     fn inverse_transform(&self) -> &Transform {
-        if !self.font_exists() {
-            panic!("{}", PANIC_ERROR_MSG);
-        }
+        assert!(self.font_exists(), "{}", PANIC_ERROR_MSG);
         unsafe { &*ffi::sfText_getInverseTransform(self.handle.as_ptr()) }
     }
 }

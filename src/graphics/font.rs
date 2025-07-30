@@ -148,7 +148,7 @@ impl Font {
     /// [`Font::from_file`], [`Font::from_memory`]
     pub unsafe fn open_from_stream<T: Read + Seek>(&mut self, stream: &mut T) -> SfResult<()> {
         let mut input_stream = InputStream::new(stream);
-        unsafe { ffi::sfFont_openFromStream(self, &mut *input_stream.stream) }.into_sf_result()
+        unsafe { ffi::sfFont_openFromStream(self, &raw mut *input_stream.stream) }.into_sf_result()
     }
 
     /// Load the font from a file in memory.

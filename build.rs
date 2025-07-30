@@ -196,9 +196,7 @@ fn main() {
     if is_windows {
         cmake.cxxflag("/std:c++17").cxxflag("/EHsc");
     }
-    if !feat_audio {
-        cmake.define("SFML_BUILD_AUDIO", "FALSE");
-    } else {
+    if feat_audio {
         // Add search path for libFLAC built by libflac-sys
         let (libogg_loc, libflac_loc) = match win_env {
             Some(WinEnv::Msvc) => {
@@ -228,6 +226,8 @@ fn main() {
             }
             (_, LinkageKind::Dynamic) => (),
         }
+    } else {
+        cmake.define("SFML_BUILD_AUDIO", "FALSE");
     }
     if !feat_window {
         cmake.define("SFML_BUILD_WINDOW", "FALSE");

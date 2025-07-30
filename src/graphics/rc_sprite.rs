@@ -40,7 +40,7 @@ impl RcSprite {
     }
 
     fn set_rc_texture(&mut self, texture: &RcTexture) {
-        self.texture = texture.downgrade()
+        self.texture = texture.downgrade();
     }
 
     /// Create a new sprite with a texture
@@ -245,7 +245,7 @@ impl Drawable for RcSprite {
         states: &RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
         if self.texture_exists() {
-            target.draw_rc_sprite(self, states)
+            target.draw_rc_sprite(self, states);
         }
     }
 }
@@ -365,18 +365,14 @@ impl Transformable for RcSprite {
     ///
     /// Panics if texture doesn't exist
     fn transform(&self) -> &Transform {
-        if !self.texture_exists() {
-            panic!("{}", PANIC_ERROR_MSG);
-        }
+        assert!(self.texture_exists(), "{}", PANIC_ERROR_MSG);
         unsafe { &*ffi::sfSprite_getTransform(self.handle.as_ptr()) }
     }
     /// Reference [`Transformable::inverse_transform`] for additional information
     ///
     /// Panics if texture doesn't exist
     fn inverse_transform(&self) -> &Transform {
-        if !self.texture_exists() {
-            panic!("{}", PANIC_ERROR_MSG);
-        }
+        assert!(self.texture_exists(), "{}", PANIC_ERROR_MSG);
         unsafe { &*ffi::sfSprite_getInverseTransform(self.handle.as_ptr()) }
     }
 }

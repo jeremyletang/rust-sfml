@@ -51,7 +51,7 @@ impl Effect for Pixelate<'_> {
         self.shader
             .set_uniform_float("pixel_threshold", (x + y) / 30.0)
     }
-    fn name(&self) -> &str {
+    fn name(&self) -> &'static str {
         "pixelate"
     }
 }
@@ -112,7 +112,7 @@ impl Effect for WaveBlur<'_> {
         self.shader
             .set_uniform_float("blur_radius", (x + y) * 0.008)
     }
-    fn name(&self) -> &str {
+    fn name(&self) -> &'static str {
         "wave + blur"
     }
 }
@@ -166,7 +166,7 @@ impl Effect for StormBlink {
         self.shader
             .set_uniform_float("blink_alpha", 0.5 + (t * 3.).cos() * 0.25)
     }
-    fn name(&self) -> &str {
+    fn name(&self) -> &'static str {
         "storm + blink"
     }
 }
@@ -220,7 +220,7 @@ impl Drawable for Edge<'_> {
 impl Effect for Edge<'_> {
     fn update(&mut self, t: f32, x: f32, y: f32) -> SfResult<()> {
         self.shader
-            .set_uniform_float("edge_threshold", 1. - (x + y) / 2.)?;
+            .set_uniform_float("edge_threshold", 1. - f32::midpoint(x, y))?;
         let entities_len = self.entities.len() as f32;
 
         for (i, en) in self.entities.iter_mut().enumerate() {
@@ -238,7 +238,7 @@ impl Effect for Edge<'_> {
         self.surface.display();
         Ok(())
     }
-    fn name(&self) -> &str {
+    fn name(&self) -> &'static str {
         "edge post-effect"
     }
 }
@@ -307,7 +307,7 @@ impl Effect for Geometry<'_> {
         Ok(())
     }
 
-    fn name(&self) -> &str {
+    fn name(&self) -> &'static str {
         "Geometry Shader Billboards"
     }
 }
@@ -355,7 +355,7 @@ fn main() -> SfResult<()> {
 
     while window.is_open() {
         while let Some(event) = window.poll_event() {
-            use crate::Event::*;
+            use crate::Event::{Closed, KeyPressed};
             match event {
                 Closed => window.close(),
                 KeyPressed { code, .. } => match code {
