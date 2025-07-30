@@ -178,7 +178,7 @@ impl Drawable for Sprite<'_> {
         target: &mut dyn RenderTarget,
         states: &RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
-        target.draw_sprite(self, states)
+        target.draw_sprite(self, states);
     }
 }
 

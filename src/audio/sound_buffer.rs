@@ -110,7 +110,7 @@ impl SoundBuffer {
     /// Load the sound buffer from a custom stream.
     pub fn load_from_stream<T: Read + Seek>(&mut self, stream: &mut T) -> SfResult<()> {
         let mut stream = InputStream::new(stream);
-        unsafe { ffi::audio::sfSoundBuffer_loadFromStream(self, &mut *stream.stream) }
+        unsafe { ffi::audio::sfSoundBuffer_loadFromStream(self, &raw mut *stream.stream) }
             .into_sf_result()
     }
     /// Load the sound buffer from a slice of audio samples.

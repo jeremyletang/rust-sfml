@@ -99,7 +99,7 @@ pub fn vertex_array_bounds(vertices: &[Vertex]) -> FloatRect {
             if pos.y < top {
                 top = pos.y;
             } else if pos.y > bottom {
-                bottom = pos.y
+                bottom = pos.y;
             }
         }
         FloatRect::new(

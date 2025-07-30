@@ -52,7 +52,7 @@ fn main() -> SfResult<()> {
         window.clear(Color::BLACK);
         window.draw(&*vertex_buffer);
         // Display things on screen
-        window.display()
+        window.display();
     }
     Ok(())
 }

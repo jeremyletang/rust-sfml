@@ -28,7 +28,7 @@
 //! [`Window::touch_position`]: crate::window::Window::touch_position
 //!
 
-use crate::{ffi::window::*, system::Vector2i};
+use crate::{ffi::window::{sfTouch_isDown, sfTouch_getPosition}, system::Vector2i};
 
 /// Check if a touch event is currently down.
 #[must_use]

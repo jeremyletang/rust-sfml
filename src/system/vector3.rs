@@ -56,6 +56,9 @@ pub struct Vector3<T> {
 }
 /// [`Vector3`] with `f32` coordinates.
 pub type Vector3f = Vector3<f32>;
+// Allow dead code to shut clippy up.
+// Yes it is unused throughout SFML's API, but is implemented for consistency.
+#[allow(dead_code)]
 /// [`Vector3`] with `u32` coordinates.
 pub type Vector3u = Vector3<u32>;
 /// [`Vector3`] with `i32` coordinates.

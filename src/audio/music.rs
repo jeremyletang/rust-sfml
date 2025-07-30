@@ -111,7 +111,7 @@ impl<'src> Music<'src> {
         &mut self,
         stream: &'src mut InputStream<T>,
     ) -> SfResult<()> {
-        unsafe { ffi::audio::sfMusic_openFromStream(self.music, &mut *stream.stream) }
+        unsafe { ffi::audio::sfMusic_openFromStream(self.music, &raw mut *stream.stream) }
             .into_sf_result()
     }
 

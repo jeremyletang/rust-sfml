@@ -60,7 +60,7 @@ impl<'s> Text<'s> {
     pub fn set_string<S: SfStrConv>(&mut self, string: S) {
         string.with_as_sfstr(|sfstr| unsafe {
             ffi::sfText_setUnicodeString(self.handle.as_ptr(), sfstr.as_ptr());
-        })
+        });
     }
 
     /// Get the string of a text
@@ -271,7 +271,7 @@ impl Drawable for Text<'_> {
         target: &mut dyn RenderTarget,
         states: &RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
-        target.draw_text(self, states)
+        target.draw_text(self, states);
     }
 }
 

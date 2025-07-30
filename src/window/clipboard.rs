@@ -37,7 +37,7 @@ pub fn get_string() -> String {
 pub fn set_string<S: SfStrConv>(string: S) {
     string.with_as_sfstr(|sfstr| unsafe {
         crate::ffi::window::sfClipboard_setUnicodeString(sfstr.as_ptr());
-    })
+    });
 }
 
 #[cfg_attr(not(feature = "ci-headless"), test)]

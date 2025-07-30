@@ -103,7 +103,7 @@ impl RcTexture {
     /// used when drawing SFML entities. It must be used only if you
     /// mix `Texture` with OpenGL code.
     pub fn bind(&self) {
-        self.texture.borrow().bind()
+        self.texture.borrow().bind();
     }
 
     /// Create a new `RcTexture`
@@ -219,7 +219,7 @@ impl RcTexture {
         unsafe {
             self.texture
                 .borrow_mut()
-                .update_from_render_window(render_window, dest)
+                .update_from_render_window(render_window, dest);
         }
     }
 
@@ -259,7 +259,7 @@ impl RcTexture {
     pub fn update_from_pixels(&mut self, pixels: &[u8], size: Vector2u, dest: Vector2u) {
         self.texture
             .borrow_mut()
-            .update_from_pixels(pixels, size, dest)
+            .update_from_pixels(pixels, size, dest);
     }
 
     /// Enable or disable the smooth filter on a texture
@@ -267,7 +267,7 @@ impl RcTexture {
     /// # Arguments
     /// * smooth - true to enable smoothing, false to disable it
     pub fn set_smooth(&mut self, smooth: bool) {
-        self.texture.borrow_mut().set_smooth(smooth)
+        self.texture.borrow_mut().set_smooth(smooth);
     }
 
     /// Enable or disable repeating for a texture
@@ -289,7 +289,7 @@ impl RcTexture {
     /// # Arguments
     /// * repeated  - true to repeat the texture, false to disable repeating
     pub fn set_repeated(&mut self, repeated: bool) {
-        self.texture.borrow_mut().set_repeated(repeated)
+        self.texture.borrow_mut().set_repeated(repeated);
     }
 
     /// Get the maximum texture size allowed
@@ -320,7 +320,7 @@ impl RcTexture {
     }
     /// Swap the contents of this texture with those of another.
     pub fn swap(&mut self, other: &mut Texture) {
-        self.texture.borrow_mut().swap(other)
+        self.texture.borrow_mut().swap(other);
     }
 
     /// INTERNAL FUNCTION ONLY

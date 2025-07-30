@@ -246,6 +246,6 @@ impl Drawable for VertexBuffer {
         target: &mut dyn RenderTarget,
         states: &RenderStates<'texture, 'shader, 'shader_texture>,
     ) {
-        target.draw_vertex_buffer(self, states)
+        target.draw_vertex_buffer(self, states);
     }
 }

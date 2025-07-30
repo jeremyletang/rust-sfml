@@ -60,7 +60,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     };
     if music.channel_count() != 1 {
         return Err("Sorry, only sounds with 1 channel are supported.".into());
-    };
+    }
     music.set_looping(true);
     music.play();
     music.set_position(Vector3::new(0., 0., 0.));

@@ -587,9 +587,9 @@ mod tests {
     #[test]
     fn test_display_formatting() {
         let angle = Angle::degrees(45.0);
-        assert_eq!(format!("{}", angle), "45°");
+        assert_eq!(format!("{angle}"), "45°");
 
-        let debug_str = format!("{:?}", angle);
+        let debug_str = format!("{angle:?}");
         assert!(debug_str.contains("degrees"));
         assert!(debug_str.contains("radians"));
     }

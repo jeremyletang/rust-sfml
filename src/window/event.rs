@@ -201,7 +201,7 @@ pub enum Event {
 
 impl Event {
     pub(crate) unsafe fn from_raw(event: &ffi::Event) -> Option<Self> {
-        use crate::window::Event::*;
+        use crate::window::Event::{Closed, Resized, FocusLost, FocusGained, TextEntered, KeyPressed, KeyReleased, MouseWheelScrolled, MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseMovedRaw, MouseEntered, MouseLeft, JoystickButtonPressed, JoystickButtonReleased, JoystickMoved, JoystickConnected, JoystickDisconnected, TouchBegan, TouchMoved, TouchEnded, SensorChanged};
         let evt = match event.type_ {
             EventType::Closed => Closed,
             EventType::Resized => Resized {

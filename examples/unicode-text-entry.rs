@@ -27,7 +27,7 @@ fn main() -> SfResult<()> {
     match std::env::args().nth(1) {
         Some(path) => font.open_from_file(&path)?,
         None => font.load_from_memory_static(include_bytes!("resources/sansation.ttf"))?,
-    };
+    }
     let mut string = String::from("This text can be edited.\nTry it!");
 
     let mut text = Text::new(&string, &font, 24);

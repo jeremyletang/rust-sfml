@@ -47,7 +47,7 @@ fn main() -> SfResult<()> {
                     Key::Up => cfg_idx = cfg_idx.saturating_sub(1),
                     Key::Down => {
                         if cfg_idx + 1 < configs.len() + fs_modes.len() {
-                            cfg_idx += 1
+                            cfg_idx += 1;
                         }
                     }
                     Key::Enter => match configs.get(cfg_idx) {
@@ -58,7 +58,7 @@ fn main() -> SfResult<()> {
                                 cfg.style,
                                 State::Windowed,
                                 &ContextSettings::default(),
-                            )?
+                            )?;
                         }
                         None => match fs_modes.get(cfg_idx - configs.len()) {
                             Some(mode) => {
@@ -68,7 +68,7 @@ fn main() -> SfResult<()> {
                                     Default::default(),
                                     State::Fullscreen,
                                     &ContextSettings::default(),
-                                )?
+                                )?;
                             }
                             None => {
                                 eprintln!("Invalid index: {cfg_idx}");

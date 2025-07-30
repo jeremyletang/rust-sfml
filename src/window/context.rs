@@ -87,14 +87,14 @@ fn test_settings() {
         Default::default(),
         &Default::default(),
     )
-    .unwrap();
+    .expect("Test code shall fail if this does not work");
     let win_settings = *window.settings();
     thread::spawn(move || {
-        let context = Context::new().unwrap();
+        let context = Context::new().expect("Test code shall fail if this does not work");
         assert_eq!(context.settings(), &win_settings);
     })
     .join()
-    .unwrap();
+    .expect("Test code shall fail if this does not work");
 }
 
 impl Drop for Context {

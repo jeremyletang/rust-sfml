@@ -46,7 +46,7 @@
 //! [`ORIENTATION`]: Type::ORIENTATION
 //!
 
-use crate::{ffi::window::*, system::Vector3f};
+use crate::{ffi::window::{sfSensor_getValue, sfSensor_isAvailable, sfSensor_setEnabled, sfSensorType}, system::Vector3f};
 
 /// Get the current sensor value.
 #[must_use]

@@ -2,7 +2,7 @@ use {
     super::{sound_channel::SoundChannel, sound_source::SoundSource},
     crate::{
         cpp::CppVector,
-        ffi::audio::*,
+        ffi::audio::{sfCustomSoundStream, sfCustomSoundStream_new, sfCustomSoundStream_play, sfCustomSoundStream_pause, sfCustomSoundStream_stop, sfCustomSoundStream_getPlayingOffset, sfCustomSoundStream_setPlayingOffset, sfCustomSoundStream_getChannelCount, sfCustomSoundStream_getSampleRate, sfCustomSoundStream_getChannelMap, sfCustomSoundStream_isLooping, sfCustomSoundStream_setLooping, sfCustomSoundStream_setPitch, sfCustomSoundStream_setVolume, sfCustomSoundStream_setPosition, sfCustomSoundStream_setRelativeToListener, sfCustomSoundStream_setMinDistance, sfCustomSoundStream_setAttenuation, sfCustomSoundStream_getPitch, sfCustomSoundStream_getVolume, sfCustomSoundStream_getPosition, sfCustomSoundStream_isRelativeToListener, sfCustomSoundStream_getMinDistance, sfCustomSoundStream_getAttenuation, sfCustomSoundStream_setPan, sfCustomSoundStream_setSpatializationEnabled, sfCustomSoundStream_setDirection, sfCustomSoundStream_setCone, sfCustomSoundStream_setVelocity, sfCustomSoundStream_setDopplerFactor, sfCustomSoundStream_setDirectionalAttenuationFactor, sfCustomSoundStream_setMaxDistance, sfCustomSoundStream_setMinGain, sfCustomSoundStream_setMaxGain, effect_processor_trampoline, sfCustomSoundStream_setEffectProcessor, sfCustomSoundStream_getPan, sfCustomSoundStream_isSpatializationEnabled, sfCustomSoundStream_getDirection, sfCustomSoundStream_getCone, sfCustomSoundStream_getVelocity, sfCustomSoundStream_getDopplerFactor, sfCustomSoundStream_getDirectionalAttenuationFactor, sfCustomSoundStream_getMaxDistance, sfCustomSoundStream_getMinGain, sfCustomSoundStream_getMaxGain, sfCustomSoundStream_getStatus, sfCustomSoundStream_del},
         system::{Time, Vector3f},
     },
     std::{ffi::c_uint, marker::PhantomData, os::raw::c_void, panic, ptr::NonNull},
@@ -50,12 +50,9 @@ unsafe extern "C" fn get_data_callback<S: SoundStream>(
     let stream: *mut S = user_data.cast();
     unsafe {
         let (data, keep_playing) =
-            match panic::catch_unwind(panic::AssertUnwindSafe(|| (*stream).get_data())) {
-                Ok(ret) => ret,
-                Err(_) => {
-                    eprintln!("sound_stream: Stopping playback beacuse `get_data` panicked.");
-                    (&[][..], false)
-                }
+            if let Ok(ret) = panic::catch_unwind(panic::AssertUnwindSafe(|| (*stream).get_data())) { ret } else {
+                eprintln!("sound_stream: Stopping playback beacuse `get_data` panicked.");
+                (&[][..], false)
             };
         (*chunk).samples = data.as_ptr();
         (*chunk).sample_count = data.len();
@@ -70,7 +67,7 @@ unsafe extern "C" fn seek_callback<S: SoundStream>(
     let stream: *mut S = user_data.cast();
     let result = unsafe {
         panic::catch_unwind(panic::AssertUnwindSafe(|| {
-            (*stream).seek(Time::from_raw(offset))
+            (*stream).seek(Time::from_raw(offset));
         }))
     };
     if result.is_err() {

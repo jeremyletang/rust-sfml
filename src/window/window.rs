@@ -84,8 +84,8 @@ impl Window {
                 style.bits(),
                 state,
                 settings,
-            )
-        })
+            );
+        });
     }
 
     /// Create a window from an existing platform-specific window handle
