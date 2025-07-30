@@ -10,7 +10,7 @@ impl Key {
     /// pressed or released while no window was focused and no events were
     /// triggered.
     #[must_use]
-    pub fn is_key_pressed(self) -> bool {
+    pub fn is_pressed(self) -> bool {
         thread_safety::set_window_thread();
 
         unsafe { ffi::sfKeyboard_isKeyPressed(self) }
@@ -30,7 +30,7 @@ impl Scancode {
     /// pressed or released while no window was focused and no events were
     /// triggered.
     #[must_use]
-    pub fn is_scancode_pressed(self) -> bool {
+    pub fn is_pressed(self) -> bool {
         thread_safety::set_window_thread();
         unsafe { ffi::sfKeyboard_isScancodePressed(self) }
     }
