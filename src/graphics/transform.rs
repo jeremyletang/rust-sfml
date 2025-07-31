@@ -1,3 +1,5 @@
+use std::ops::{Mul, MulAssign};
+
 use crate::{ffi::graphics as ffi, graphics::FloatRect, system::Vector2f};
 
 /// Define a 3x3 transform matrix.
@@ -193,5 +195,65 @@ impl Transform {
 impl Default for Transform {
     fn default() -> Self {
         Self::IDENTITY
+    }
+}
+
+impl Mul for Transform {
+    type Output = Self;
+
+    /// Combines two transformations
+    ///
+    /// Equivelant to calling `left.clone().combine(right)`
+    ///
+    /// Returns new combined Transform
+    /// ```
+    /// # use sfml::graphics::Transform;
+    /// let test_transform = Transform::new(1., 2., 3., 4., 5., 6., 7., 8., 9.);
+    /// let result = Transform::new(30., 36., 42., 66., 81., 96., 102., 126., 150.);
+    /// assert_eq!(test_transform * test_transform, result);
+    /// ```
+    fn mul(self, rhs: Self) -> Self::Output {
+        let mut clone_self = self;
+        clone_self.combine(&rhs);
+        clone_self
+    }
+}
+
+impl MulAssign for Transform {
+    /// Combines two transformations
+    ///
+    /// Equivelant to calling `left.combine(right)`
+    ///
+    /// Returns new combined Transform
+    /// ```
+    /// # use sfml::graphics::Transform;
+    /// let mut test_transform = Transform::new(1., 2., 3., 4., 5., 6., 7., 8., 9.);
+    /// let result = Transform::new(30., 36., 42., 66., 81., 96., 102., 126., 150.);
+    /// test_transform *= test_transform;
+    /// assert_eq!(test_transform, result);
+    /// ```
+    fn mul_assign(&mut self, rhs: Self) {
+        self.combine(&rhs);
+    }
+}
+
+impl Mul<Vector2f> for Transform {
+    type Output = Vector2f;
+
+    /// Transforms a point
+    ///
+    /// Equivalent to calling `left.transform_point(right)`
+    ///
+    /// Returns a new transformed points
+    /// ```
+    /// # use sfml::graphics::Transform;
+    /// # use sfml::system::Vector2f;
+    /// let test_transform = Transform::new(1., 2., 3., 4., 5., 6., 7., 8., 9.);
+    /// let test_point = Vector2f::new(2., 3.);
+    /// let result = Vector2f::new(11., 29.);
+    /// assert_eq!(test_transform * test_point, result);
+    /// ```
+    fn mul(self, rhs: Vector2f) -> Self::Output {
+        self.transform_point(rhs)
     }
 }
