@@ -243,7 +243,7 @@ impl Event {
                 position: unsafe { event.union.mouse_button.position },
             },
             EventType::MouseMoved => MouseMoved {
-                position: unsafe { event.union.mouse_button.position },
+                position: unsafe { event.union.mouse_move.position },
             },
             EventType::MouseMovedRaw => MouseMovedRaw {
                 delta: unsafe { event.union.mouse_move_raw.delta },
