@@ -173,4 +173,7 @@ required-features = ["graphics", "window"]
 name = "opengl-context"
 required-features = ["window"]
 
+[[example]]
+name = "snake"
+
 [workspace]
