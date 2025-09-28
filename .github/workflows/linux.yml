@@ -2,7 +2,7 @@ name: Build and test (Linux)
 
 on:
   push:
-    branches: [ master ]
+    branches: [ * ]
     paths:
       - 'src/**'
       - 'examples/**'
