@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.25.0
+
+This is the final SFML 2.x release.
+There might be some bugfix releases if needed though.
+
+### Added
+
+- Option to dynamically link FLAC and ogg
+- Some conversion functions between arrays, tuples, and `Vector2`/`Vector3`
+- Make `VideoMode` constructible from arrays
+- Geometry shader example
+
+### Changed
+
+- Now requires Rust edition 2024, Rust 1.86
+- Implement `Send` and `Sync` for more types
+
+### Fixed
+
+- Potentially fix some crashes on OS X
+- `Texture::update_from_pixels` bounds check being too conservative
+
 ## 0.24.0
 
 ### Added
