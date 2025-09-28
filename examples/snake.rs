@@ -3,6 +3,7 @@ use sfml::{
     system::{Clock, Time, Vector2f, Vector2i},
     window::{Event, Key, Style},
 };
+use rand::Rng;
 
 trait Simple: Default {
     fn load(&mut self, path: &str);
@@ -12,7 +13,7 @@ trait Simple: Default {
     fn view(&self, canvas: &mut RenderWindow);
     fn run(title: &str) {
         if let Ok(mut window) = RenderWindow::new(
-            (crate::SCREEN_WIDTH as u32, crate::SCREEN_HEIGHT as u32),
+            (SCREEN_WIDTH as u32, SCREEN_HEIGHT as u32),
             title,
             Style::CLOSE,
             &Default::default(),
@@ -41,6 +42,11 @@ trait Simple: Default {
 }
 // --- Constants ---
 const SQUARE_SIZE: i32 = 20;
+const SCREEN_WIDTH: i32 = 960;
+const SCREEN_HEIGHT: i32 = 540;
+const CELL: i32 = 20;
+const COLS: i32 = SCREEN_WIDTH / CELL;
+const ROWS: i32 = SCREEN_HEIGHT / CELL;
 
 // --- Model: Structs and Enums for the game's state ---
 
@@ -84,6 +90,8 @@ impl Default for Model {
 
 impl Simple for Model {
     /// Handles keyboard input to change the snake's direction.
+    fn load(&mut self, path: &str){}
+    fn exit(&self, path: &str){}
     fn handle(&mut self, key: Key) {
         if self.game_over {
             if key == Key::Enter {
