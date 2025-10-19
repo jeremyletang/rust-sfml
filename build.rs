@@ -53,6 +53,7 @@ fn static_link_windows(
     }
     println!("cargo:rustc-link-lib=dylib=winmm");
     println!("cargo:rustc-link-lib=dylib=user32");
+    println!("cargo:rustc-link-lib=dylib=advapi32");
     if feat_window {
         println!("cargo:rustc-link-lib=dylib=opengl32");
         println!("cargo:rustc-link-lib=dylib=gdi32");
