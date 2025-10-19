@@ -177,7 +177,7 @@ impl VertexBuffer {
     /// Bind a vertex buffer for rendering.
     ///
     /// This function is not part of the graphics API, it mustn't be used when drawing SFML
-    /// entities. It must be used only if you mix sf::VertexBuffer with OpenGL code.
+    /// entities. It must be used only if you mix `sf::VertexBuffer` with OpenGL code.
     ///
     #[cfg_attr(feature = "ci-headless", doc = "```no_run")]
     #[cfg_attr(not(feature = "ci-headless"), doc = "```")]

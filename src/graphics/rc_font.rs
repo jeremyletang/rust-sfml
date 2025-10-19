@@ -270,7 +270,7 @@ impl RcFont {
     /// # Arguments
     /// * `character_size` - Character size, in pixels
     #[must_use]
-    pub fn texture(&self, character_size: u32) -> Ref<Texture> {
+    pub fn texture(&self, character_size: u32) -> Ref<'_, Texture> {
         Ref::map(self.font.borrow(), move |r| r.texture(character_size))
     }
 
