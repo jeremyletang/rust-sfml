@@ -106,6 +106,10 @@ name = "music-stream"
 required-features = ["audio"]
 
 [[example]]
+name = "music-stream-owned"
+required-features = ["audio"]
+
+[[example]]
 name = "pong"
 required-features = ["graphics", "audio"]
 

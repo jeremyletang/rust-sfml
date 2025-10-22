@@ -65,7 +65,8 @@ unsafe extern "C" fn seek<T: Read + Seek>(
 #[derive(Debug)]
 pub struct InputStream<'src, T> {
     pub(crate) stream: FBox<sfInputStreamHelper>,
-    _source: PhantomData<&'src mut T>,
+    _source: Option<Box<T>>,
+    _marker: PhantomData<&'src mut T>,
 }
 
 impl<'src, T: Read + Seek> InputStream<'src, T> {
@@ -86,7 +87,33 @@ impl<'src, T: Read + Seek> InputStream<'src, T> {
             );
             Self {
                 stream: FBox::new(new).expect("Failed to create InputStream"),
-                _source: PhantomData,
+                _source: None,
+                _marker: PhantomData,
+            }
+        }
+    }
+
+    /// Create a new input stream from a `Read + Seek` source, with ownership.
+    ///
+    /// # Panics
+    ///
+    /// Panics if a new `InputStream` can't be created for some reason.
+    pub fn new_owned(stream: T) -> InputStream<'src, T> {
+        let mut stream = Box::new(stream);
+        let user_data: *mut T = stream.as_mut();
+
+        unsafe {
+            let new = crate::ffi::system::sfInputStreamHelper_new(
+                Some(read::<T>),
+                Some(seek::<T>),
+                Some(tell::<T>),
+                Some(get_size::<T>),
+                user_data.cast(),
+            );
+            Self {
+                stream: FBox::new(new).expect("Failed to create InputStream"),
+                _source: Some(stream),
+                _marker: PhantomData,
             }
         }
     }

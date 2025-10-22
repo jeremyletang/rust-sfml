@@ -9,8 +9,7 @@ use {
     },
     std::{
         ffi::{CString, c_uint, c_void},
-        io::{Read, Seek},
-        marker::PhantomData,
+        io::Empty
     },
 };
 
@@ -35,9 +34,9 @@ use {
 /// [`SoundBuffer`]: crate::audio::SoundBuffer
 /// [`Sound`]: crate::audio::Sound
 #[derive(Debug)]
-pub struct Music<'src> {
+pub struct Music<'src, S = Empty> {
     music: *mut ffi::audio::sfMusic,
-    _stream: PhantomData<&'src mut ()>,
+    stream: Option<InputStream<'src, S>>,
 }
 
 // SAFETY: An `sfMusic` isn't tied to a particular thread, so it can be sent between threads safely.
@@ -48,28 +47,84 @@ unsafe impl Send for Music<'_> {}
 unsafe impl Sync for Music<'_> {}
 
 /// Creating and opening
-impl<'src> Music<'src> {
+impl<'src, S> Music<'src, S> {
     /// Create a new (empty) `Music`.
     pub fn new() -> SfResult<Self> {
         Ok(Self {
             music: unsafe { ffi::audio::sfMusic_new() },
-            _stream: PhantomData,
+            stream: None,
         })
     }
+
+    /// Create a new `Music` by "opening" it from a stream
+    ///
+    /// See [`Self::open_from_stream`].
+    pub fn from_stream(stream: &'src mut InputStream<'src, S>) -> SfResult<Self> {
+        let mut new = Self::new()?;
+        new.open_from_stream(stream)?;
+        Ok(new)
+    }
+    /// Create a new `Music` by "opening" it from a stream, with ownership.
+    ///
+    /// See [`Self::open_from_stream_owned`].
+    pub fn from_stream_owned(stream: InputStream<'src, S>) -> SfResult<Self> {
+        let mut new = Self::new()?;
+        new.open_from_stream_owned(stream)?;
+        Ok(new)
+    }
+
+    /// Open music from a stream (a struct implementing Read and Seek)
+    ///
+    /// This function doesn't start playing the music (call [`play`] to do so).
+    /// Here is a complete list of all the supported audio formats:
+    /// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
+    /// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
+    ///
+    /// # Arguments
+    /// * stream - Your struct, implementing Read and Seek
+    ///
+    /// [`play`]: Music::play
+    pub fn open_from_stream(
+        &mut self,
+        stream: &'src mut InputStream<'src, S>,
+    ) -> SfResult<()> {
+        unsafe { ffi::audio::sfMusic_openFromStream(self.music, &raw mut *stream.stream) }
+            .into_sf_result()
+    }
+
+    /// Open music from a stream (a struct implementing Read and Seek), with ownership.
+    ///
+    /// This function doesn't start playing the music (call [`play`] to do so).
+    /// Here is a complete list of all the supported audio formats:
+    /// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
+    /// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
+    ///
+    /// # Arguments
+    /// * stream - Your struct, implementing Read and Seek
+    ///
+    /// [`play`]: Music::play
+    pub fn open_from_stream_owned(
+        &mut self,
+        stream: InputStream<'src, S>,
+    ) -> SfResult<()> {
+        unsafe { ffi::audio::sfMusic_openFromStream(self.music, stream.stream.0.as_ptr()) }
+            .into_sf_result()
+            .map(|_| {
+                self.stream = Some(stream);
+                ()
+            })
+
+    }
+}
+
+/// Creating and opening from file and memory
+impl<'src> Music<'src> {
     /// Create a new `Music` by opening a music file
     ///
     /// See [`Self::open_from_file`].
     pub fn from_file(filename: &str) -> SfResult<Self> {
         let mut new = Self::new()?;
         new.open_from_file(filename)?;
-        Ok(new)
-    }
-    /// Create a new `Music` by "opening" it from a stream
-    ///
-    /// See [`Self::open_from_stream`].
-    pub fn from_stream<T: Read + Seek>(stream: &'src mut InputStream<T>) -> SfResult<Self> {
-        let mut new = Self::new()?;
-        new.open_from_stream(stream)?;
         Ok(new)
     }
     /// Create a new `Music` by "opening" it from music data in memory
@@ -96,25 +151,6 @@ impl<'src> Music<'src> {
         unsafe { ffi::audio::sfMusic_openFromFile(self.music, c_str.as_ptr()) }.into_sf_result()
     }
 
-    /// Open music from a stream (a struct implementing Read and Seek)
-    ///
-    /// This function doesn't start playing the music (call [`play`] to do so).
-    /// Here is a complete list of all the supported audio formats:
-    /// ogg, wav, flac, aiff, au, raw, paf, svx, nist, voc, ircam,
-    /// w64, mat4, mat5 pvf, htk, sds, avr, sd2, caf, wve, mpc2k, rf64.
-    ///
-    /// # Arguments
-    /// * stream - Your struct, implementing Read and Seek
-    ///
-    /// [`play`]: Music::play
-    pub fn open_from_stream<T: Read + Seek>(
-        &mut self,
-        stream: &'src mut InputStream<T>,
-    ) -> SfResult<()> {
-        unsafe { ffi::audio::sfMusic_openFromStream(self.music, &raw mut *stream.stream) }
-            .into_sf_result()
-    }
-
     /// Create a new music and open it from memory
     ///
     /// This function doesn't start playing the music (call [`play`] to do so).
@@ -133,7 +169,7 @@ impl<'src> Music<'src> {
 }
 
 /// Playback
-impl Music<'_> {
+impl<S> Music<'_, S> {
     /// Start or resume playing a music
     ///
     /// This function starts the music if it was stopped, resumes
@@ -164,7 +200,7 @@ impl Music<'_> {
 }
 
 /// Query properties
-impl Music<'_> {
+impl<S> Music<'_, S> {
     /// Tell whether or not a music is in loop mode
     ///
     /// Return true if the music is looping, false otherwise
@@ -236,7 +272,7 @@ impl Music<'_> {
 }
 
 /// Set properties
-impl Music<'_> {
+impl<S> Music<'_, S> {
     /// Sets whether this music should loop or not.
     ///
     /// If `true`, the music will restart from beginning after
@@ -272,7 +308,7 @@ impl Music<'_> {
     }
 }
 
-impl SoundSource for Music<'_> {
+impl<S> SoundSource for Music<'_, S> {
     fn set_pitch(&mut self, pitch: f32) {
         unsafe { ffi::audio::sfMusic_setPitch(self.music, pitch) }
     }
@@ -395,7 +431,7 @@ impl SoundSource for Music<'_> {
     }
 }
 
-impl Drop for Music<'_> {
+impl<S> Drop for Music<'_, S> {
     fn drop(&mut self) {
         unsafe {
             ffi::audio::sfMusic_del(self.music);
