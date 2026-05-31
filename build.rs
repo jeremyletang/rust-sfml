@@ -194,7 +194,9 @@ fn main() {
         // Disable "install" step
         .no_build_target(true);
     if is_windows {
-        cmake.cxxflag("/std:c++17").cxxflag("/EHsc");
+        cmake.define("CMAKE_CXX_STANDARD", "17");
+        cmake.define("CMAKE_CXX_STANDARD_REQUIRED", "ON");
+        cmake.define("CMAKE_CXX_FLAGS_INIT", "/EHsc");
     }
     if feat_audio {
         // Add search path for libFLAC built by libflac-sys
