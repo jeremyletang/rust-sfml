@@ -195,7 +195,7 @@ pub enum StencilUpdateOperation {
 #[derive(Clone, Copy, Default, Debug, PartialEq, Eq)]
 pub struct StencilValue {
     /// The stored stencil value    
-    value: u32,
+    pub value: u32,
 }
 
 /// Stencil modes for drawing
@@ -203,18 +203,21 @@ pub struct StencilValue {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct StencilMode {
     /// The comparison we're performing the stencil test with    
-    comparison: StencilComparison,
+    pub comparison: StencilComparison,
     /// The update operation to perform if the stencil test passes     
-    update_operation: StencilUpdateOperation,
+    pub update_operation: StencilUpdateOperation,
     /// The reference value we're performing the stencil test with      
-    reference: StencilValue,
+    pub reference: StencilValue,
     /// The mask to apply to both the reference value and the value in the stencil buffer     
-    mask: StencilValue,
+    pub mask: StencilValue,
     /// Whether we should update the color buffer in addition to the stencil buffer     
-    only: bool,
+    pub only: bool,
 }
 
 impl StencilMode {
+    /// Default stencil mode
+    ///
+    /// This can be used in a const context, unlike the [`Default`] implementation.
     pub const DEFAULT: Self = Self {
         comparison: StencilComparison::Always,
         update_operation: StencilUpdateOperation::Keep,
@@ -232,7 +235,7 @@ impl Default for StencilMode {
 /// Types of texture coordinates that can be used for rendering.
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum CoordinateType {
+pub enum sfCoordinateType {
     /// Texture coordinates in range [0 .. 1].
     sfCoordinateTypeNormalized,
     /// Texture coordinates in range [0 .. size].    

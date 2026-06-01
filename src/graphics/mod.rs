@@ -9,6 +9,7 @@ pub use {
         circle_shape::CircleShape,
         color::Color,
         convex_shape::ConvexShape,
+        coordinate_type::CoordinateType,
         custom_shape::{CustomShape, CustomShapePoints},
         drawable::Drawable,
         font::{Font, Info as FontInfo},
@@ -37,13 +38,14 @@ pub use {
         vertex_buffer::{VertexBuffer, VertexBufferUsage},
         view::View,
     },
-    crate::ffi::graphics::ShaderType,
+    crate::ffi::graphics::{ShaderType, StencilMode},
 };
 
 pub mod blend_mode;
 mod circle_shape;
 mod color;
 mod convex_shape;
+mod coordinate_type;
 mod custom_shape;
 mod drawable;
 mod font;

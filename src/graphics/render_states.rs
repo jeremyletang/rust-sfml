@@ -1,6 +1,6 @@
 use crate::{
-    ffi::graphics::{CoordinateType, StencilMode},
-    graphics::{BlendMode, Shader, Texture, Transform},
+    ffi::graphics::StencilMode,
+    graphics::{BlendMode, Shader, Texture, Transform, coordinate_type::CoordinateType},
 };
 
 /// Define the states used for drawing to a [`RenderTarget`].
@@ -76,7 +76,7 @@ impl RenderStates<'_, '_, '_> {
         blend_mode: BlendMode::ALPHA,
         stencil_mode: StencilMode::DEFAULT,
         transform: Transform::IDENTITY,
-        coordinate_type: CoordinateType::sfCoordinateTypePixels,
+        coordinate_type: CoordinateType::PIXELS,
         texture: None,
         shader: None,
     };
