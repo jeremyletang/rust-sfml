@@ -21,7 +21,7 @@ use crate::{graphics::Color, system::Vector2f};
 /// their type is float because of some buggy graphics drivers that are not able to
 /// process integer coordinates correctly.
 #[repr(C)]
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Vertex {
     /// 2D position of the vertex
     pub position: Vector2f,
