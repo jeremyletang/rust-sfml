@@ -1,6 +1,10 @@
 use std::ops::{Mul, MulAssign};
 
-use crate::{ffi::graphics as ffi, graphics::FloatRect, system::Vector2f};
+use crate::{
+    ffi::graphics as ffi,
+    graphics::FloatRect,
+    system::{Angle, Vector2f},
+};
 
 /// Define a 3x3 transform matrix.
 ///
@@ -119,8 +123,8 @@ impl Transform {
     ///
     /// # Arguments
     /// * angle - Rotation angle, in degrees
-    pub fn rotate(&mut self, angle: f32) {
-        unsafe { ffi::sfTransform_rotate(self, angle) }
+    pub fn rotate(&mut self, angle: Angle) {
+        unsafe { ffi::sfTransform_rotate(self, angle.as_degrees()) }
     }
 
     /// Combine the current transform with a rotation
@@ -134,8 +138,8 @@ impl Transform {
     /// * angle - Rotation angle, in degrees
     /// * `center_x` - X coordinate of the center of rotation
     /// * `center_y` - Y coordinate of the center of rotation
-    pub fn rotate_with_center(&mut self, angle: f32, center: Vector2f) {
-        unsafe { ffi::sfTransform_rotateWithCenter(self, angle, center) }
+    pub fn rotate_with_center(&mut self, angle: Angle, center: Vector2f) {
+        unsafe { ffi::sfTransform_rotateWithCenter(self, angle.as_degrees(), center) }
     }
 
     /// Combine the current transform with a scaling

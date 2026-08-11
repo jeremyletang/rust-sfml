@@ -8,7 +8,7 @@ use {
             RenderTexture, RenderWindow, Shader, ShaderType, Sprite, Text, Texture, Transform,
             Transformable, Vertex,
         },
-        system::{Clock, Vector2, Vector2f},
+        system::{Angle, Clock, Vector2, Vector2f},
         window::{Event, Key, Style, window_enums::State},
     },
 };
@@ -301,7 +301,7 @@ impl Effect for Geometry<'_> {
     fn update(&mut self, _t: f32, x: f32, y: f32) -> SfResult<()> {
         self.transform = Transform::IDENTITY;
         self.transform.translate(Vector2::new(400., 300.));
-        self.transform.rotate(x * 360.0);
+        self.transform.rotate(Angle::degrees(x * 360.0));
         let size = 25. + y.abs() * 50.;
         self.shader.set_uniform_vec2("size", size.into())?;
         Ok(())
