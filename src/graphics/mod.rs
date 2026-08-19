@@ -38,7 +38,9 @@ pub use {
         vertex_buffer::{VertexBuffer, VertexBufferUsage},
         view::View,
     },
-    crate::ffi::graphics::{ShaderType, StencilMode},
+    crate::ffi::graphics::{
+        ShaderType, StencilComparison, StencilMode, StencilUpdateOperation, StencilValue,
+    },
 };
 
 pub mod blend_mode;
