@@ -17,6 +17,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Window/Mouse.hpp>
+#include <SFML/Window/Vulkan.hpp>
 #include <chrono>
 #include <cstddef>
 
@@ -61,6 +62,10 @@ extern "C" sfVector2i sfRenderWindow_getPosition(const sf::RenderWindow *renderW
 
 extern "C" void sfRenderWindow_setPosition(sf::RenderWindow *renderWindow, sfVector2i position) {
     renderWindow->setPosition(sf::Vector2i(position.x, position.y));
+}
+
+extern "C" bool sfRenderWindow_createVulkanSurface(sf::RenderWindow *renderWindow, VkInstance instance, VkSurfaceKHR *surface, const VkAllocationCallbacks *allocator) {
+    return renderWindow->createVulkanSurface(instance, *surface, allocator);
 }
 
 extern "C" sfVector2u sfRenderWindow_getSize(const sf::RenderWindow *renderWindow) {
@@ -226,6 +231,10 @@ extern "C" void sfRenderWindow_drawRectangleShape(sf::RenderWindow *renderWindow
 }
 extern "C" void sfRenderWindow_drawVertexBuffer(sf::RenderWindow *renderWindow, const sf::VertexBuffer *object, const sf::RenderStates *states) {
     renderWindow->draw(*object, *states);
+}
+
+extern "C" void sfRenderWindow_drawVertexBufferRange(sf::RenderWindow *renderWindow, const sf::VertexBuffer *object, size_t firstVertex, size_t vertexCount, const sf::RenderStates *states) {
+    renderWindow->draw(*object, firstVertex, vertexCount, *states);
 }
 
 extern "C" void sfRenderWindow_drawPrimitives(sf::RenderWindow *renderWindow,

@@ -1,3 +1,5 @@
+use std::ops::Range;
+
 use crate::{
     ffi::graphics::StencilValue,
     graphics::{
@@ -247,6 +249,37 @@ pub trait RenderTarget {
     /// Draw primitives defined by a vertex buffer
     fn draw_vertex_buffer(&mut self, vertex_buffer: &VertexBuffer, rs: &RenderStates);
 
+    /// Draw a range of the primitives defined by a vertex buffer
+    ///
+    /// `range` selects the vertices to draw, so `0..3` draws the first three. Vertices past the
+    /// end of the buffer are ignored, and a range whose end is before its start draws nothing.
+    fn draw_vertex_buffer_range(
+        &mut self,
+        vertex_buffer: &VertexBuffer,
+        range: Range<usize>,
+        rs: &RenderStates,
+    );
+
     /// Draw primitives defined by an array of vertices.
     fn draw_primitives(&mut self, vertices: &[Vertex], ty: PrimitiveType, rs: &RenderStates);
+}
+
+pub(crate) fn range_to_first_count(range: Range<usize>) -> (usize, usize) {
+    (range.start, range.end.saturating_sub(range.start))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::range_to_first_count;
+
+    #[test]
+    fn range_converts_to_first_and_count() {
+        assert_eq!(range_to_first_count(2..5), (2, 3));
+    }
+
+    #[test]
+    fn reversed_range_has_no_vertices() {
+        let (start, end) = (5, 2);
+        assert_eq!(range_to_first_count(start..end), (5, 0));
+    }
 }

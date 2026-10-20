@@ -61,6 +61,14 @@ extern "C" float sfFont_getLineSpacing(const sf::Font *font, unsigned int charac
     return font->getLineSpacing(characterSize);
 }
 
+extern "C" float sfFont_getAscent(const sf::Font *font, unsigned int characterSize) {
+    return font->getAscent(characterSize);
+}
+
+extern "C" float sfFont_getDescent(const sf::Font *font, unsigned int characterSize) {
+    return font->getDescent(characterSize);
+}
+
 extern "C" float sfFont_getUnderlinePosition(const sf::Font *font, unsigned int characterSize) {
     return font->getUnderlinePosition(characterSize);
 }

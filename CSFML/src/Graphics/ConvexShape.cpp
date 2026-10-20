@@ -89,6 +89,10 @@ extern "C" void sfConvexShape_setOutlineThickness(sf::ConvexShape *shape, float 
     shape->setOutlineThickness(thickness);
 }
 
+extern "C" void sfConvexShape_setMiterLimit(sf::ConvexShape *shape, float miterLimit) {
+    shape->setMiterLimit(miterLimit);
+}
+
 extern "C" const sf::Texture *sfConvexShape_getTexture(const sf::ConvexShape *shape) {
     return shape->getTexture();
 }
@@ -107,6 +111,10 @@ extern "C" sfColor sfConvexShape_getOutlineColor(const sf::ConvexShape *shape) {
 
 extern "C" float sfConvexShape_getOutlineThickness(const sf::ConvexShape *shape) {
     return shape->getOutlineThickness();
+}
+
+extern "C" float sfConvexShape_getMiterLimit(const sf::ConvexShape *shape) {
+    return shape->getMiterLimit();
 }
 
 extern "C" size_t sfConvexShape_getPointCount(const sf::ConvexShape *shape) {

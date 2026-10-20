@@ -1,12 +1,16 @@
 use crate::{
-    IntoSfResult, SfResult,
+    IntoSfResult, SfError, SfResult,
     cpp::FBox,
     ffi::window as ffi,
     system::{SfStrConv, Time, Vector2i, Vector2u},
     window::{ContextSettings, Cursor, Event, Style, VideoMode, thread_safety},
 };
 
-use super::window_enums::State;
+use super::{
+    event::drain_events,
+    vulkan::{VkAllocationCallbacks, VkInstance, VkSurfaceKHR},
+    window_enums::State,
+};
 
 /// The system native window handle type. Can be used to create an SFML Window
 /// from an existing system window.
@@ -120,6 +124,34 @@ impl Window {
         unsafe { ffi::sfWindow_getNativeHandle(self) }
     }
 
+    /// Creates a Vulkan surface for the window
+    ///
+    /// The window must be open. Returns [`SfError::CallFailed`] if SFML could not create the
+    /// surface.
+    ///
+    /// # Safety
+    ///
+    /// `instance` must be a valid Vulkan instance, created with the extensions that
+    /// [`crate::window::vulkan::graphics_required_instance_extensions`] returns. If `allocator`
+    /// is given, it must stay valid until the surface is destroyed. The surface must be destroyed
+    /// before the window is closed or dropped, and before `instance` is destroyed.
+    pub unsafe fn create_vulkan_surface(
+        &mut self,
+        instance: VkInstance,
+        allocator: Option<&VkAllocationCallbacks>,
+    ) -> SfResult<VkSurfaceKHR> {
+        let mut surface = std::mem::MaybeUninit::uninit();
+        let allocator = allocator.map_or(std::ptr::null(), std::ptr::from_ref);
+        let created = unsafe {
+            ffi::sfWindow_createVulkanSurface(self, instance, surface.as_mut_ptr(), allocator)
+        };
+        if created {
+            Ok(unsafe { surface.assume_init() })
+        } else {
+            Err(SfError::CallFailed)
+        }
+    }
+
     ///  Pop the event on top of event queue, if any, and return it
     ///
     /// This function is not blocking: if there's no pending event then
@@ -137,6 +169,58 @@ impl Window {
         } else {
             None
         }
+    }
+
+    /// Process every pending event, passing each one to `handler`
+    ///
+    /// The handler can't use the window, because this function borrows it until it returns.
+    /// To close the window, set a flag in the handler and call [`Window::close`] after this
+    /// function returns. Use [`Window::poll_event`] instead when the window is needed for each
+    /// event.
+    ///
+    /// # Usage Example
+    ///
+    #[cfg_attr(feature = "ci-headless", doc = "```no_run")]
+    #[cfg_attr(not(feature = "ci-headless"), doc = "```")]
+    /// use sfml::window::{Event, Style, Window};
+    ///
+    /// let mut window = Window::new_open(
+    ///     (800, 600),
+    ///     "handle_events",
+    ///     Style::CLOSE,
+    ///     Default::default(),
+    ///     &Default::default(),
+    /// )
+    /// .unwrap();
+    /// let mut close_requested = false;
+    /// window.handle_events(|event| {
+    ///     if event == Event::Closed {
+    ///         close_requested = true;
+    ///     }
+    /// });
+    /// if close_requested {
+    ///     window.close();
+    /// }
+    /// ```
+    ///
+    /// Calling [`Window::close`] inside the handler does not compile, because the window is
+    /// already borrowed:
+    ///
+    /// ```compile_fail,E0499
+    /// use sfml::window::{Style, Window};
+    ///
+    /// let mut window = Window::new_open(
+    ///     (800, 600),
+    ///     "handle_events",
+    ///     Style::CLOSE,
+    ///     Default::default(),
+    ///     &Default::default(),
+    /// )
+    /// .unwrap();
+    /// window.handle_events(|_| window.close());
+    /// ```
+    pub fn handle_events(&mut self, handler: impl FnMut(Event)) {
+        drain_events(|| self.poll_event(), handler);
     }
 
     /// Wait for an event and return it

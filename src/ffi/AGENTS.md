@@ -5,7 +5,7 @@ Raw `extern "C"` declarations for the CSFML shim. Private to the crate. The `*_b
 ## Hand-written
 
 - `system.rs`: `sfTime`, `sfBuffer` alias, input stream callback types, and opaque system types. Includes `system_bindgen.rs`.
-- `window.rs`: window enums (keys, scancodes, mouse buttons, joystick axes, sensor types, cursor types), event structs and union, `sfContextSettings`, and the per-OS `sfWindowHandle`. Includes `window_bindgen.rs`.
+- `window.rs`: window enums (keys, scancodes, mouse buttons, joystick axes, sensor types, cursor types), event structs and union, `sfContextSettings`, the per-OS `sfWindowHandle`, and the Vulkan handle types (`VkInstance`, `VkSurfaceKHR`, `VkAllocationCallbacks`). Includes `window_bindgen.rs`.
 - `graphics.rs`: opaque graphics types, blend and stencil enums, shader and font types, vertex and GLSL structs, primitive types, and the text glyph callback type. Includes `graphics_bindgen.rs`.
 - `audio.rs`: opaque audio types, `sfSoundStreamChunk`, `sfTimeSpan`, cone converters for listener and sound source, effect processor trampoline, and recorder and stream callback types. Includes `audio_bindgen.rs`.
 

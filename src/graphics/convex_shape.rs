@@ -166,6 +166,9 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfConvexShape_setOutlineThickness(self.handle.as_ptr(), thickness) }
     }
+    fn set_miter_limit(&mut self, limit: f32) {
+        unsafe { ffi::sfConvexShape_setMiterLimit(self.handle.as_ptr(), limit) }
+    }
     fn texture(&self) -> Option<&'s Texture> {
         unsafe { ffi::sfConvexShape_getTexture(self.handle.as_ptr()).as_ref() }
     }
@@ -180,6 +183,9 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
     }
     fn outline_thickness(&self) -> f32 {
         unsafe { ffi::sfConvexShape_getOutlineThickness(self.handle.as_ptr()) }
+    }
+    fn miter_limit(&self) -> f32 {
+        unsafe { ffi::sfConvexShape_getMiterLimit(self.handle.as_ptr()) }
     }
     fn point_count(&self) -> usize {
         unsafe { ffi::sfConvexShape_getPointCount(self.handle.as_ptr()) }

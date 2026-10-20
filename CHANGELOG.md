@@ -11,12 +11,20 @@
 - Add `system::version` and `system::Version` to query the version of the SFML library loaded at runtime
 - Add `len`, `is_empty`, `get`, `iter` and indexing to `cpp::CppVector`, for every element type
 - Add `SfError::UnsupportedChannelCount { requested, current }` for a sound recorder rejecting a channel count, along with `audio::capture::SoundRecorderDriver::channel_map` and `audio::capture::SoundBufferRecorder::channel_map`
+- Add `Window::handle_events` and `RenderWindow::handle_events`, which pass every pending event to a closure
+- Add `Font::{ascent, descent}` and `RcFont::{ascent, descent}` to get the ascent and descent of a font at a given character size
+- Add `Shape::{set_miter_limit, miter_limit}` to set and get the miter limit of the outline of `CircleShape`, `ConvexShape`, `RectangleShape` and `CustomShape`
+- Add `RenderTarget::draw_vertex_buffer_range`, along with its `RenderWindow` and `RenderTexture` implementations, to draw a range of the vertices of a `VertexBuffer`
+- Add `window::vulkan`, with `is_available`, `get_function`, `graphics_required_instance_extensions`, and the `VkInstance`, `VkSurfaceKHR` and `VkAllocationCallbacks` handle types, to check for Vulkan and find its functions and extensions
+- Add `Window::create_vulkan_surface` and `RenderWindow::create_vulkan_surface`, to create a Vulkan surface for an open window
 
 ### Changed
 - Link HarfBuzz (required by SFML 3.x for text shaping) for Linux and macOS
 - `TextStyle` now implements `Clone` and `Copy`
 - `Image` loads and saves QOI files, and loads PNM files, as SFML 3.1 supports them
 - `SoundRecorderDriver::set_channel_count` and `SoundBufferRecorder::set_channel_count` return `SfResult<()>`, and return `SfError::UnsupportedChannelCount` when SFML does not accept the count, instead of only logging it from SFML
+- `Shape` has two new required methods, `set_miter_limit` and `miter_limit`, so types that implement `Shape` outside this crate must add them
+- `RenderTarget` has a new required method, `draw_vertex_buffer_range`, so types that implement `RenderTarget` outside this crate must add it
 
 ### Fixed
 - Fix undefined behavior when dereferencing an empty `cpp::CppVector`

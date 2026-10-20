@@ -6,6 +6,7 @@
 #include "Window/Event.hpp"
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/Window.hpp>
+#include <SFML/Window/Vulkan.hpp>
 #include <chrono>
 #include <cstdint>
 #include <optional>
@@ -97,6 +98,10 @@ extern "C" void sfWindow_setUnicodeTitle(sf::Window *window, const uint32_t *tit
 
 extern "C" void sfWindow_setIcon(sf::Window *window, sfVector2u size, const uint8_t *pixels) {
     window->setIcon(convertVector2(size), pixels);
+}
+
+extern "C" bool sfWindow_createVulkanSurface(sf::Window *window, VkInstance instance, VkSurfaceKHR *surface, const VkAllocationCallbacks *allocator) {
+    return window->createVulkanSurface(instance, *surface, allocator);
 }
 
 extern "C" void sfWindow_setVisible(sf::Window *window, bool visible) {

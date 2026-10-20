@@ -296,6 +296,7 @@ fn main() {
                 "CSFML/src/Window/VideoMode.cpp",
                 "CSFML/src/Window/Window.cpp",
                 "CSFML/src/Window/Context.cpp",
+                "CSFML/src/Window/Vulkan.cpp",
             ]
             .iter(),
         );

@@ -177,4 +177,16 @@ required-features = ["graphics", "window"]
 name = "opengl-context"
 required-features = ["window"]
 
+[[example]]
+name = "handle-events"
+required-features = ["window"]
+
+[[example]]
+name = "vulkan"
+required-features = ["window"]
+
+[[example]]
+name = "vulkan-info"
+required-features = ["window"]
+
 [workspace]

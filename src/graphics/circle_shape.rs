@@ -156,6 +156,9 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfCircleShape_setOutlineThickness(self.handle.as_ptr(), thickness) }
     }
+    fn set_miter_limit(&mut self, limit: f32) {
+        unsafe { ffi::sfCircleShape_setMiterLimit(self.handle.as_ptr(), limit) }
+    }
     fn texture(&self) -> Option<&'s Texture> {
         unsafe {
             let raw = ffi::sfCircleShape_getTexture(self.handle.as_ptr());
@@ -173,6 +176,9 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     }
     fn outline_thickness(&self) -> f32 {
         unsafe { ffi::sfCircleShape_getOutlineThickness(self.handle.as_ptr()) }
+    }
+    fn miter_limit(&self) -> f32 {
+        unsafe { ffi::sfCircleShape_getMiterLimit(self.handle.as_ptr()) }
     }
     fn point_count(&self) -> usize {
         unsafe { ffi::sfCircleShape_getPointCount(self.handle.as_ptr()) }

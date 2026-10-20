@@ -54,6 +54,10 @@ pub fn sfVideoMode_getFullscreenModes() -> *const sfVideoModeVector;
 pub fn sfVideoMode_isValid(mode: sfVideoMode) -> bool;
 pub fn sfVideoModeVector_getLength(vec: *const sfVideoModeVector) -> usize;
 pub fn sfVideoModeVector_getData(vec: *const sfVideoModeVector) -> *const sfVideoMode;
+// Vulkan.cpp
+pub fn sfVulkan_isAvailable(requireGraphics: bool) -> bool;
+pub fn sfVulkan_getFunction(name: *const c_char) -> *mut c_void;
+pub fn sfVulkan_getGraphicsRequiredInstanceExtensions(count: *mut usize) -> *const *const c_char;
 // Window.cpp
 pub fn sfWindow_new() -> *mut sfWindow;
 pub fn sfWindow_del(window: *mut sfWindow);
@@ -72,6 +76,7 @@ pub fn sfWindow_setMinimumSize(window: *mut sfWindow, size: *const sfVector2u);
 pub fn sfWindow_setMaximumSize(window: *mut sfWindow, size: *const sfVector2u);
 pub fn sfWindow_setUnicodeTitle(window: *mut sfWindow, title: *const u32);
 pub fn sfWindow_setIcon(window: *mut sfWindow, size: sfVector2u, pixels: *const u8);
+pub fn sfWindow_createVulkanSurface(window: *mut sfWindow, instance: VkInstance, surface: *mut VkSurfaceKHR, allocator: *const VkAllocationCallbacks) -> bool;
 pub fn sfWindow_setVisible(window: *mut sfWindow, visible: bool);
 pub fn sfWindow_setMouseCursorVisible(window: *mut sfWindow, visible: bool);
 pub fn sfWindow_setMouseCursorGrabbed(window: *mut sfWindow, grabbed: bool);

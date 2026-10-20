@@ -124,6 +124,53 @@ impl RcFont {
         self.font.borrow().line_spacing(character_size)
     }
 
+    /// Get the ascent
+    ///
+    /// The ascent is the largest distance between the baseline and the top of all
+    /// glyphs in the font. There is no uniform definition of how the ascent is
+    /// calculated, so it can vary from font to font.
+    ///
+    /// # Arguments
+    /// * `character_size` - Reference character size, in pixels
+    ///
+    /// Return the ascent, in pixels
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::RcFont;
+    /// # let font = RcFont::from_file("examples/resources/sansation.ttf").unwrap();
+    /// assert!(font.ascent(32) > 0.);
+    /// ```
+    #[must_use]
+    pub fn ascent(&self, character_size: u32) -> f32 {
+        self.font.borrow().ascent(character_size)
+    }
+
+    /// Get the descent
+    ///
+    /// The descent is the largest distance between the baseline and the bottom of
+    /// all glyphs in the font. It shares the coordinate system of the ascent, so it
+    /// is negative for distances below the baseline. There is no uniform definition
+    /// of how the descent is calculated, so it can vary from font to font.
+    ///
+    /// # Arguments
+    /// * `character_size` - Reference character size, in pixels
+    ///
+    /// Return the descent, in pixels
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::RcFont;
+    /// # let font = RcFont::from_file("examples/resources/sansation.ttf").unwrap();
+    /// assert!(font.descent(32) < 0.);
+    /// ```
+    #[must_use]
+    pub fn descent(&self, character_size: u32) -> f32 {
+        self.font.borrow().descent(character_size)
+    }
+
     /// Get a glyph in a font
     ///
     /// # Arguments

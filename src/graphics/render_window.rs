@@ -1,3 +1,5 @@
+use std::ops::Range;
+
 use crate::{
     IntoSfResult, SfError, SfResult,
     cpp::FBox,
@@ -5,11 +7,14 @@ use crate::{
     graphics::{
         CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType, RcSprite,
         RcText, RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexBuffer,
-        View,
+        View, render_target::range_to_first_count,
     },
     system::{SfStrConv, Time, Vector2f, Vector2i, Vector2u},
     window::{
-        ContextSettings, Cursor, Event, Handle, Style, VideoMode, thread_safety,
+        ContextSettings, Cursor, Event, Handle, Style, VideoMode,
+        event::drain_events,
+        thread_safety,
+        vulkan::{VkAllocationCallbacks, VkInstance, VkSurfaceKHR},
         window_enums::State,
     },
 };
@@ -90,6 +95,37 @@ impl RenderWindow {
     }
 }
 
+/// Vulkan
+impl RenderWindow {
+    /// Creates a Vulkan surface for the window
+    ///
+    /// The window must be open. Returns [`SfError::CallFailed`] if SFML could not create the
+    /// surface.
+    ///
+    /// # Safety
+    ///
+    /// `instance` must be a valid Vulkan instance, created with the extensions that
+    /// [`crate::window::vulkan::graphics_required_instance_extensions`] returns. If `allocator`
+    /// is given, it must stay valid until the surface is destroyed. The surface must be destroyed
+    /// before the window is closed or dropped, and before `instance` is destroyed.
+    pub unsafe fn create_vulkan_surface(
+        &mut self,
+        instance: VkInstance,
+        allocator: Option<&VkAllocationCallbacks>,
+    ) -> SfResult<VkSurfaceKHR> {
+        let mut surface = std::mem::MaybeUninit::uninit();
+        let allocator = allocator.map_or(std::ptr::null(), std::ptr::from_ref);
+        let created = unsafe {
+            ffi::sfRenderWindow_createVulkanSurface(self, instance, surface.as_mut_ptr(), allocator)
+        };
+        if created {
+            Ok(unsafe { surface.assume_init() })
+        } else {
+            Err(SfError::CallFailed)
+        }
+    }
+}
+
 /// Event handling
 impl RenderWindow {
     /// Pop the event on top of event queue, if any, and return it
@@ -109,6 +145,61 @@ impl RenderWindow {
         } else {
             None
         }
+    }
+
+    /// Process every pending event, passing each one to `handler`
+    ///
+    /// The handler can't use the window, because this function borrows it until it returns.
+    /// To close the window, set a flag in the handler and call [`RenderWindow::close`] after
+    /// this function returns. Use [`RenderWindow::poll_event`] instead when the window is needed
+    /// for each event.
+    ///
+    /// # Usage Example
+    ///
+    #[cfg_attr(feature = "ci-headless", doc = "```no_run")]
+    #[cfg_attr(not(feature = "ci-headless"), doc = "```")]
+    /// use sfml::{
+    ///     graphics::RenderWindow,
+    ///     window::{Event, Style},
+    /// };
+    ///
+    /// let mut window = RenderWindow::new(
+    ///     (800, 600),
+    ///     "handle_events",
+    ///     Style::CLOSE,
+    ///     Default::default(),
+    ///     &Default::default(),
+    /// )
+    /// .unwrap();
+    /// let mut close_requested = false;
+    /// window.handle_events(|event| {
+    ///     if event == Event::Closed {
+    ///         close_requested = true;
+    ///     }
+    /// });
+    /// if close_requested {
+    ///     window.close();
+    /// }
+    /// ```
+    ///
+    /// Calling [`RenderWindow::close`] inside the handler does not compile, because the window is
+    /// already borrowed:
+    ///
+    /// ```compile_fail,E0499
+    /// use sfml::{graphics::RenderWindow, window::Style};
+    ///
+    /// let mut window = RenderWindow::new(
+    ///     (800, 600),
+    ///     "handle_events",
+    ///     Style::CLOSE,
+    ///     Default::default(),
+    ///     &Default::default(),
+    /// )
+    /// .unwrap();
+    /// window.handle_events(|_| window.close());
+    /// ```
+    pub fn handle_events(&mut self, handler: impl FnMut(Event)) {
+        drain_events(|| self.poll_event(), handler);
     }
 
     /// Wait for an event and return it
@@ -497,6 +588,23 @@ impl RenderTarget for RenderWindow {
     }
     fn draw_vertex_buffer(&mut self, vertex_buffer: &VertexBuffer, render_states: &RenderStates) {
         unsafe { ffi::sfRenderWindow_drawVertexBuffer(self, vertex_buffer, render_states) }
+    }
+    fn draw_vertex_buffer_range(
+        &mut self,
+        vertex_buffer: &VertexBuffer,
+        range: Range<usize>,
+        render_states: &RenderStates,
+    ) {
+        let (first, count) = range_to_first_count(range);
+        unsafe {
+            ffi::sfRenderWindow_drawVertexBufferRange(
+                self,
+                vertex_buffer,
+                first,
+                count,
+                render_states,
+            )
+        }
     }
     fn draw_primitives(&mut self, vertices: &[Vertex], ty: PrimitiveType, rs: &RenderStates) {
         unsafe {

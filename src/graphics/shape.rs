@@ -37,6 +37,15 @@ pub trait Shape<'texture>: Drawable + Transformable {
     /// (so that the outline expands towards the center of the shape),
     /// and using zero disables the outline. By default, the outline thickness is 0.
     fn set_outline_thickness(&mut self, thickness: f32);
+    /// Sets the miter limit of the shape's outline.
+    ///
+    /// The miter limit caps the ratio between the length of a miter and the outline thickness.
+    /// When that ratio is exceeded, a bevel is used instead of a miter. The limit is linked to
+    /// the corner angle below which a bevel is used by `limit = 1 / sin(angle / 2)`. The limit
+    /// must be at least 1, and by default it is 10. SFML checks this only with an assertion,
+    /// which is disabled in the Release builds of SFML that this crate uses, so a smaller value
+    /// is accepted and used as given.
+    fn set_miter_limit(&mut self, limit: f32);
     /// Gets the source texture of the shape.
     ///
     /// If the shape has no source texture, None is returned.
@@ -49,6 +58,8 @@ pub trait Shape<'texture>: Drawable + Transformable {
     fn outline_color(&self) -> Color;
     /// Gets the outline thickness of this shape.
     fn outline_thickness(&self) -> f32;
+    /// Gets the miter limit of this shape's outline.
+    fn miter_limit(&self) -> f32;
     /// Gets the total number of points of the shape.
     fn point_count(&self) -> usize;
     /// Get the geometric center of the shape

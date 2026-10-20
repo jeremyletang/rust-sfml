@@ -18,13 +18,14 @@ pub mod clipboard;
 mod context;
 mod context_settings;
 mod cursor;
-mod event;
+pub(crate) mod event;
 pub mod joystick;
 mod keyboard;
 pub mod mouse;
 pub mod sensor;
 pub(crate) mod thread_safety;
 mod video_mode;
+pub mod vulkan;
 #[expect(clippy::module_inception)]
 mod window;
 pub mod window_enums;

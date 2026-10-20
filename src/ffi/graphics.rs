@@ -3,7 +3,10 @@ pub(crate) use crate::ffi::*;
 use {
     super::system::sfInputStreamHelper,
     crate::{
-        ffi::window::{Event as sfEvent, sfContextSettings, sfCursor, sfWindow, sfWindowHandle},
+        ffi::window::{
+            Event as sfEvent, VkAllocationCallbacks, VkInstance, VkSurfaceKHR, sfContextSettings,
+            sfCursor, sfWindow, sfWindowHandle,
+        },
         graphics::{
             ClusterGrouping, Color, LineAlignment, Rect, RenderStates as sfRenderStates,
             ShapedGlyph, TextOrientation, Transform as sfTransform,

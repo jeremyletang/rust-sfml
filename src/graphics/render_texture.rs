@@ -1,3 +1,5 @@
+use std::ops::Range;
+
 use crate::{
     IntoSfResult, SfResult,
     cpp::FBox,
@@ -5,7 +7,7 @@ use crate::{
     graphics::{
         CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType, RcSprite,
         RcText, RectangleShape, RenderStates, RenderTarget, Sprite, Text, Texture, Vertex,
-        VertexBuffer, View,
+        VertexBuffer, View, render_target::range_to_first_count,
     },
     system::{Vector2f, Vector2i, Vector2u},
     window::ContextSettings,
@@ -199,6 +201,15 @@ impl RenderTarget for RenderTexture {
     }
     fn draw_vertex_buffer(&mut self, vertex_buffer: &VertexBuffer, rs: &RenderStates) {
         unsafe { ffi::sfRenderTexture_drawVertexBuffer(self, vertex_buffer, rs) }
+    }
+    fn draw_vertex_buffer_range(
+        &mut self,
+        vertex_buffer: &VertexBuffer,
+        range: Range<usize>,
+        rs: &RenderStates,
+    ) {
+        let (first, count) = range_to_first_count(range);
+        unsafe { ffi::sfRenderTexture_drawVertexBufferRange(self, vertex_buffer, first, count, rs) }
     }
     fn draw_primitives(&mut self, vertices: &[Vertex], ty: PrimitiveType, rs: &RenderStates) {
         let len = vertices.len();

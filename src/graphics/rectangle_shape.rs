@@ -157,6 +157,9 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfRectangleShape_setOutlineThickness(self.handle.as_ptr(), thickness) }
     }
+    fn set_miter_limit(&mut self, limit: f32) {
+        unsafe { ffi::sfRectangleShape_setMiterLimit(self.handle.as_ptr(), limit) }
+    }
     fn texture(&self) -> Option<&'s Texture> {
         unsafe { ffi::sfRectangleShape_getTexture(self.handle.as_ptr()).as_ref() }
     }
@@ -171,6 +174,9 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     }
     fn outline_thickness(&self) -> f32 {
         unsafe { ffi::sfRectangleShape_getOutlineThickness(self.handle.as_ptr()) }
+    }
+    fn miter_limit(&self) -> f32 {
+        unsafe { ffi::sfRectangleShape_getMiterLimit(self.handle.as_ptr()) }
     }
     fn point_count(&self) -> usize {
         unsafe { ffi::sfRectangleShape_getPointCount(self.handle.as_ptr()) }

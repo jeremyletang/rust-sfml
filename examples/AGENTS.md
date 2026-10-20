@@ -14,6 +14,7 @@ Examples that need `window`, `graphics`, or `audio` have a `[[example]]` entry w
 - `custom-shape.rs`: Implements `CustomShapePoints` to define a custom triangle shape that is animated.
 - `custom-sound-recorder.rs`: Implements `SoundRecorder` to capture microphone samples and play them back.
 - `custom-sound-stream.rs`: Implements `SoundStream` to generate a looping chiptune-style melody procedurally.
+- `handle-events.rs`: Drains the event queue each frame with `Window::handle_events` and prints events, closing on Escape or the close button.
 - `joystick.rs`: Prints the name and vendor/product IDs of every connected joystick.
 - `mouse.rs`: Shows mouse position, buttons, wheel, and cursor grab/visibility handling.
 - `music-stream.rs`: Streams an Ogg file as `Music` from a borrowed `File` via `InputStream`.
@@ -30,8 +31,10 @@ Examples that need `window`, `graphics`, or `audio` have a `[[example]]` entry w
 - `spritemark.rs`: Benchmark that renders many sprites using a raw vertex array instead of `Sprite`.
 - `unicode-text-entry.rs`: Unicode text entry and rendering using shaped glyphs, clusters, and per-glyph bounding boxes.
 - `vertex-arrays.rs`: Draws a colored shape from a `Vertex` array with `PrimitiveType`.
-- `vertex-buffers.rs`: Uses a `VertexBuffer` and updates its vertices on mouse click.
+- `vertex-buffers.rs`: Uses a `VertexBuffer` and updates its vertices on mouse click, and draws a range of them with `RenderTarget::draw_vertex_buffer_range`. Right-click hides the oldest visible vertex.
 - `version.rs`: Prints the SFML version loaded at runtime.
+- `vulkan.rs`: Opens a window, creates a Vulkan instance and a surface for it, and clears the window to a color that changes on each key press. Escape or closing the window exits.
+- `vulkan-info.rs`: Prints whether Vulkan is available and which instance extensions graphics rendering requires.
 - `window-test.rs`: Opens several windows with different sizes, styles, and fullscreen modes.
 
 Shared setup code lives in `../example_common.rs` at the crate root, not in this folder. Examples pull it in with `include!`.

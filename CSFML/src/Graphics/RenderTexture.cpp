@@ -112,6 +112,10 @@ extern "C" void sfRenderTexture_drawVertexBuffer(sf::RenderTexture *renderTextur
     renderTexture->draw(*object, *states);
 }
 
+extern "C" void sfRenderTexture_drawVertexBufferRange(sf::RenderTexture *renderTexture, const sf::VertexBuffer *object, size_t firstVertex, size_t vertexCount, const sf::RenderStates *states) {
+    renderTexture->draw(*object, firstVertex, vertexCount, *states);
+}
+
 extern "C" void sfRenderTexture_drawPrimitives(sf::RenderTexture *renderTexture,
                                                const sf::Vertex *vertices, size_t vertexCount,
                                                sfPrimitiveType type, const sf::RenderStates *states) {

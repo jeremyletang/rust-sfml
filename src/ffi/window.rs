@@ -625,6 +625,25 @@ pub type sfWindowHandle = std::os::raw::c_ulong;
 #[cfg(target_os = "macos")]
 pub type sfWindowHandle = *mut c_void;
 
+decl_opaque! {
+    /// Opaque `VkInstance_T`, which a `VkInstance` handle points to.
+    pub VkInstanceT;
+    /// Opaque `VkAllocationCallbacks`, passed to Vulkan functions by pointer.
+    pub VkAllocationCallbacks;
+}
+
+/// Vulkan instance handle, a pointer to an opaque `VkInstance_T`.
+pub type VkInstance = *mut VkInstanceT;
+
+/// Vulkan surface handle. It is a pointer on 64-bit targets and a 64-bit integer otherwise, as in the
+/// Vulkan header.
+#[cfg(target_pointer_width = "64")]
+pub type VkSurfaceKHR = *mut c_void;
+/// Vulkan surface handle. It is a pointer on 64-bit targets and a 64-bit integer otherwise, as in the
+/// Vulkan header.
+#[cfg(not(target_pointer_width = "64"))]
+pub type VkSurfaceKHR = u64;
+
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum sfSensorType {

@@ -80,7 +80,8 @@ Summary of the `CSFML/` directory. It is a modified C++ shim over SFML 3.1 that 
 - `Window.hpp`: C `sfState` enum (windowed or fullscreen) and its converter.
 - `Cursor.hpp`: C enum of system cursor types.
 - `Mouse.cpp`: Mouse state and cursor position functions.
-- `Window.cpp`: `sf::Window` wrapper.
+- `Window.cpp`: `sf::Window` wrapper, including `createVulkanSurface`.
+- `Vulkan.cpp`: Vulkan availability check, function address lookup, and the instance extensions that graphics rendering requires.
 - `Sensor.hpp`: C enum of sensor types.
 - `VideoMode.hpp`: C struct for video modes and converters.
 - `Context.cpp`: OpenGL context creation and management.

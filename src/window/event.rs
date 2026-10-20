@@ -295,3 +295,34 @@ impl Event {
         Some(evt)
     }
 }
+
+pub(crate) fn drain_events(
+    mut poll: impl FnMut() -> Option<Event>,
+    mut handler: impl FnMut(Event),
+) {
+    while let Some(event) = poll() {
+        handler(event);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{Event, drain_events};
+    use std::collections::VecDeque;
+
+    #[test]
+    fn drain_events_delivers_every_queued_event_in_order() {
+        let mut queue = VecDeque::from([Event::Closed, Event::FocusGained, Event::FocusLost]);
+        let mut seen = Vec::new();
+        drain_events(|| queue.pop_front(), |event| seen.push(event));
+        assert_eq!(seen, [Event::Closed, Event::FocusGained, Event::FocusLost]);
+        assert!(queue.is_empty());
+    }
+
+    #[test]
+    fn drain_events_on_empty_queue_calls_nothing() {
+        let mut calls = 0;
+        drain_events(|| None, |_| calls += 1);
+        assert_eq!(calls, 0);
+    }
+}
