@@ -6,7 +6,7 @@ use crate::ffi::graphics::sfCoordinateType;
 pub struct CoordinateType(pub(super) sfCoordinateType);
 
 impl CoordinateType {
-    /// Texutre coordinates in range [0 .. 1].
+    /// Texture coordinates in range [0 .. 1].
     pub const NORMALIZED: Self = Self(sfCoordinateType::sfCoordinateTypeNormalized);
     /// Texture coordinates in range [0 .. size].
     pub const PIXELS: Self = Self(sfCoordinateType::sfCoordinateTypePixels);

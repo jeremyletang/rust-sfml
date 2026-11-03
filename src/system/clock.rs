@@ -83,7 +83,7 @@ impl Clock {
 
     /// Start the clock
     ///
-    /// see [`stop`]: `Clock::stop`
+    /// See [`Clock::stop`](Clock::stop).
     ///
     /// # Usage example
     /// ```
@@ -100,7 +100,7 @@ impl Clock {
 
     /// Stop the clock
     ///
-    /// see [`start`]: `Clock::stop`
+    /// See [`Clock::start`](Clock::start).
     ///
     /// # Usage example
     /// ```

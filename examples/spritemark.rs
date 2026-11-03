@@ -10,7 +10,7 @@ use {
             Color, Font, PrimitiveType, Rect, RenderStates, RenderTarget, RenderWindow, Text,
             Texture, Transform, Vertex, View,
         },
-        system::{Clock, Vector2, Vector2f, Vector2i},
+        system::{Angle, Clock, Vector2, Vector2f, Vector2i},
         window::{ContextSettings, Event, Key, Style, VideoMode, mouse::Button},
     },
 };
@@ -133,7 +133,10 @@ fn main() -> SfResult<()> {
             let tex_x = f32::from(obj.image_id) * size;
             let mut tf = Transform::default();
             tf.translate(obj.position);
-            tf.rotate_with_center(obj.angle, Vector2::new(size / 2., size / 2.));
+            tf.rotate_with_center(
+                Angle::degrees(obj.angle),
+                Vector2::new(size / 2., size / 2.),
+            );
             buf.push(Vertex {
                 color: Color::WHITE,
                 position: tf.transform_point(Vector2f::new(0., 0.)),

@@ -131,7 +131,7 @@ impl Texture {
         Ok(new)
     }
 
-    /// Convenience method to easily create and load a `Texture` from an iamge.
+    /// Convenience method to easily create and load a `Texture` from an image.
     pub fn from_image(image: &Image, srgb: bool, area: IntRect) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         new.load_from_image(image, srgb, area)?;
@@ -177,7 +177,7 @@ impl Texture {
     }
     /// Tell whether a texture is repeated or not
     ///
-    /// Return frue if repeat mode is enabled, false if it is disabled
+    /// Return true if repeat mode is enabled, false if it is disabled
     #[must_use]
     pub fn is_repeated(&self) -> bool {
         unsafe { ffi::sfTexture_isRepeated(self) }

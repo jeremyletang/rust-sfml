@@ -13,7 +13,7 @@ typedef struct
 {
     sfBlendMode blendMode;           ///< Blending mode
     sfStencilMode stencilMode;       //!< Stencil mode
-    sfTransform transform;           ///< Transform
+    sfTransform transform;           ///< Legacy/unused; the Rust RenderStates uses its own 16-float Transform
     sfCoordinateType coordinateType; //!< Texture coordinate type
     const sf::Texture *texture;      ///< Texture
     const sf::Shader *shader;        ///< Shader

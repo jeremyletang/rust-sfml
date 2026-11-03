@@ -6,10 +6,7 @@ use {
         graphics::{Glyph, Texture},
         system::InputStream,
     },
-    std::{
-        ffi::{CStr, CString},
-        io::{Read, Seek},
-    },
+    std::ffi::{CStr, CString},
 };
 
 decl_opaque! {
@@ -53,6 +50,11 @@ decl_opaque! {
 /// If you need to display text of a certain size, make sure the corresponding bitmap font that
 /// supports that size is used.
 ///
+/// Streams passed to [`Font::from_stream`] are read lazily through SFML's
+/// `FreeType` callbacks. The [`InputStream`] adapter and its source must outlive
+/// every use of the font, including every [`Text`] bound to it; drop the font
+/// before the stream.
+///
 /// [`Text`]: crate::graphics::Text
 pub Font;
 }
@@ -65,7 +67,13 @@ impl Font {
     }
     /// Creates a new `Font` from a file on the filesystem.
     ///
-    /// See [`Self::load_from_file`].
+    /// See [`Self::open_from_file`].
+    ///
+    /// ```
+    /// # use sfml::graphics::Font;
+    /// let font = Font::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// assert!(font.has_glyph('A' as u32));
+    /// ```
     pub fn from_file(path: &str) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         new.open_from_file(path)?;
@@ -73,11 +81,11 @@ impl Font {
     }
     /// Creates a new `Font` from font file data in memory.
     ///
-    /// See [`Self::load_from_memory`].
+    /// See [`Self::open_from_memory`].
     ///
     /// # Safety
     ///
-    /// Also see [`Self::load_from_memory`].
+    /// Also see [`Self::open_from_memory`].
     pub unsafe fn from_memory(data: &[u8]) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         unsafe {
@@ -87,7 +95,7 @@ impl Font {
     }
     /// Creates a new `Font` from static font file data in memory.
     ///
-    /// See [`Self::load_from_memory_static`].
+    /// See [`Self::open_from_memory`].
     pub fn from_memory_static(data: &'static [u8]) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         new.load_from_memory_static(data)?;
@@ -95,12 +103,26 @@ impl Font {
     }
     /// Creates a new `Font` from a streamable source.
     ///
-    /// See [`Self::load_from_stream`].
+    /// See [`Self::open_from_stream`].
     ///
     /// # Safety
     ///
-    /// Also see [`Self::load_from_stream`].
-    pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<FBox<Self>> {
+    /// SFML reads from the stream lazily through `FreeType` callbacks, so
+    /// `stream` (the adapter and its source) must outlive every use of the
+    /// returned font, including every [`crate::graphics::Text`] bound to it.
+    /// Drop the font before the stream.
+    ///
+    /// ```
+    /// # use sfml::graphics::Font;
+    /// # use sfml::system::InputStream;
+    /// let mut file = std::fs::File::open("examples/resources/sansation.ttf")
+    ///     .expect("failed to open font file");
+    /// let stream = InputStream::new(&mut file);
+    /// // SAFETY: `stream` outlives the font and every use of it.
+    /// let font = unsafe { Font::from_stream(&stream) }.expect("failed to load font");
+    /// assert!(font.has_glyph('A' as u32));
+    /// ```
+    pub unsafe fn from_stream<S>(stream: &InputStream<'_, S>) -> SfResult<FBox<Self>> {
         let mut new = Self::new()?;
         unsafe {
             new.open_from_stream(stream)?;
@@ -141,14 +163,15 @@ impl Font {
     /// Windows FNT, BDF, PFR and Type 42.
     ///
     /// # Safety
-    /// SFML cannot preload all the font data in this function, so the stream has to remain
-    /// accessible until the `Font` object loads a new font or is destroyed.
+    ///
+    /// SFML reads from the stream lazily through `FreeType` callbacks, so
+    /// `stream` must outlive every use of this font, including every
+    /// [`crate::graphics::Text`] bound to it. Drop the font before the stream.
     ///
     /// # See also
     /// [`Font::from_file`], [`Font::from_memory`]
-    pub unsafe fn open_from_stream<T: Read + Seek>(&mut self, stream: &mut T) -> SfResult<()> {
-        let mut input_stream = InputStream::new(stream);
-        unsafe { ffi::sfFont_openFromStream(self, &raw mut *input_stream.stream) }.into_sf_result()
+    pub unsafe fn open_from_stream<S>(&mut self, stream: &InputStream<'_, S>) -> SfResult<()> {
+        unsafe { ffi::sfFont_openFromStream(self, stream.stream.0.as_ptr()) }.into_sf_result()
     }
 
     /// Load the font from a file in memory.
@@ -172,7 +195,7 @@ impl Font {
     ///
     /// This function is safe because the font will stay in memory as long as required.
     ///
-    /// See [`Self::load_from_memory`].
+    /// See [`Self::open_from_memory`].
     pub fn load_from_memory_static(&mut self, data: &'static [u8]) -> SfResult<()> {
         unsafe { self.open_from_memory(data) }
     }
@@ -243,6 +266,54 @@ impl Font {
     pub fn line_spacing(&self, character_size: u32) -> f32 {
         unsafe { ffi::sfFont_getLineSpacing(self, character_size) }
     }
+
+    /// Get the ascent
+    ///
+    /// The ascent is the largest distance between the baseline and the top of all
+    /// glyphs in the font. There is no uniform definition of how the ascent is
+    /// calculated, so it can vary from font to font.
+    ///
+    /// # Arguments
+    /// * `character_size` - Reference character size, in pixels
+    ///
+    /// Return the ascent, in pixels
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Font;
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
+    /// assert!(font.ascent(32) > 0.);
+    /// ```
+    #[must_use]
+    pub fn ascent(&self, character_size: u32) -> f32 {
+        unsafe { ffi::sfFont_getAscent(self, character_size) }
+    }
+
+    /// Get the descent
+    ///
+    /// The descent is the largest distance between the baseline and the bottom of
+    /// all glyphs in the font. It shares the coordinate system of the ascent, so it
+    /// is negative for distances below the baseline. There is no uniform definition
+    /// of how the descent is calculated, so it can vary from font to font.
+    ///
+    /// # Arguments
+    /// * `character_size` - Reference character size, in pixels
+    ///
+    /// Return the descent, in pixels
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::Font;
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").unwrap();
+    /// assert!(font.descent(32) < 0.);
+    /// ```
+    #[must_use]
+    pub fn descent(&self, character_size: u32) -> f32 {
+        unsafe { ffi::sfFont_getDescent(self, character_size) }
+    }
+
     /// Get a glyph in a font
     ///
     /// # Arguments
@@ -279,6 +350,12 @@ impl Font {
     /// default character, it might be useful to verify whether specific
     /// code points are included to determine whether a font is suited
     /// to display text in a specific language.
+    ///
+    /// ```
+    /// # use sfml::graphics::Font;
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// assert!(font.has_glyph('A' as u32));
+    /// ```
     #[must_use]
     pub fn has_glyph(&self, codepoint: u32) -> bool {
         unsafe { ffi::sfFont_hasGlyph(self, codepoint) }
@@ -347,6 +424,12 @@ impl Font {
     }
 
     /// Tell whether the smooth filter is enabled or not.
+    ///
+    /// ```
+    /// # use sfml::graphics::Font;
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// assert!(font.is_smooth());
+    /// ```
     #[must_use]
     pub fn is_smooth(&self) -> bool {
         unsafe { ffi::sfFont_isSmooth(self) }
@@ -360,6 +443,14 @@ impl Font {
     ///
     /// # Arguments
     /// * `smooth` - True to enable smoothing, false to disable smoothing
+    ///
+    /// ```
+    /// # use sfml::graphics::Font;
+    /// let mut font = Font::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// assert!(font.is_smooth());
+    /// font.set_smooth(false);
+    /// assert!(!font.is_smooth());
+    /// ```
     pub fn set_smooth(&mut self, smooth: bool) {
         unsafe { ffi::sfFont_setSmooth(self, smooth) }
     }

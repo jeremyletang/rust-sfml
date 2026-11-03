@@ -10,6 +10,17 @@ use std::f32::consts::PI;
 /// outer angle of the cone. The gain declines linearly
 /// from 1 to `outerGain` as the sound moves from the inner
 /// angle to the outer angle.
+///
+/// # Examples
+///
+/// ```
+/// use sfml::audio::sound_source::Cone;
+/// use sfml::system::Angle;
+///
+/// let cone = Cone::default();
+/// assert_eq!(cone.outer_gain, 1.);
+/// assert_eq!(cone.inner_angle, Angle::degrees(2. * std::f32::consts::PI));
+/// ```
 #[repr(C)]
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub struct Cone {
@@ -32,6 +43,13 @@ impl Default for Cone {
 }
 
 /// Enumeration of statuses for sounds and musics
+///
+/// ```
+/// use sfml::audio::sound_source::Status;
+///
+/// assert_eq!(Status::default(), Status::Stopped);
+/// assert!(Status::Playing > Status::Paused);
+/// ```
 #[repr(C)]
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Status {
@@ -352,15 +370,15 @@ pub trait SoundSource {
 
     ///Get the maximum distance of the sound
     #[must_use]
-    fn get_max_distance(&self) -> f32;
+    fn max_distance(&self) -> f32;
 
     ///Get the minimum gain of the sound
     #[must_use]
-    fn get_min_gain(&self) -> f32;
+    fn min_gain(&self) -> f32;
 
     ///Get the maximum gain of the sound
     #[must_use]
-    fn get_max_gain(&self) -> f32;
+    fn max_gain(&self) -> f32;
 
     /// Get the attenuation factor of the sound.
     #[must_use]

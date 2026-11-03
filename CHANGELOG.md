@@ -1,5 +1,72 @@
 # Changelog
 
+## NEW
+
+### Changed
+- Updated rust-sfml to rust version 1.99
+
+### Fixed
+- Skip the SFML/CSFML C++ build when the standard `DOCS_RS` environment variable is set, so the crate builds on docs.rs. Disable `-Zrustdoc-scrape-examples` for the same reason.
+- Fix broken intra-doc links in the `audio` and `graphics` docs, so `cargo doc` builds without warnings
+
+## 3.1.0.0
+
+### Added
+- `CppString` can be compared with `str` and `&str` in either direction, matching the existing `impl PartialEq<CppString> for str`
+- Add `RcTexture::resize`, matching `Texture::resize`
+- Add `RcFont::has_glyph`, matching `Font::has_glyph`
+- Add `RcText::set_outline_color`, matching `Text::set_outline_color`
+- Add `Text::shaped_glyphs` and `RcText::shaped_glyphs` to access the glyphs of a text after shaping, along with `graphics::ShapedGlyph` and `graphics::TextDirection`
+- Add `Text::{line_alignment, set_line_alignment}`, `Text::{text_orientation, set_text_orientation}` and `Text::{cluster_grouping, set_cluster_grouping}`, along with the matching `RcText` methods and `graphics::{LineAlignment, TextOrientation, ClusterGrouping}`
+- Add `Text::set_glyph_pre_processor` (`None` removes the pre-processor) to change the style and colors of each glyph when the text geometry is generated, along with the matching `RcText` methods and `graphics::GlyphAppearance`
+- Add `Text::{vertex_data, outline_vertex_data}` to access the vertices of a text, along with the matching `RcText` methods
+- Add `audio::playback_device`, covering the `sf::PlaybackDevice` namespace: listing and selecting playback devices, `device_sample_rate`, and `set_notification_callback` with the `playback_device::Notification` enum
+- Add `system::version` and `system::Version` to query the version of the SFML library loaded at runtime
+- Add `len`, `is_empty`, `get`, `iter` and indexing to `cpp::CppVector`, for every element type
+- Add `SfError::UnsupportedChannelCount { requested, current }` for a sound recorder rejecting a channel count, along with `audio::capture::SoundRecorderDriver::channel_map` and `audio::capture::SoundBufferRecorder::channel_map`
+- Add `Window::handle_events` and `RenderWindow::handle_events`, which pass every pending event to a closure
+- Add `Font::{ascent, descent}` and `RcFont::{ascent, descent}` to get the ascent and descent of a font at a given character size
+- Add `Shape::{set_miter_limit, miter_limit}` to set and get the miter limit of the outline of `CircleShape`, `ConvexShape`, `RectangleShape` and `CustomShape`
+- Add `RenderTarget::draw_vertex_buffer_range`, along with its `RenderWindow` and `RenderTexture` implementations, to draw a range of the vertices of a `VertexBuffer`
+- Add `window::vulkan`, with `is_available`, `get_function`, `graphics_required_instance_extensions`, and the `VkInstance`, `VkSurfaceKHR` and `VkAllocationCallbacks` handle types, to check for Vulkan and find its functions and extensions
+- Add `Window::create_vulkan_surface` and `RenderWindow::create_vulkan_surface`, to create a Vulkan surface for an open window
+
+### Changed
+- `Font::from_stream`/`RcFont::from_stream` and the underlying open function are unsafe again and take a borrowed `InputStream`; the shim no longer buffers stream data, so the stream must outlive the font.
+- `Window::new` now creates and opens the window, taking the arguments that `Window::new_open` had. `Window::new_open` and the closed-window constructor are removed
+- `RcFont` and `RcTexture` now implement `Clone` by cloning the reference counter, and their deep-copy `ToOwned` impls are removed
+- `RcText` and `RcSprite` only guard the operations that genuinely need their font or texture. Other methods no longer print errors or panic when the resource is gone; glyph geometry and drawing return empty/default values, and `transform`/`inverse_transform` no longer panic
+- Rename `Transformable::get_scale` to `scale` and the mutating `Transformable::scale` to `scale_by`. `set_scale` stays the absolute setter
+- Rename `VertexBuffer::available` to `VertexBuffer::is_available`, matching `Shader::is_available`
+- `RenderTexture::resize` returns `bool`; the constructors still return `SfResult` and map a failed resize to `SfError::CallFailed`
+- `Context::set_active` and `RenderWindow::set_active` return `bool` instead of `SfResult<()>`, matching `Window::set_active` and `RenderTexture::set_active`
+- `View::new` no longer returns `SfResult`; it panics if the view cannot be allocated
+- `View::rotation` returns `Angle` instead of a raw `f32` number of degrees
+- `Image::{new, new_solid, from_pixels}` no longer return `SfResult`; they panic if the image cannot be allocated. `from_pixels` is now safe and documents the expected `size.x * size.y * 4` byte length
+- `Image::pixel_data` now returns `&[u8]` and reports an image without pixel data as an empty slice
+- Rename `SoundSource::{get_max_distance, get_min_gain, get_max_gain}` to `max_distance`, `min_gain`, and `max_gain`, matching the other getters
+- `SoundBuffer::samples` now returns `&[i16]` and reports an empty buffer as an empty slice instead of building one from a null pointer
+- Link HarfBuzz (required by SFML 3.x for text shaping) for Linux and macOS
+- `TextStyle` now implements `Clone` and `Copy`
+- `Image` loads and saves QOI files, and loads PNM files, as SFML 3.1 supports them
+- `SoundRecorderDriver::set_channel_count` and `SoundBufferRecorder::set_channel_count` return `SfResult<()>`, and return `SfError::UnsupportedChannelCount` when SFML does not accept the count, instead of only logging it from SFML
+- `Shape` has two new required methods, `set_miter_limit` and `miter_limit`, so types that implement `Shape` outside this crate must add them
+- `RenderTarget` has a new required method, `draw_vertex_buffer_range`, so types that implement `RenderTarget` outside this crate must add it
+- `audio::capture::{default_device, available_devices}`, `SoundRecorderDriver::device`, `SoundBufferRecorder::device`, and `audio::playback_device::{available_devices, default_device, device}` now return `String`/`Vec<String>`/`Option<String>` instead of `cpp::CppString`/`cpp::CppVector<cpp::CppString>`. Device names are decoded as UTF-8, with invalid sequences replaced by `U+FFFD`
+- `VideoMode::fullscreen_modes`, `SoundBuffer::channel_map`, `Music::channel_map`, `SoundStreamPlayer::channel_map`, `SoundRecorderDriver::channel_map`, and `SoundBufferRecorder::channel_map` now return `&[T]` instead of `&cpp::CppVector<T>`. Channel maps borrowed from `SoundBuffer`, `Music`, and `SoundStreamPlayer` are now tied to the object lifetime instead of `'static`
+
+### Fixed
+- Re-export `system::SfStrConvError`, so the error type returned by `SfStr::try_to_rust_string` can be named by users
+- Fix undefined behavior when dereferencing an empty `cpp::CppVector`
+- Fix `SoundBuffer::load_from_samples` always failing with `CallFailed`, and custom `SoundStream` channel maps having twice the requested length. The C++ shim filled the channel map with placeholder entries before copying the real ones
+- Fix every element of `cpp::CppVector<cpp::CppString>` being the first element. `CppVector<CppString>` no longer derefs to a slice, since a `CppString` can't be sliced
+- Fix the `opengl` example throwing a "call failed" error when pressing space to toggle sRGB. The window was closed but the render loop kept calling `set_active` on the now-closed window; it now stops the render loop and lets the outer loop recreate the window
+
+### Removed
+- `system::SfString`, the raw handle to a C++ `sf::String`. String-returning APIs now copy into Rust `String` values and own the handle internally, including `joystick::Identification::name`
+- `Text::find_character_pos` and `RcText::find_character_pos`, deprecated by SFML 3.1 in favor of `shaped_glyphs`
+- `window::touch` (`is_down`, `desktop_position`), `Window::touch_position` and `RenderWindow::touch_position`, deprecated by SFML 3.1. Use the `position` of `Event::TouchBegan`, `Event::TouchMoved` and `Event::TouchEnded` instead, and track which fingers are down from those events. `desktop_position` has no replacement, since touch events report positions relative to the window.
+
 ## 0.24.0
 
 ### Added
@@ -22,11 +89,10 @@
 - Rename `Transform::get_matrix` to `Transform::matrix`
 - Make `Transform::{new, matrix, inverse}` `const fn`
 - `Image::new` now creates an empty image. See `Image::new_solid`
-- Old `Window::new` is now `Window::new_open`
 - `SoundRecorder` now requires `Send`
 - Make `RcFont::texture` return `Ref` rather than "leak" a borrow
 - Make all fields on `RenderStates` public
-- `Texture::upate_from_pixels` is now a safe, checked function
+- `Texture::update_from_pixels` is now a safe, checked function
 
 ### Fixed
 

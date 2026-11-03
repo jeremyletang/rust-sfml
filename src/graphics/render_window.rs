@@ -1,15 +1,20 @@
+use std::ops::Range;
+
 use crate::{
-    IntoSfResult, SfError, SfResult,
+    SfError, SfResult,
     cpp::FBox,
     ffi::graphics as ffi,
     graphics::{
         CircleShape, Color, ConvexShape, CustomShape, Drawable, IntRect, PrimitiveType, RcSprite,
         RcText, RectangleShape, RenderStates, RenderTarget, Sprite, Text, Vertex, VertexBuffer,
-        View,
+        View, render_target::range_to_first_count,
     },
     system::{SfStrConv, Time, Vector2f, Vector2i, Vector2u},
     window::{
-        ContextSettings, Cursor, Event, Handle, Style, VideoMode, thread_safety,
+        ContextSettings, Cursor, Event, Handle, Style, VideoMode,
+        event::drain_events,
+        thread_safety,
+        vulkan::{VkAllocationCallbacks, VkInstance, VkSurfaceKHR},
         window_enums::State,
     },
 };
@@ -90,6 +95,37 @@ impl RenderWindow {
     }
 }
 
+/// Vulkan
+impl RenderWindow {
+    /// Creates a Vulkan surface for the window
+    ///
+    /// The window must be open. Returns [`SfError::CallFailed`] if SFML could not create the
+    /// surface.
+    ///
+    /// # Safety
+    ///
+    /// `instance` must be a valid Vulkan instance, created with the extensions that
+    /// [`crate::window::vulkan::graphics_required_instance_extensions`] returns. If `allocator`
+    /// is given, it must stay valid until the surface is destroyed. The surface must be destroyed
+    /// before the window is closed or dropped, and before `instance` is destroyed.
+    pub unsafe fn create_vulkan_surface(
+        &mut self,
+        instance: VkInstance,
+        allocator: Option<&VkAllocationCallbacks>,
+    ) -> SfResult<VkSurfaceKHR> {
+        let mut surface = std::mem::MaybeUninit::uninit();
+        let allocator = allocator.map_or(std::ptr::null(), std::ptr::from_ref);
+        let created = unsafe {
+            ffi::sfRenderWindow_createVulkanSurface(self, instance, surface.as_mut_ptr(), allocator)
+        };
+        if created {
+            Ok(unsafe { surface.assume_init() })
+        } else {
+            Err(SfError::CallFailed)
+        }
+    }
+}
+
 /// Event handling
 impl RenderWindow {
     /// Pop the event on top of event queue, if any, and return it
@@ -111,6 +147,61 @@ impl RenderWindow {
         }
     }
 
+    /// Process every pending event, passing each one to `handler`
+    ///
+    /// The handler can't use the window, because this function borrows it until it returns.
+    /// To close the window, set a flag in the handler and call [`RenderWindow::close`] after
+    /// this function returns. Use [`RenderWindow::poll_event`] instead when the window is needed
+    /// for each event.
+    ///
+    /// # Usage Example
+    ///
+    #[cfg_attr(feature = "ci-headless", doc = "```no_run")]
+    #[cfg_attr(not(feature = "ci-headless"), doc = "```")]
+    /// use sfml::{
+    ///     graphics::RenderWindow,
+    ///     window::{Event, Style},
+    /// };
+    ///
+    /// let mut window = RenderWindow::new(
+    ///     (800, 600),
+    ///     "handle_events",
+    ///     Style::CLOSE,
+    ///     Default::default(),
+    ///     &Default::default(),
+    /// )
+    /// .unwrap();
+    /// let mut close_requested = false;
+    /// window.handle_events(|event| {
+    ///     if event == Event::Closed {
+    ///         close_requested = true;
+    ///     }
+    /// });
+    /// if close_requested {
+    ///     window.close();
+    /// }
+    /// ```
+    ///
+    /// Calling [`RenderWindow::close`] inside the handler does not compile, because the window is
+    /// already borrowed:
+    ///
+    /// ```compile_fail,E0499
+    /// use sfml::{graphics::RenderWindow, window::Style};
+    ///
+    /// let mut window = RenderWindow::new(
+    ///     (800, 600),
+    ///     "handle_events",
+    ///     Style::CLOSE,
+    ///     Default::default(),
+    ///     &Default::default(),
+    /// )
+    /// .unwrap();
+    /// window.handle_events(|_| window.close());
+    /// ```
+    pub fn handle_events(&mut self, handler: impl FnMut(Event)) {
+        drain_events(|| self.poll_event(), handler);
+    }
+
     /// Wait for an event and return it
     ///
     /// This function is blocking: if there's no pending event then
@@ -120,7 +211,7 @@ impl RenderWindow {
     /// is dedicated to events handling: you want to make this thread
     /// sleep as long as no new event is received.
     ///
-    /// Returns `Some(event)` or `None` if an error has occured
+    /// Returns `Some(event)` or `None` if an error has occurred
     pub fn wait_event(&mut self, timeout: Time) -> Option<Event> {
         let mut event = std::mem::MaybeUninit::uninit();
         let have_event = unsafe {
@@ -170,7 +261,7 @@ impl RenderWindow {
         unsafe { &*ffi::sfRenderWindow_getSettings(self) }
     }
 
-    /// Tell if the render texture will use sRGB encoding when drawing it
+    /// Tell if the render window will use sRGB encoding when drawing to it
     ///
     /// Returns true if sRGB encoding is enabled, false if sRGB encoding is disabled
     #[must_use]
@@ -202,8 +293,10 @@ impl RenderWindow {
     ///
     /// # Arguments
     /// * active - true to activate, false to deactivate
-    pub fn set_active(&mut self, enabled: bool) -> SfResult<()> {
-        unsafe { ffi::sfRenderWindow_setActive(self, enabled) }.into_sf_result()
+    ///
+    /// Return true if the operation was successful, false otherwise
+    pub fn set_active(&mut self, enabled: bool) -> bool {
+        unsafe { ffi::sfRenderWindow_setActive(self, enabled) }
     }
 }
 
@@ -212,7 +305,7 @@ impl RenderWindow {
     /// Show or hide the mouse cursor
     ///
     /// # Arguments
-    /// * visible - true to  false to hide
+    /// * visible - true to show the cursor, false to hide it
     pub fn set_mouse_cursor_visible(&mut self, visible: bool) {
         unsafe {
             ffi::sfRenderWindow_setMouseCursorVisible(self, visible);
@@ -266,11 +359,6 @@ impl RenderWindow {
     /// * `position` - the positon to set
     pub fn set_mouse_position(&mut self, position: Vector2i) {
         unsafe { crate::ffi::graphics::sfMouse_setPositionRenderWindow(position, self) }
-    }
-    /// Returns the current position of a touch in window coordinates.
-    #[must_use]
-    pub fn touch_position(&self, finger: u32) -> Vector2i {
-        unsafe { crate::ffi::graphics::sfTouch_getPositionRenderWindow(finger, self) }
     }
 }
 
@@ -367,7 +455,7 @@ impl RenderWindow {
     ///
     /// Pass `None` to unset the minimum size
     pub fn set_minimum_size(&mut self, size: Option<Vector2u>) {
-        let ptr = size.as_ref().map_or(std::ptr::null(), |v| v);
+        let ptr = size.as_ref().map_or(std::ptr::null(), std::ptr::from_ref);
         unsafe {
             ffi::sfRenderWindow_setMinimumSize(self, ptr);
         }
@@ -377,7 +465,7 @@ impl RenderWindow {
     ///
     /// Pass `None` to unset the maximum size
     pub fn set_maximum_size(&mut self, size: Option<Vector2u>) {
-        let ptr = size.as_ref().map_or(std::ptr::null(), |v| v);
+        let ptr = size.as_ref().map_or(std::ptr::null(), std::ptr::from_ref);
         unsafe {
             ffi::sfRenderWindow_setMaximumSize(self, ptr);
         }
@@ -502,6 +590,23 @@ impl RenderTarget for RenderWindow {
     }
     fn draw_vertex_buffer(&mut self, vertex_buffer: &VertexBuffer, render_states: &RenderStates) {
         unsafe { ffi::sfRenderWindow_drawVertexBuffer(self, vertex_buffer, render_states) }
+    }
+    fn draw_vertex_buffer_range(
+        &mut self,
+        vertex_buffer: &VertexBuffer,
+        range: Range<usize>,
+        render_states: &RenderStates,
+    ) {
+        let (first, count) = range_to_first_count(range);
+        unsafe {
+            ffi::sfRenderWindow_drawVertexBufferRange(
+                self,
+                vertex_buffer,
+                first,
+                count,
+                render_states,
+            )
+        }
     }
     fn draw_primitives(&mut self, vertices: &[Vertex], ty: PrimitiveType, rs: &RenderStates) {
         unsafe {

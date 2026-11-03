@@ -2,12 +2,18 @@ use {
     crate::{
         ffi::graphics as ffi,
         graphics::{
-            Color, Drawable, FloatRect, Font, RenderStates, RenderTarget, TextStyle, Transform,
-            Transformable,
+            ClusterGrouping, Color, Drawable, FloatRect, Font, GlyphAppearance, LineAlignment,
+            RenderStates, RenderTarget, ShapedGlyph, TextOrientation, TextStyle, Transform,
+            Transformable, Vertex,
+            glyph_pre_processor::{SharedGlyphPreProcessor, glyph_pre_processor_trampoline},
+            vertex,
         },
         system::{Angle, SfStr, SfStrConv, Vector2f},
     },
-    std::{marker::PhantomData, ptr::NonNull},
+    std::{
+        marker::PhantomData,
+        ptr::{self, NonNull},
+    },
 };
 
 /// Graphical text
@@ -21,26 +27,50 @@ use {
 /// and draw all the text you want with it. You can change its properties using
 /// `set_font`, `set_position`, `set_string`, etc., before drawing it, as many times as you need
 /// to.
+///
+/// # Examples
+///
+/// ```
+/// use sfml::graphics::{Font, Text, TextStyle, Transformable};
+/// use sfml::system::Vector2f;
+///
+/// let font = Font::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+/// let mut text = Text::new("Hello, SFML!", &font, 24);
+/// text.set_style(TextStyle::BOLD | TextStyle::ITALIC);
+/// text.set_position(Vector2f::new(10., 20.));
+///
+/// assert_eq!(text.character_size(), 24);
+/// assert!(text.style().contains(TextStyle::BOLD));
+/// assert_eq!(text.position(), Vector2f::new(10., 20.));
+/// ```
 #[derive(Debug)]
 pub struct Text<'s> {
     handle: NonNull<ffi::sfText>,
     font: PhantomData<&'s Font>,
+    glyph_pre_processor: Option<SharedGlyphPreProcessor>,
 }
 
 impl<'s> Text<'s> {
     /// Create a new text with initialized value
     ///
-    /// Default value for characterSize on SFML is 30.i
+    /// Default value for characterSize on SFML is 30.
     ///
     /// # Panics
-    /// Panics during const evaluation.
-    /// This method will panic during const evaluation if the string cannot be
-    /// determined to be null or not.
+    ///
+    /// Panics if the text allocation fails or if the string contains an
+    /// interior NUL.
     ///
     /// # Arguments
     /// * string - The string of the text
     /// * font - The font to display the Text
     /// * characterSize - The size of the Text
+    ///
+    /// ```
+    /// # use sfml::graphics::{Font, Text};
+    /// let font = Font::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// let text = Text::new("Hello", &font, 30);
+    /// assert_eq!(text.character_size(), 30);
+    /// ```
     pub fn new<S: SfStrConv>(string: S, font: &'s Font, character_size: u32) -> Text<'s> {
         let text = string.with_as_sfstr(|sfstr| unsafe {
             ffi::sfText_new(font, sfstr.as_ptr(), character_size)
@@ -48,6 +78,7 @@ impl<'s> Text<'s> {
         Text {
             handle: NonNull::new(text).expect("Failed to create Text"),
             font: PhantomData,
+            glyph_pre_processor: None,
         }
     }
 
@@ -57,6 +88,14 @@ impl<'s> Text<'s> {
     ///
     /// # Arguments
     /// * string - New string
+    ///
+    /// ```
+    /// # use sfml::graphics::{Font, Text};
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// let mut text = Text::new("", &font, 30);
+    /// text.set_string("Hello");
+    /// assert_eq!(text.string().to_rust_string(), "Hello");
+    /// ```
     pub fn set_string<S: SfStrConv>(&mut self, string: S) {
         string.with_as_sfstr(|sfstr| unsafe {
             ffi::sfText_setUnicodeString(self.handle.as_ptr(), sfstr.as_ptr());
@@ -90,6 +129,13 @@ impl<'s> Text<'s> {
     /// use it, the behaviour is undefined.
     ///
     /// font - New font
+    ///
+    /// ```
+    /// # use sfml::graphics::{Font, Text};
+    /// let font = Font::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// let mut text = Text::new("Hello", &font, 30);
+    /// assert!(text.font().is_some());
+    /// ```
     pub fn set_font(&mut self, font: &'s Font) {
         unsafe { ffi::sfText_setFont(self.handle.as_ptr(), font) }
     }
@@ -102,6 +148,16 @@ impl<'s> Text<'s> {
     ///
     /// # Arguments
     /// * style - New style
+    ///
+    /// ```
+    /// # use sfml::graphics::{Font, Text, TextStyle};
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// let mut text = Text::new("Hello", &font, 30);
+    /// text.set_style(TextStyle::BOLD | TextStyle::UNDERLINED);
+    /// assert!(text.style().contains(TextStyle::BOLD));
+    /// assert!(text.style().contains(TextStyle::UNDERLINED));
+    /// assert!(!text.style().contains(TextStyle::ITALIC));
+    /// ```
     pub fn set_style(&mut self, style: TextStyle) {
         unsafe { ffi::sfText_setStyle(self.handle.as_ptr(), style.bits()) }
     }
@@ -112,6 +168,14 @@ impl<'s> Text<'s> {
     ///
     /// # Arguments
     /// * size - The new character size, in pixels
+    ///
+    /// ```
+    /// # use sfml::graphics::{Font, Text};
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// let mut text = Text::new("Hello", &font, 30);
+    /// text.set_character_size(48);
+    /// assert_eq!(text.character_size(), 48);
+    /// ```
     pub fn set_character_size(&mut self, size: u32) {
         unsafe { ffi::sfText_setCharacterSize(self.handle.as_ptr(), size) }
     }
@@ -137,6 +201,14 @@ impl<'s> Text<'s> {
     ///
     /// By default, the text's fill color is opaque white. Setting the fill color to a transparent
     /// color with an outline will cause the outline to be displayed in the fill area of the text.
+    ///
+    /// ```
+    /// # use sfml::graphics::{Color, Font, Text};
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// let mut text = Text::new("Hello", &font, 30);
+    /// text.set_fill_color(Color::RED);
+    /// assert_eq!(text.fill_color(), Color::RED);
+    /// ```
     pub fn set_fill_color(&mut self, color: Color) {
         unsafe { ffi::sfText_setFillColor(self.handle.as_ptr(), color) }
     }
@@ -176,22 +248,143 @@ impl<'s> Text<'s> {
         unsafe { ffi::sfText_getOutlineThickness(self.handle.as_ptr()) }
     }
 
-    /// Return the position of the index-th character in a text
+    /// Get the shaped glyphs that make up the text
     ///
-    /// This function computes the visual position of a character
-    /// from its index in the string. The returned position is
-    /// in global coordinates (translation, rotation, scale and
-    /// origin are applied).
-    /// If index is out of range, the position of the end of
-    /// the string is returned.
+    /// The glyph positions are in local coordinates, which means
+    /// that translation, rotation, scale and origin are not applied.
+    ///
+    /// This takes `&mut self`, because SFML may regenerate the text geometry
+    /// (and therefore invalidate the returned slice) from `&self` methods
+    /// such as [`Drawable::draw`].
+    #[must_use]
+    pub fn shaped_glyphs(&mut self) -> &[ShapedGlyph] {
+        unsafe { &*ffi::sfText_getShapedGlyphs(self.handle.as_ptr()) }
+    }
+
+    /// Set the alignment of the lines of a multi-line text
+    ///
+    /// By default, lines are aligned according to the direction of their script.
     ///
     /// # Arguments
-    /// * index - The index of the character
+    /// * alignment - New line alignment
     ///
-    /// Return the position of the character
+    /// ```
+    /// # use sfml::graphics::{Font, LineAlignment, Text};
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// let mut text = Text::new("Hello", &font, 30);
+    /// text.set_line_alignment(LineAlignment::Center);
+    /// assert_eq!(text.line_alignment(), LineAlignment::Center);
+    /// ```
+    pub fn set_line_alignment(&mut self, alignment: LineAlignment) {
+        unsafe { ffi::sfText_setLineAlignment(self.handle.as_ptr(), alignment) }
+    }
+
+    /// Get the alignment of the lines of a multi-line text
     #[must_use]
-    pub fn find_character_pos(&self, index: usize) -> Vector2f {
-        unsafe { ffi::sfText_findCharacterPos(self.handle.as_ptr(), index) }
+    pub fn line_alignment(&self) -> LineAlignment {
+        unsafe { ffi::sfText_getLineAlignment(self.handle.as_ptr()) }
+    }
+
+    /// Set the orientation of the lines of a text
+    ///
+    /// By default, the lines have a horizontal orientation. Most fonts don't natively support
+    /// vertical orientations, so SFML has to emulate them, which may not look good.
+    ///
+    /// # Arguments
+    /// * orientation - New text orientation
+    ///
+    /// ```
+    /// # use sfml::graphics::{Font, Text, TextOrientation};
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// let mut text = Text::new("Hello", &font, 30);
+    /// text.set_text_orientation(TextOrientation::TopToBottom);
+    /// assert_eq!(text.text_orientation(), TextOrientation::TopToBottom);
+    /// ```
+    pub fn set_text_orientation(&mut self, orientation: TextOrientation) {
+        unsafe { ffi::sfText_setTextOrientation(self.handle.as_ptr(), orientation) }
+    }
+
+    /// Get the orientation of the lines of a text
+    #[must_use]
+    pub fn text_orientation(&self) -> TextOrientation {
+        unsafe { ffi::sfText_getTextOrientation(self.handle.as_ptr()) }
+    }
+
+    /// Set the cluster grouping algorithm used when shaping the text
+    ///
+    /// By default, character cluster grouping is used.
+    ///
+    /// # Arguments
+    /// * `cluster_grouping` - New cluster grouping algorithm
+    ///
+    /// ```
+    /// # use sfml::graphics::{ClusterGrouping, Font, Text};
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// let mut text = Text::new("Hello", &font, 30);
+    /// text.set_cluster_grouping(ClusterGrouping::Grapheme);
+    /// assert_eq!(text.cluster_grouping(), ClusterGrouping::Grapheme);
+    /// ```
+    pub fn set_cluster_grouping(&mut self, cluster_grouping: ClusterGrouping) {
+        unsafe { ffi::sfText_setClusterGrouping(self.handle.as_ptr(), cluster_grouping) }
+    }
+
+    /// Get the cluster grouping algorithm used when shaping the text
+    #[must_use]
+    pub fn cluster_grouping(&self) -> ClusterGrouping {
+        unsafe { ffi::sfText_getClusterGrouping(self.handle.as_ptr()) }
+    }
+
+    /// Set or remove the glyph pre-processor
+    ///
+    /// The pre-processor is called for every glyph whenever the geometry of the text is
+    /// regenerated. It receives the shaped glyph, and can change the glyph's style, fill color,
+    /// outline color and outline thickness through the [`GlyphAppearance`].
+    ///
+    /// `Some` replaces any previously set pre-processor, and `None` removes it. Since `None`
+    /// has no closure type to infer, name the type, e.g.
+    /// `None::<fn(&ShapedGlyph, &mut GlyphAppearance)>`.
+    ///
+    /// The pre-processor is called from within SFML, so it must not panic (that aborts the
+    /// process), and it has no access to the text it is set on.
+    ///
+    /// # Arguments
+    /// * `pre_processor` - The pre-processor to call for every glyph, or `None` to remove it
+    pub fn set_glyph_pre_processor<F>(&mut self, pre_processor: Option<F>)
+    where
+        F: Fn(&ShapedGlyph, &mut GlyphAppearance) + 'static,
+    {
+        let pre_processor = pre_processor.map(SharedGlyphPreProcessor::new);
+        let callback: ffi::sfTextGlyphPreProcessorCb = if pre_processor.is_some() {
+            Some(glyph_pre_processor_trampoline)
+        } else {
+            None
+        };
+        let user_data = pre_processor
+            .as_ref()
+            .map_or(ptr::null_mut(), SharedGlyphPreProcessor::user_data);
+        unsafe { ffi::sfText_setGlyphPreProcessor(self.handle.as_ptr(), callback, user_data) }
+        self.glyph_pre_processor = pre_processor;
+    }
+
+    /// Get the vertices of the fill geometry of the text
+    ///
+    /// SFML regenerates the vertices whenever the text changes, which discards any changes made
+    /// to them. This takes `&mut self` for the same reason as [`Text::shaped_glyphs`].
+    #[must_use]
+    pub fn vertex_data(&mut self) -> &mut [Vertex] {
+        let mut count = 0;
+        let data = unsafe { ffi::sfText_getVertexData(self.handle.as_ptr(), &mut count) };
+        unsafe { vertex::slice_from_raw_parts_mut(data.cast(), count) }
+    }
+
+    /// Get the vertices of the outline geometry of the text
+    ///
+    /// Same as [`Text::vertex_data`], but for the outline.
+    #[must_use]
+    pub fn outline_vertex_data(&mut self) -> &mut [Vertex] {
+        let mut count = 0;
+        let data = unsafe { ffi::sfText_getOutlineVertexData(self.handle.as_ptr(), &mut count) };
+        unsafe { vertex::slice_from_raw_parts_mut(data.cast(), count) }
     }
 
     /// Get the local bounding rectangle of a text
@@ -231,6 +424,14 @@ impl<'s> Text<'s> {
     /// The default spacing between lines is defined by the font.
     /// This method enables you to set a factor for the spacing between lines.
     /// By default the line spacing factor is 1.
+    ///
+    /// ```
+    /// # use sfml::graphics::{Font, Text};
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// let mut text = Text::new("Hello", &font, 30);
+    /// text.set_line_spacing(1.5);
+    /// assert_eq!(text.line_spacing(), 1.5);
+    /// ```
     pub fn set_line_spacing(&mut self, factor: f32) {
         unsafe { ffi::sfText_setLineSpacing(self.handle.as_ptr(), factor) }
     }
@@ -246,6 +447,14 @@ impl<'s> Text<'s> {
     /// it rather adds a fixed space between them which is calculated from the font metrics and
     /// the character size. Note that factors below 1 (including negative numbers) bring
     /// characters closer to each other. By default the letter spacing factor is 1.
+    ///
+    /// ```
+    /// # use sfml::graphics::{Font, Text};
+    /// # let font = Font::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// let mut text = Text::new("Hello", &font, 30);
+    /// text.set_letter_spacing(2.);
+    /// assert_eq!(text.letter_spacing(), 2.);
+    /// ```
     pub fn set_letter_spacing(&mut self, factor: f32) {
         unsafe { ffi::sfText_setLetterSpacing(self.handle.as_ptr(), factor) }
     }
@@ -261,6 +470,7 @@ impl<'s> Clone for Text<'s> {
         Text {
             handle: NonNull::new(sp).expect("Not enough memory to clone Text"),
             font: PhantomData,
+            glyph_pre_processor: self.glyph_pre_processor.clone(),
         }
     }
 }
@@ -294,7 +504,7 @@ impl Transformable for Text<'_> {
     fn rotation(&self) -> Angle {
         Angle::degrees(unsafe { ffi::sfText_getRotation(self.handle.as_ptr()) })
     }
-    fn get_scale(&self) -> Vector2f {
+    fn scale(&self) -> Vector2f {
         unsafe { ffi::sfText_getScale(self.handle.as_ptr()) }
     }
     fn origin(&self) -> Vector2f {
@@ -306,7 +516,7 @@ impl Transformable for Text<'_> {
     fn rotate(&mut self, angle: Angle) {
         unsafe { ffi::sfText_rotate(self.handle.as_ptr(), angle.as_degrees()) }
     }
-    fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
+    fn scale_by<F: Into<Vector2f>>(&mut self, factors: F) {
         unsafe { ffi::sfText_scale(self.handle.as_ptr(), factors.into()) }
     }
     fn transform(&self) -> &Transform {

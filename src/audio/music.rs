@@ -3,13 +3,12 @@ use {
     crate::{
         IntoSfResult, SfResult,
         audio::TimeSpan,
-        cpp::CppVector,
         ffi,
         system::{InputStream, Time, Vector3f},
     },
     std::{
         ffi::{CString, c_uint, c_void},
-        io::Empty
+        io::Empty,
     },
 };
 
@@ -32,6 +31,9 @@ use {
 ///
 /// [`play`]: Music::play
 /// [`SoundBuffer`]: crate::audio::SoundBuffer
+/// A `Music` is `Send` when its owned stream type is `Send`, and `Sync`
+/// when that type is `Sync`.
+///
 /// [`Sound`]: crate::audio::Sound
 #[derive(Debug)]
 pub struct Music<'src, S = Empty> {
@@ -40,11 +42,13 @@ pub struct Music<'src, S = Empty> {
 }
 
 // SAFETY: An `sfMusic` isn't tied to a particular thread, so it can be sent between threads safely.
-unsafe impl Send for Music<'_> {}
+// The owned stream type must be `Send` because the music can move it.
+unsafe impl<S: Send> Send for Music<'_, S> {}
 
 // SAFETY: An `&Music` only allows access to methods which read the status of the music, which is
 // fine to do from multiple threads at once. Thus it is safe to pass `&Music` between threads.
-unsafe impl Sync for Music<'_> {}
+// The owned stream type must be `Sync` because `&Music` gives access to it.
+unsafe impl<S: Sync> Sync for Music<'_, S> {}
 
 /// Creating and opening
 impl<'src, S> Music<'src, S> {
@@ -84,10 +88,7 @@ impl<'src, S> Music<'src, S> {
     /// * stream - Your struct, implementing Read and Seek
     ///
     /// [`play`]: Music::play
-    pub fn open_from_stream(
-        &mut self,
-        stream: &'src mut InputStream<'src, S>,
-    ) -> SfResult<()> {
+    pub fn open_from_stream(&mut self, stream: &'src mut InputStream<'src, S>) -> SfResult<()> {
         unsafe { ffi::audio::sfMusic_openFromStream(self.music, &raw mut *stream.stream) }
             .into_sf_result()
     }
@@ -103,17 +104,12 @@ impl<'src, S> Music<'src, S> {
     /// * stream - Your struct, implementing Read and Seek
     ///
     /// [`play`]: Music::play
-    pub fn open_from_stream_owned(
-        &mut self,
-        stream: InputStream<'src, S>,
-    ) -> SfResult<()> {
+    pub fn open_from_stream_owned(&mut self, stream: InputStream<'src, S>) -> SfResult<()> {
         unsafe { ffi::audio::sfMusic_openFromStream(self.music, stream.stream.0.as_ptr()) }
             .into_sf_result()
             .map(|_| {
                 self.stream = Some(stream);
-                ()
             })
-
     }
 }
 
@@ -242,7 +238,7 @@ impl<S> Music<'_, S> {
     ///
     /// Return Map of position in sample frame to sound channel
     #[must_use]
-    pub fn channel_map(&self) -> &'static CppVector<SoundChannel> {
+    pub fn channel_map(&self) -> &[SoundChannel] {
         unsafe { &*ffi::audio::sfMusic_getChannelMap(self.music) }
     }
 
@@ -417,13 +413,13 @@ impl<S> SoundSource for Music<'_, S> {
     fn directional_attenuation_factor(&self) -> f32 {
         unsafe { ffi::audio::sfMusic_getDirectionalAttenuationFactor(self.music) }
     }
-    fn get_max_distance(&self) -> f32 {
+    fn max_distance(&self) -> f32 {
         unsafe { ffi::audio::sfMusic_getMaxDistance(self.music) }
     }
-    fn get_min_gain(&self) -> f32 {
+    fn min_gain(&self) -> f32 {
         unsafe { ffi::audio::sfMusic_getMinGain(self.music) }
     }
-    fn get_max_gain(&self) -> f32 {
+    fn max_gain(&self) -> f32 {
         unsafe { ffi::audio::sfMusic_getMaxGain(self.music) }
     }
     fn status(&self) -> super::sound_source::Status {

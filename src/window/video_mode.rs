@@ -1,5 +1,5 @@
 use crate::{
-    cpp::{CppVector, CppVectorItem},
+    cpp::{CppVector, CppVectorItem, CppVectorSliceable},
     ffi::window as ffi,
     system::{Vector2, Vector2u},
     window::thread_safety,
@@ -35,6 +35,15 @@ pub struct VideoMode {
 
 impl VideoMode {
     /// Constructs a new `VideoMode` from the given parameters.
+    ///
+    /// ```
+    /// use sfml::system::Vector2u;
+    /// use sfml::window::VideoMode;
+    ///
+    /// let mode = VideoMode::new(Vector2u::new(1920, 1080), 32);
+    /// assert_eq!(mode.size, Vector2u::new(1920, 1080));
+    /// assert_eq!(mode.bits_per_pixel, 32);
+    /// ```
     #[must_use]
     pub const fn new(size: Vector2u, bits_per_pixel: u32) -> Self {
         Self {
@@ -75,9 +84,9 @@ impl VideoMode {
     /// the first element will always give the best mode (higher
     /// `width`, `height` and `bits_per_pixel`).
     ///
-    /// Return a vector containing all the supported `VideoMode`s
+    /// Return a slice containing all the supported `VideoMode`s
     #[must_use]
-    pub fn fullscreen_modes() -> &'static CppVector<Self> {
+    pub fn fullscreen_modes() -> &'static [Self] {
         unsafe { &*ffi::sfVideoMode_getFullscreenModes() }
     }
 }
@@ -108,6 +117,8 @@ impl Default for VideoMode {
         Self::new(Vector2::new(0, 0), 0)
     }
 }
+
+unsafe impl CppVectorSliceable for VideoMode {}
 
 unsafe impl CppVectorItem for VideoMode {
     fn get_data(vec: &crate::cpp::CppVector<Self>) -> *const Self {

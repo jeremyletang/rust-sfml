@@ -1,4 +1,16 @@
 //! Available styles applicable to windows.
+//!
+//! ```
+//! use sfml::window::Style;
+//! use sfml::window::window_enums::State;
+//!
+//! let style = Style::TITLEBAR | Style::CLOSE;
+//! assert!(style.contains(Style::TITLEBAR));
+//! assert!(!style.contains(Style::RESIZE));
+//! assert!(Style::default().contains(Style::CLOSE));
+//!
+//! assert_eq!(State::default(), State::Windowed);
+//! ```
 
 bitflags::bitflags! {
     /// Available styles applicable to windows.

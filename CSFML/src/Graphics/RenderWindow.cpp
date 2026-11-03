@@ -17,7 +17,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Window/Mouse.hpp>
-#include <SFML/Window/Touch.hpp>
+#include <SFML/Window/Vulkan.hpp>
 #include <chrono>
 #include <cstddef>
 
@@ -62,6 +62,10 @@ extern "C" sfVector2i sfRenderWindow_getPosition(const sf::RenderWindow *renderW
 
 extern "C" void sfRenderWindow_setPosition(sf::RenderWindow *renderWindow, sfVector2i position) {
     renderWindow->setPosition(sf::Vector2i(position.x, position.y));
+}
+
+extern "C" bool sfRenderWindow_createVulkanSurface(sf::RenderWindow *renderWindow, VkInstance instance, VkSurfaceKHR *surface, const VkAllocationCallbacks *allocator) {
+    return renderWindow->createVulkanSurface(instance, *surface, allocator);
 }
 
 extern "C" sfVector2u sfRenderWindow_getSize(const sf::RenderWindow *renderWindow) {
@@ -183,8 +187,7 @@ extern "C" sfIntRect sfRenderWindow_getViewport(const sf::RenderWindow *renderWi
 }
 
 extern "C" sfIntRect sfRenderWindow_getScissor(const sf::RenderWindow *renderWindow, const sf::View *view) {
-    sf::IntRect rect = renderWindow->getViewport(*view);
-    return {{rect.position.x, rect.position.y}, {rect.size.x, rect.size.y}};
+    return convertRect(renderWindow->getScissor(*view));
 }
 
 extern "C" sfVector2f sfRenderWindow_mapPixelToCoords(const sf::RenderWindow *renderWindow, sfVector2i point) {
@@ -229,6 +232,10 @@ extern "C" void sfRenderWindow_drawVertexBuffer(sf::RenderWindow *renderWindow, 
     renderWindow->draw(*object, *states);
 }
 
+extern "C" void sfRenderWindow_drawVertexBufferRange(sf::RenderWindow *renderWindow, const sf::VertexBuffer *object, size_t firstVertex, size_t vertexCount, const sf::RenderStates *states) {
+    renderWindow->draw(*object, firstVertex, vertexCount, *states);
+}
+
 extern "C" void sfRenderWindow_drawPrimitives(sf::RenderWindow *renderWindow,
                                               const sf::Vertex *vertices, size_t vertexCount,
                                               sfPrimitiveType type, const sf::RenderStates *states) {
@@ -254,9 +261,4 @@ extern "C" void sfMouse_setPositionRenderWindow(sfVector2i pos, const sf::Render
 extern "C" sfVector2i sfMouse_getPositionRenderWindow(const sf::RenderWindow *relativeTo) {
     sf::Vector2i vec2 = sf::Mouse::getPosition(*relativeTo);
     return {vec2.x, vec2.y};
-}
-
-extern "C" sfVector2i sfTouch_getPositionRenderWindow(unsigned int finger, const sf::RenderWindow *relativeTo) {
-    sf::Vector2i pos = sf::Touch::getPosition(finger, *relativeTo);
-    return {pos.x, pos.y};
 }

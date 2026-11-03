@@ -9,13 +9,5 @@ include usage in the examples or write example doc code!
 
 Thanks!
 
-# Missing implementation
-
-sfRenderWindow_drawVertexBufferRange
-sfRenderwindow_createVulkanSurface
-sfRenderTexture_drawVertexBufferRange
-All of the vulkan crap
-handleEvents
-
 # Other stuff
 window-test example crashes if you keep selecting new window sizes quickly on linux. (It also crashes in rust-sfml 2.6 versioning)

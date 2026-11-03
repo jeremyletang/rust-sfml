@@ -1,4 +1,12 @@
 //! Available blending modes for drawing
+//!
+//! ```
+//! use sfml::graphics::blend_mode::{BlendMode, Factor};
+//!
+//! // The default blend mode is alpha blending.
+//! assert_eq!(BlendMode::default(), BlendMode::ALPHA);
+//! assert_eq!(BlendMode::ALPHA.color_src_factor, Factor::SrcAlpha);
+//! ```
 
 use crate::ffi;
 pub use ffi::graphics::{BlendEquation as Equation, BlendFactor as Factor, BlendMode};

@@ -3,6 +3,7 @@ use std::ops::Deref;
 use crate::ffi::system::{sfBuffer_destroy, sfBuffer_getData, sfBuffer_getSize};
 
 decl_opaque! {
+    #[cfg_attr(not(feature = "graphics"), expect(dead_code))]
     pub Buffer;
 }
 

@@ -38,12 +38,38 @@ pub mod window;
 use std::{error::Error, fmt::Display};
 
 /// An SFML operation has failed
+///
+/// # Examples
+///
+/// ```
+/// use sfml::SfError;
+///
+/// assert_eq!(
+///     SfError::NulInStr.to_string(),
+///     "Interior nul byte in string passed to SFML"
+/// );
+/// assert_eq!(
+///     SfError::UnsupportedChannelCount {
+///         requested: 3,
+///         current: 1,
+///     }
+///     .to_string(),
+///     "Channel count 3 is not supported by this capture device. Keeping 1 channel."
+/// );
+/// ```
 #[derive(Clone, Copy, Debug)]
 pub enum SfError {
-    /// An string argument passed had interior nul bytes
+    /// A string argument contained interior nul bytes
     NulInStr,
     /// Call to SFML function returned an error
     CallFailed,
+    /// A sound recorder rejected a channel count. The recorder keeps `current` channels.
+    UnsupportedChannelCount {
+        /// The channel count that was requested
+        requested: u32,
+        /// The channel count the recorder kept
+        current: u32,
+    },
 }
 
 impl Display for SfError {
@@ -51,6 +77,13 @@ impl Display for SfError {
         match self {
             SfError::NulInStr => write!(f, "Interior nul byte in string passed to SFML"),
             SfError::CallFailed => write!(f, "Call to SFML function returned an error"),
+            SfError::UnsupportedChannelCount { requested, current } => {
+                let noun = if *current == 1 { "channel" } else { "channels" };
+                write!(
+                    f,
+                    "Channel count {requested} is not supported by this capture device. Keeping {current} {noun}."
+                )
+            }
         }
     }
 }
@@ -64,6 +97,19 @@ impl From<std::ffi::NulError> for SfError {
 impl Error for SfError {}
 
 /// Result of a fallible SFML operation
+///
+/// # Examples
+///
+/// ```
+/// use sfml::{SfError, SfResult};
+///
+/// fn parse(value: &str) -> SfResult<u32> {
+///     value.parse().map_err(|_| SfError::CallFailed)
+/// }
+///
+/// assert!(matches!(parse("42"), Ok(42)));
+/// assert!(matches!(parse("nope"), Err(SfError::CallFailed)));
+/// ```
 pub type SfResult<T> = Result<T, SfError>;
 
 trait IntoSfResult<T> {

@@ -39,3 +39,7 @@ extern "C" void sfSoundBufferRecorder_setChannelCount(sf::SoundBufferRecorder *s
 extern "C" unsigned int sfSoundBufferRecorder_getChannelCount(const sf::SoundBufferRecorder *soundBufferRecorder) {
     return soundBufferRecorder->getChannelCount();
 }
+
+extern "C" const std::vector<sf::SoundChannel> *sfSoundBufferRecorder_getChannelMap(const sf::SoundBufferRecorder *soundBufferRecorder) {
+    return &soundBufferRecorder->getChannelMap();
+}

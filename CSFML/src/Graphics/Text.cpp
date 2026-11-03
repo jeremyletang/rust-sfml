@@ -1,10 +1,12 @@
 #include "Graphics/Color.hpp"
 #include "Graphics/Rect.hpp"
+#include "Graphics/TextEnums.hpp"
 #include "SFML/Graphics/Font.hpp"
 #include "System/Vector2.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <cstddef>
+#include <vector>
 
 extern "C" sf::Text *sfText_new(const sf::Font *font, const uint32_t *string, unsigned int size) {
     return new sf::Text(*font, (char32_t *)string, size);
@@ -142,14 +144,89 @@ extern "C" float sfText_getOutlineThickness(const sf::Text *text) {
     return text->getOutlineThickness();
 }
 
-extern "C" sfVector2f sfText_findCharacterPos(const sf::Text *text, size_t index) {
-    return convertVector2(text->findCharacterPos(index));
-}
-
 extern "C" sfFloatRect sfText_getLocalBounds(const sf::Text *text) {
     return convertRect(text->getLocalBounds());
 }
 
 extern "C" sfFloatRect sfText_getGlobalBounds(const sf::Text *text) {
     return convertRect(text->getGlobalBounds());
+}
+
+extern "C" const std::vector<sf::Text::ShapedGlyph> *sfText_getShapedGlyphs(const sf::Text *text) {
+    return &text->getShapedGlyphs();
+}
+
+extern "C" std::size_t sfShapedGlyphVector_getLength(const std::vector<sf::Text::ShapedGlyph> *vec) {
+    return vec->size();
+}
+
+extern "C" const sf::Text::ShapedGlyph *sfShapedGlyphVector_getData(const std::vector<sf::Text::ShapedGlyph> *vec) {
+    return vec->data();
+}
+
+extern "C" void sfText_setLineAlignment(sf::Text *text, sfLineAlignment lineAlignment) {
+    text->setLineAlignment(static_cast<sf::Text::LineAlignment>(lineAlignment));
+}
+
+extern "C" sfLineAlignment sfText_getLineAlignment(const sf::Text *text) {
+    return static_cast<sfLineAlignment>(text->getLineAlignment());
+}
+
+extern "C" void sfText_setTextOrientation(sf::Text *text, sfTextOrientation textOrientation) {
+    text->setTextOrientation(static_cast<sf::Text::TextOrientation>(textOrientation));
+}
+
+extern "C" sfTextOrientation sfText_getTextOrientation(const sf::Text *text) {
+    return static_cast<sfTextOrientation>(text->getTextOrientation());
+}
+
+extern "C" void sfText_setClusterGrouping(sf::Text *text, sfClusterGrouping clusterGrouping) {
+    text->setClusterGrouping(static_cast<sf::Text::ClusterGrouping>(clusterGrouping));
+}
+
+extern "C" sfClusterGrouping sfText_getClusterGrouping(const sf::Text *text) {
+    return static_cast<sfClusterGrouping>(text->getClusterGrouping());
+}
+
+typedef void (*sfTextGlyphPreProcessorCb)(const sf::Text::ShapedGlyph *shapedGlyph,
+                                          std::uint32_t *style,
+                                          sfColor *fillColor,
+                                          sfColor *outlineColor,
+                                          float *outlineThickness,
+                                          void *userData);
+
+extern "C" void sfText_setGlyphPreProcessor(sf::Text *text, sfTextGlyphPreProcessorCb callback, void *userData) {
+    if (!callback) {
+        text->setGlyphPreProcessor({});
+        return;
+    }
+
+    text->setGlyphPreProcessor([callback, userData](const sf::Text::ShapedGlyph &shapedGlyph,
+                                                    std::uint32_t &style,
+                                                    sf::Color &fillColor,
+                                                    sf::Color &outlineColor,
+                                                    float &outlineThickness) {
+        sfColor fill = convertColor(fillColor);
+        sfColor outline = convertColor(outlineColor);
+        callback(&shapedGlyph, &style, &fill, &outline, &outlineThickness, userData);
+        fillColor = convertColor(fill);
+        outlineColor = convertColor(outline);
+    });
+}
+
+static sf::Vertex *vertexArrayData(sf::VertexArray &vertices, std::size_t *vertexCount) {
+    *vertexCount = vertices.getVertexCount();
+    return *vertexCount ? &vertices[0] : nullptr;
+}
+
+// getVertexData and getOutlineVertexData don't regenerate the geometry themselves,
+// so query the local bounds first to make sure the vertices are up to date
+extern "C" sf::Vertex *sfText_getVertexData(sf::Text *text, std::size_t *vertexCount) {
+    (void)text->getLocalBounds();
+    return vertexArrayData(text->getVertexData(), vertexCount);
+}
+
+extern "C" sf::Vertex *sfText_getOutlineVertexData(sf::Text *text, std::size_t *vertexCount) {
+    (void)text->getLocalBounds();
+    return vertexArrayData(text->getOutlineVertexData(), vertexCount);
 }

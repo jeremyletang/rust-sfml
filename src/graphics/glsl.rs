@@ -102,19 +102,16 @@ impl From<IVec3> for ffi::graphics::sfGlslIvec3 {
 
 impl From<BVec2> for ffi::graphics::sfGlslBvec2 {
     fn from(src: BVec2) -> Self {
-        Self {
-            x: (src.x),
-            y: (src.y),
-        }
+        Self { x: src.x, y: src.y }
     }
 }
 
 impl From<BVec3> for ffi::graphics::sfGlslBvec3 {
     fn from(src: BVec3) -> Self {
         Self {
-            x: (src.x),
-            y: (src.y),
-            z: (src.z),
+            x: src.x,
+            y: src.y,
+            z: src.z,
         }
     }
 }
@@ -135,10 +132,10 @@ pub struct BVec4 {
 impl From<BVec4> for ffi::graphics::sfGlslBvec4 {
     fn from(src: BVec4) -> Self {
         Self {
-            x: (src.x),
-            y: (src.y),
-            z: (src.z),
-            w: (src.w),
+            x: src.x,
+            y: src.y,
+            z: src.z,
+            w: src.w,
         }
     }
 }

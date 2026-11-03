@@ -1,5 +1,5 @@
 use crate::{
-    cpp::{CppVector, CppVectorItem},
+    cpp::{CppVector, CppVectorItem, CppVectorSliceable},
     ffi::audio as ffi,
 };
 
@@ -38,6 +38,8 @@ pub enum SoundChannel {
     TopBackCenter,
 }
 
+unsafe impl CppVectorSliceable for SoundChannel {}
+
 unsafe impl CppVectorItem for SoundChannel {
     fn get_data(vec: &crate::cpp::CppVector<Self>) -> *const Self {
         unsafe { ffi::sfSoundChannelVector_getData(vec) }
@@ -47,7 +49,6 @@ unsafe impl CppVectorItem for SoundChannel {
         unsafe { ffi::sfSoundChannelVector_getLength(vec) }
     }
 
-    fn del(vec: &mut CppVector<Self>) {
-        unsafe { ffi::sfSoundChannelVector_del(vec) }
-    }
+    // Only need to borrow the data. No need to clone, so no need to delete.
+    fn del(_: &mut CppVector<Self>) {}
 }

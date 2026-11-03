@@ -22,7 +22,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let devices = capture::available_devices();
     println!("{} recording devices available:", devices.len());
     for (i, device) in devices.iter().enumerate() {
-        let def_str = if device == &*default_device {
+        let def_str = if device == &default_device {
             " (default)"
         } else {
             ""
@@ -65,7 +65,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut recorder = SoundBufferRecorder::new();
     match devices.get(device_idx) {
         Some(device) => {
-            recorder.set_device(device.to_str()?)?;
+            recorder.set_device(device)?;
         }
         None => {
             eprintln!("No device with index {device_idx}");
@@ -77,7 +77,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     recorder.start(sample_rate)?;
     println!(
         "Recording on device {} @ {} Hz...\nPress enter to stop",
-        recorder.device().to_str().unwrap_or("<invalid utf-8>"),
+        recorder.device(),
         recorder.sample_rate()
     );
     reader.read_line(&mut String::new())?;

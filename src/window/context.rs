@@ -39,8 +39,10 @@ impl Context {
     ///
     /// # Arguments
     /// * active - `true` to activate, `false` to deactivate
-    pub fn set_active(&mut self, active: bool) -> SfResult<()> {
-        unsafe { ffi::sfContext_setActive(self, active) }.into_sf_result()
+    ///
+    /// Return true if the operation was successful, false otherwise
+    pub fn set_active(&mut self, active: bool) -> bool {
+        unsafe { ffi::sfContext_setActive(self, active) }
     }
     /// Get the settings of the context.
     ///
@@ -77,10 +79,11 @@ impl Context {
 }
 
 #[cfg_attr(not(feature = "ci-headless"), test)]
+#[cfg_attr(feature = "ci-headless", expect(dead_code))]
 fn test_settings() {
     use {crate::window::Window, std::thread};
 
-    let window = Window::new_open(
+    let window = Window::new(
         (32, 32),
         "test",
         Default::default(),

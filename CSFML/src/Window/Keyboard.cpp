@@ -15,7 +15,7 @@ extern "C" sfKeyCode sfKeyboard_localize(sfScancode code) {
 }
 
 extern "C" sfScancode sfKeyboard_delocalize(sfKeyCode code) {
-    return static_cast<sfScancode>(sf::Keyboard::localize(static_cast<sf::Keyboard::Scancode>(code)));
+    return static_cast<sfScancode>(sf::Keyboard::delocalize(static_cast<sf::Keyboard::Key>(code)));
 }
 
 extern "C" sf::String *sfKeyboard_getDescription(sfScancode code) {

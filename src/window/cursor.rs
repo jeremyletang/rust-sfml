@@ -57,7 +57,13 @@ impl Cursor {
     /// - `hotspot`: (x,y) location of the hotspot
     ///
     /// # Returns
-    /// `true` if the cursor was successfully loaded; `false` otherwise
+    ///
+    /// A new cursor on success.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`SfError::CallFailed`](crate::SfError::CallFailed) if the
+    /// cursor could not be created.
     ///
     /// # Safety
     ///

@@ -59,6 +59,7 @@ fn static_link_windows(
         println!("cargo:rustc-link-lib=dylib=gdi32");
     }
     if feat_graphics {
+        println!("cargo:rustc-link-lib=static=harfbuzz");
         println!("cargo:rustc-link-lib=static=freetype");
     }
     if feat_audio {
@@ -102,6 +103,7 @@ fn pkgconfig_probe_with_fallback(lib: &str, fallback: &str) {
 /// Link supporting libraries for graphics on unix platforms (currently only freetype)
 fn unix_graphics_link_support_libs() {
     pkgconfig_probe_with_fallback("freetype2", "rustc-link-lib=dylib=freetype");
+    pkgconfig_probe_with_fallback("harfbuzz", "rustc-link-lib=dylib=harfbuzz");
 }
 
 fn unix_audio_link_support_libs(flac_ogg_linkage: LinkageKind) {
@@ -149,11 +151,24 @@ impl WinEnv {
     }
 }
 
+/// Whether this is a docs.rs build, where the C++ build must be skipped
+/// because docs.rs has no network access and rustdoc never links anything.
+fn build_docs_rs() -> bool {
+    println!("cargo:rerun-if-env-changed=DOCS_RS");
+    if env::var("DOCS_RS").is_err() {
+        return false;
+    }
+    println!("cargo:warning=docs.rs build: skipping the SFML/CSFML C++ build");
+    true
+}
+
 fn main() {
+    if build_docs_rs() {
+        return;
+    }
     // Need to probe Cargo's env as build.rs uses the default toolchain to
     // run the build meaning that #[cfg(..)]'s won't work
     let is_windows = env::var("CARGO_CFG_WINDOWS").is_ok();
-    let is_unix = env::var("CARGO_CFG_UNIX").is_ok();
     let is_linux = env::var("CARGO_CFG_TARGET_OS")
         .map(|os| os == "linux")
         .unwrap_or(false);
@@ -181,21 +196,14 @@ fn main() {
     // we cannot support debug builds of SFML.
     cmake.profile("Release");
     cmake
-        .define("CMAKE_FIND_DEBUG_MODE", "TRUE")
         .define("BUILD_SHARED_LIBS", "FALSE")
         .define("SFML_BUILD_NETWORK", "FALSE")
         .define("SFML_INSTALL_PKGCONFIG_FILES", "FALSE")
         .define("CMAKE_CXX_STANDARD", "17")
         .define("CMAKE_CXX_STANDARD_REQUIRED", "ON")
-        .define("CMAKE_FIND_DEBUG_MODE", "TRUE") // I think I'll leave this on for now. Useful for debugging.
-        .define("BUILD_SHARED_LIBS", "FALSE")
-        .define("SFML_BUILD_NETWORK", "FALSE")
-        .define("SFML_INSTALL_PKGCONFIG_FILES", "FALSE")
         // Disable "install" step
         .no_build_target(true);
-    if is_windows {
-        cmake.define("CMAKE_CXX_STANDARD", "17");
-        cmake.define("CMAKE_CXX_STANDARD_REQUIRED", "ON");
+    if matches!(win_env, Some(WinEnv::Msvc)) {
         cmake.define("CMAKE_CXX_FLAGS_INIT", "/EHsc");
     }
     if feat_audio {
@@ -262,6 +270,7 @@ fn main() {
             "CSFML/src/System/SfStdString.cpp",
             "CSFML/src/System/SfStdVector.cpp",
             "CSFML/src/System/Buffer.cpp",
+            "CSFML/src/System/Version.cpp",
         ]
         .iter(),
     );
@@ -270,6 +279,7 @@ fn main() {
             [
                 "CSFML/src/Audio/Listener.cpp",
                 "CSFML/src/Audio/Music.cpp",
+                "CSFML/src/Audio/PlaybackDevice.cpp",
                 "CSFML/src/Audio/Sound.cpp",
                 "CSFML/src/Audio/SoundChannel.cpp",
                 "CSFML/src/Audio/SoundBuffer.cpp",
@@ -290,10 +300,10 @@ fn main() {
                 "CSFML/src/Window/Keyboard.cpp",
                 "CSFML/src/Window/Mouse.cpp",
                 "CSFML/src/Window/Sensor.cpp",
-                "CSFML/src/Window/Touch.cpp",
                 "CSFML/src/Window/VideoMode.cpp",
                 "CSFML/src/Window/Window.cpp",
                 "CSFML/src/Window/Context.cpp",
+                "CSFML/src/Window/Vulkan.cpp",
             ]
             .iter(),
         );
@@ -332,8 +342,17 @@ fn main() {
         build_lib_path.display()
     );
     println!("cargo:rustc-link-lib=static=rcsfml");
+    if feat_graphics {
+        link_sfml_subsystem("graphics");
+    }
+    if feat_window {
+        link_sfml_subsystem("window");
+    }
+    if feat_audio {
+        link_sfml_subsystem("audio");
+    }
     link_sfml_subsystem("system");
-    if is_unix && is_linux {
+    if is_linux {
         static_link_linux(feat_window, feat_audio, feat_graphics, flac_ogg_linkage);
     } else if is_windows {
         match win_env {
@@ -364,15 +383,6 @@ fn main() {
         println!("cargo::rustc-link-arg=-ObjC");
     } else {
         panic!("Uhhh... Can't determine your environment. Sorry.");
-    }
-    if feat_audio {
-        link_sfml_subsystem("audio");
-    }
-    if feat_window {
-        link_sfml_subsystem("window");
-    }
-    if feat_graphics {
-        link_sfml_subsystem("graphics");
     }
 }
 

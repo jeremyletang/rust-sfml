@@ -118,6 +118,10 @@ extern "C" void sfCustomShape_setOutlineThickness(sfCustomShape *shape, float th
     shape->setOutlineThickness(thickness);
 }
 
+extern "C" void sfCustomShape_setMiterLimit(sfCustomShape *shape, float miterLimit) {
+    shape->setMiterLimit(miterLimit);
+}
+
 extern "C" const sf::Texture *sfCustomShape_getTexture(const sfCustomShape *shape) {
     return shape->getTexture();
 }
@@ -136,6 +140,10 @@ extern "C" sfColor sfCustomShape_getOutlineColor(const sfCustomShape *shape) {
 
 extern "C" float sfCustomShape_getOutlineThickness(const sfCustomShape *shape) {
     return shape->getOutlineThickness();
+}
+
+extern "C" float sfCustomShape_getMiterLimit(const sfCustomShape *shape) {
+    return shape->getMiterLimit();
 }
 
 extern "C" size_t sfCustomShape_getPointCount(const sfCustomShape *shape) {

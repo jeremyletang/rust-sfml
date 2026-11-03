@@ -2,7 +2,7 @@ use {
     super::sound_channel::SoundChannel,
     crate::{
         IntoSfResult, SfResult,
-        cpp::{CppVector, FBox},
+        cpp::FBox,
         ffi::{self},
         system::{InputStream, Time},
     },
@@ -150,18 +150,24 @@ impl SoundBuffer {
         unsafe { ffi::audio::sfSoundBuffer_getSampleCount(self) }
     }
 
-    /// Get the samples stored in the buffer
+    /// Get the samples stored in the buffer.
+    ///
+    /// Returns an empty slice when the buffer has no sample data.
     ///
     /// # Panics
     ///
     /// Panics if the sample count exceeds usize range
     #[must_use]
     pub fn samples(&self) -> &[i16] {
+        let data = unsafe { ffi::audio::sfSoundBuffer_getSamples(self) };
+        if data.is_null() {
+            return &[];
+        }
         let len: usize = self
             .sample_count()
             .try_into()
             .expect("Overflow when casting sample count to usize");
-        unsafe { slice::from_raw_parts(ffi::audio::sfSoundBuffer_getSamples(self), len) }
+        unsafe { slice::from_raw_parts(data, len) }
     }
 
     /// Get the number of channels used by a sound buffer
@@ -182,7 +188,7 @@ impl SoundBuffer {
     ///
     /// Return Map of position in sample frame to sound channel
     #[must_use]
-    pub fn channel_map(&self) -> &'static CppVector<SoundChannel> {
+    pub fn channel_map(&self) -> &[SoundChannel] {
         unsafe { &*ffi::audio::sfSoundBuffer_getChannelMap(self) }
     }
 
@@ -238,4 +244,28 @@ impl Drop for SoundBuffer {
             ffi::audio::sfSoundBuffer_del(self);
         }
     }
+}
+
+#[test]
+fn test_load_from_samples_keeps_channel_layout() {
+    let mut buffer = SoundBuffer::new().expect("Failed to create SoundBuffer");
+    let samples = [1i16, -1, 2, -2, 3, -3, 4, -4];
+    buffer
+        .load_from_samples(
+            &samples,
+            2,
+            44_100,
+            &[SoundChannel::FrontLeft, SoundChannel::FrontRight],
+        )
+        .expect("Stereo samples should load");
+    assert_eq!(buffer.channel_count(), 2);
+    assert_eq!(buffer.sample_rate(), 44_100);
+    assert_eq!(buffer.samples(), &samples[..]);
+
+    buffer
+        .load_from_samples(&samples[..4], 1, 22_050, &[SoundChannel::Mono])
+        .expect("Mono samples should load");
+    assert_eq!(buffer.channel_count(), 1);
+    assert_eq!(buffer.sample_rate(), 22_050);
+    assert_eq!(buffer.samples(), &samples[..4]);
 }

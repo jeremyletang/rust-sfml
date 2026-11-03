@@ -49,8 +49,11 @@ use {
 /// This means that a pixel must be composed of
 /// 8 bits red, green, blue and alpha channels – just like a [`Color`].
 ///
+/// Cloning an `RcTexture` clones the reference counter and shares the same
+/// texture.
+///
 /// [`Color`]: crate::graphics::Color
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct RcTexture {
     texture: Rc<RefCell<FBox<Texture>>>,
 }
@@ -63,6 +66,16 @@ impl RcTexture {
     pub fn size(&self) -> Vector2u {
         self.texture.borrow().size()
     }
+    /// Resize a texture.
+    ///
+    /// # Arguments
+    /// * size - Width and height of the texture
+    /// * srgb - `true` to enable sRGB conversion, `false` to disable it
+    ///
+    /// Returns `true` if resizing was successful, `false` if it failed
+    pub fn resize(&mut self, size: Vector2u, srgb: bool) -> bool {
+        self.texture.borrow_mut().resize(size, srgb)
+    }
     /// Tell whether the smooth filter is enabled or not for a texture
     ///
     /// Return true if smoothing is enabled, false if it is disabled
@@ -72,7 +85,7 @@ impl RcTexture {
     }
     /// Tell whether a texture is repeated or not
     ///
-    /// Return frue if repeat mode is enabled, false if it is disabled
+    /// Return true if repeat mode is enabled, false if it is disabled
     #[must_use]
     pub fn is_repeated(&self) -> bool {
         self.texture.borrow().is_repeated()
@@ -327,15 +340,5 @@ impl RcTexture {
     /// Allows other rc variants to request a weak pointer to the texture
     pub(super) fn downgrade(&self) -> std::rc::Weak<RefCell<FBox<Texture>>> {
         Rc::downgrade(&self.texture)
-    }
-}
-
-impl ToOwned for RcTexture {
-    type Owned = Self;
-
-    fn to_owned(&self) -> Self {
-        RcTexture {
-            texture: Rc::new(RefCell::new(self.texture.borrow().to_owned())),
-        }
     }
 }

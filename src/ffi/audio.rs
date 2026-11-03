@@ -1,4 +1,4 @@
-pub use crate::ffi::*;
+pub(crate) use crate::ffi::*;
 use crate::{
     audio::{SoundChannel, sound_source},
     system::Angle,
@@ -53,6 +53,10 @@ pub(crate) unsafe extern "C" fn effect_processor_trampoline(
     frame_channel_count: c_uint,
     user_data: *mut c_void,
 ) {
+    if input_frames.is_null() {
+        return;
+    }
+
     unsafe {
         let closure = &mut *user_data.cast::<sound_source::EffectProcessor>();
 
@@ -148,5 +152,8 @@ type sfCustomSoundRecorderStopCb = Option<unsafe extern "C" fn(user_data: *mut c
 type sfCustomSoundStreamGetDataCb =
     Option<unsafe extern "C" fn(chunk: *mut sfSoundStreamChunk, user_data: *mut c_void) -> bool>;
 type sfCustomSoundStreamSeekCb = Option<unsafe extern "C" fn(pos: i64, user_data: *mut c_void)>;
+
+pub(crate) type sfPlaybackDeviceNotificationCallback =
+    Option<unsafe extern "C" fn(notification: c_int, user_data: *mut c_void)>;
 
 include!("audio_bindgen.rs");

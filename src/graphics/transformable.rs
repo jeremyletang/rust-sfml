@@ -20,7 +20,7 @@ pub trait Transformable {
     /// Sets the scale factors of the object.
     ///
     /// This function completely overwrites the previous scale.
-    /// See the scale function to add a factor based on the previous scale instead.
+    /// See [`scale_by`](Self::scale_by) to add a factor based on the previous scale instead.
     /// The default scale of a transformable object is (1, 1).
     fn set_scale<S: Into<Vector2f>>(&mut self, scale: S);
     /// Sets the local origin of the object.
@@ -38,7 +38,7 @@ pub trait Transformable {
     /// The rotation is always in the range [0, 360].
     fn rotation(&self) -> Angle;
     /// Gets the current scale of the object.
-    fn get_scale(&self) -> Vector2f;
+    fn scale(&self) -> Vector2f;
     /// Gets the local origin of the object.
     fn origin(&self) -> Vector2f;
     /// Moves the object by a given offset.
@@ -55,7 +55,7 @@ pub trait Transformable {
     ///
     /// This function multiplies the current scale of the object, unlike
     /// [`set_scale`](Self::set_scale), which overwrites it.
-    fn scale<F: Into<Vector2f>>(&mut self, factors: F);
+    fn scale_by<F: Into<Vector2f>>(&mut self, factors: F);
     /// Gets the combined transform of the object.
     fn transform(&self) -> &Transform;
     /// Gets the inverse combined transform of the object.

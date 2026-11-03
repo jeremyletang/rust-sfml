@@ -26,15 +26,21 @@ pub(crate) mod system;
 #[cfg(any(feature = "window", feature = "graphics"))]
 pub(crate) mod window;
 
+use std::{ffi::c_void, os::raw::c_char};
+
+#[cfg(feature = "window")]
+use crate::system::Vector2;
+#[cfg(any(feature = "audio", feature = "window"))]
 use {
-    crate::system::{Vector2, Vector3},
-    std::{
-        ffi::c_void,
-        os::raw::{c_char, c_int, c_uint},
-    },
+    crate::system::Vector3,
+    std::os::raw::{c_int, c_uint},
 };
 
+#[cfg(any(feature = "audio", feature = "window"))]
 pub type sfVector3f = Vector3<f32>;
+#[cfg(feature = "window")]
 pub type sfVector2i = Vector2<c_int>;
+#[cfg(feature = "window")]
 pub type sfVector2u = Vector2<c_uint>;
+#[cfg(feature = "graphics")]
 pub type sfVector2f = Vector2<f32>;

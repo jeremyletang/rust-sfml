@@ -1,5 +1,6 @@
 use sfml::{
     SfResult,
+    cpp::FBox,
     graphics::{
         Color, Font, Rect, RectangleShape, RenderTarget, RenderWindow, Shape, Text, Transformable,
     },
@@ -18,6 +19,9 @@ fn gridindex(
     x: usize,
     y: usize,
 ) -> Option<&mut bool> {
+    if x >= DRAW_GRID_WH as usize {
+        return None;
+    }
     grid.get_mut(y * DRAW_GRID_WH as usize + x)
 }
 
@@ -71,6 +75,7 @@ fn bstyle(highlighted: bool, selected: bool, error: bool) -> ButtonStyle {
 
 fn main() -> SfResult<()> {
     example_ensure_right_working_dir();
+    let mut active_cursor: Option<FBox<Cursor>> = None;
     let mut rw = RenderWindow::new(
         (800, 800),
         "SFML cursor example",
@@ -137,6 +142,7 @@ fn main() -> SfResult<()> {
                                     unsafe {
                                         rw.set_mouse_cursor(&cursor);
                                     }
+                                    active_cursor = Some(cursor);
                                     selected_index = i;
                                 }
                                 Err(e) => {
@@ -165,6 +171,7 @@ fn main() -> SfResult<()> {
                             ) {
                                 Ok(cursor) => {
                                     rw.set_mouse_cursor(&cursor);
+                                    active_cursor = Some(cursor);
                                 }
                                 Err(e) => {
                                     eprintln!("{e}");
@@ -184,11 +191,9 @@ fn main() -> SfResult<()> {
                 Event::MouseButtonReleased {
                     button: mouse::Button::Left,
                     ..
-                } => {
-                    if hotspot_selected {
-                        hotspot_selection = false;
-                        hotspot_selected = false;
-                    }
+                } if hotspot_selected => {
+                    hotspot_selection = false;
+                    hotspot_selected = false;
                 }
                 _ => {}
             }
@@ -216,7 +221,10 @@ fn main() -> SfResult<()> {
         // Grid interactions
         let rela_x = mp.x - i32::from(DRAW_AREA_TOPLEFT.0);
         let rela_y = mp.y - i32::from(DRAW_AREA_TOPLEFT.1);
-        let (gx, gy) = (rela_x / i32::from(DRAW_CELL_WH), rela_y / i32::from(DRAW_CELL_WH));
+        let (gx, gy) = (
+            rela_x.div_euclid(i32::from(DRAW_CELL_WH)),
+            rela_y.div_euclid(i32::from(DRAW_CELL_WH)),
+        );
         if gx >= 0 && gy >= 0 {
             if let Some(cell) = gridindex(&mut pixel_grid, gx as usize, gy as usize) {
                 if hotspot_selection {
@@ -319,5 +327,7 @@ fn main() -> SfResult<()> {
         );
         rw.display();
     }
+    drop(rw);
+    let _ = active_cursor;
     Ok(())
 }

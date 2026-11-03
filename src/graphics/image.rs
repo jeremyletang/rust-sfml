@@ -23,40 +23,93 @@ decl_opaque! {
 /// Creation and loading
 impl Image {
     /// Create a new (empty) image.
-    pub fn new() -> SfResult<FBox<Self>> {
-        FBox::new(unsafe { ffi::sfImage_new() }).into_sf_result()
+    ///
+    /// ```
+    /// # use sfml::graphics::Image;
+    /// # use sfml::system::Vector2u;
+    /// let image = Image::new();
+    /// assert_eq!(image.size(), Vector2u::new(0, 0));
+    /// ```
+    ///
+    /// # Panics
+    ///
+    /// Panics if the image allocation fails.
+    #[must_use]
+    pub fn new() -> FBox<Self> {
+        FBox::new(unsafe { ffi::sfImage_new() }).expect("Failed to create Image")
     }
     /// Create a new `Image` filled with a solid color.
-    pub fn new_solid(size: Vector2u, color: Color) -> SfResult<FBox<Self>> {
-        let mut img = Self::new()?;
+    ///
+    /// ```
+    /// # use sfml::graphics::{Color, Image};
+    /// # use sfml::system::Vector2u;
+    /// let image = Image::new_solid(Vector2u::new(2, 3), Color::RED);
+    /// assert_eq!(image.size(), Vector2u::new(2, 3));
+    /// assert_eq!(image.pixel_at(Vector2u::new(0, 0)), Some(Color::RED));
+    /// ```
+    ///
+    /// # Panics
+    ///
+    /// Panics if the image allocation fails.
+    #[must_use]
+    pub fn new_solid(size: Vector2u, color: Color) -> FBox<Self> {
+        let mut img = Self::new();
         img.resize_with_color(size, color);
-        Ok(img)
+        img
     }
     /// Create a new `Image` from the provided RGBA pixel data.
     ///
-    /// See [`Self::recreate_from_pixels`].
+    /// `data` is expected to contain `size.x * size.y * 4` bytes in RGBA
+    /// order. A zero-sized image is allowed and produces an empty image.
     ///
-    /// # Safety
+    /// See [`Self::resize_with_pixels`].
     ///
-    /// Also see [`Self::recreate_from_pixels`].
-    pub unsafe fn from_pixels(size: Vector2u, data: &[u8]) -> SfResult<FBox<Self>> {
-        let mut img = Self::new()?;
+    /// # Panics
+    ///
+    /// Panics if the image allocation fails.
+    ///
+    /// ```
+    /// # use sfml::graphics::{Color, Image};
+    /// # use sfml::system::Vector2u;
+    /// let image = Image::from_pixels(Vector2u::new(1, 1), &[255, 0, 0, 255]);
+    /// assert_eq!(image.pixel_at(Vector2u::new(0, 0)), Some(Color::RED));
+    /// ```
+    #[must_use]
+    pub fn from_pixels(size: Vector2u, data: &[u8]) -> FBox<Self> {
+        let mut img = Self::new();
         img.resize_with_pixels(size, data);
-        Ok(img)
+        img
     }
     /// Create a new `Image` from an image file on the filesystem.
     ///
     /// See [`Self::load_from_file`].
+    ///
+    /// ```
+    /// # use sfml::graphics::Image;
+    /// let image = Image::from_file("examples/resources/logo.png").expect("failed to load image");
+    /// assert!(image.size().x > 0);
+    /// assert!(image.size().y > 0);
+    /// ```
     pub fn from_file(filename: &str) -> SfResult<FBox<Self>> {
-        let mut new = Self::new()?;
+        let mut new = Self::new();
         new.load_from_file(filename)?;
         Ok(new)
     }
     /// Create a new `Image` from image file data in memory.
     ///
     /// See [`Self::load_from_memory`].
+    ///
+    /// ```
+    /// # use sfml::graphics::{Color, Image};
+    /// # use sfml::system::Vector2u;
+    /// let source = Image::new_solid(Vector2u::new(2, 2), Color::RED);
+    /// let data = source.save_to_memory("png").expect("failed to encode image");
+    /// let loaded = Image::from_memory(&data).expect("failed to decode image");
+    /// assert_eq!(loaded.size(), Vector2u::new(2, 2));
+    /// assert_eq!(loaded.pixel_at(Vector2u::new(0, 0)), Some(Color::RED));
+    /// ```
     pub fn from_memory(data: &[u8]) -> SfResult<FBox<Self>> {
-        let mut new = Self::new()?;
+        let mut new = Self::new();
         new.load_from_memory(data)?;
         Ok(new)
     }
@@ -64,23 +117,30 @@ impl Image {
     ///
     /// See [`Self::load_from_stream`].
     pub fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<FBox<Self>> {
-        let mut new = Self::new()?;
+        let mut new = Self::new();
         new.load_from_stream(stream)?;
         Ok(new)
     }
     /// Load from image file data on the filesystem.
     ///
     /// The supported image formats are bmp, png, tga, jpg, gif,
-    /// psd, hdr and pic. Some format options are not supported,
+    /// psd, hdr, pic, pnm and qoi. Some format options are not supported,
     /// like progressive jpeg.
     /// If this function fails, the image is left unchanged.
+    ///
+    /// ```
+    /// # use sfml::graphics::Image;
+    /// let mut image = Image::new();
+    /// image.load_from_file("examples/resources/logo.png").expect("failed to load image");
+    /// assert!(image.size().x > 0);
+    /// ```
     pub fn load_from_file(&mut self, path: &str) -> SfResult<()> {
         let c_path = CString::new(path)?;
         unsafe { ffi::sfImage_loadFromFile(self, c_path.as_ptr()) }.into_sf_result()
     }
     /// Load from image file data in memory.
     ///
-    /// The supported image formats are bmp, png, tga, jpg, gif, psd, hdr and pic.
+    /// The supported image formats are bmp, png, tga, jpg, gif, psd, hdr, pic, pnm and qoi.
     /// Some format options are not supported, like progressive jpeg.
     /// If this function fails, the image is left unchanged.
     ///
@@ -91,12 +151,13 @@ impl Image {
     }
     /// Load from image file data coming from a custom stream.
     ///
-    /// The supported image formats are bmp, png, tga, jpg, gif, psd, hdr and pic.
+    /// The supported image formats are bmp, png, tga, jpg, gif, psd, hdr, pic, pnm and qoi.
     /// Some format options are not supported, like progressive jpeg.
     /// If this function fails, the image is left unchanged.
     pub fn load_from_stream<T: Read + Seek>(&mut self, stream: &mut T) -> SfResult<()> {
         let mut input_stream = InputStream::new(stream);
-        unsafe { ffi::sfImage_loadFromStream(self, &raw mut *input_stream.stream) }.into_sf_result()?;
+        unsafe { ffi::sfImage_loadFromStream(self, &raw mut *input_stream.stream) }
+            .into_sf_result()?;
         Ok(())
     }
 }
@@ -125,18 +186,26 @@ impl Image {
     /// * x - X coordinate of pixel to change
     /// * y - Y coordinate of pixel to change
     /// * color - New color of the pixel
+    ///
+    /// ```
+    /// # use sfml::graphics::{Color, Image};
+    /// # use sfml::system::Vector2u;
+    /// let mut image = Image::new_solid(Vector2u::new(2, 2), Color::BLACK);
+    /// image.set_pixel(Vector2u::new(1, 0), Color::GREEN).expect("in-bounds");
+    /// assert_eq!(image.pixel_at(Vector2u::new(1, 0)), Some(Color::GREEN));
+    /// ```
     pub fn set_pixel(&mut self, coords: Vector2u, color: Color) -> Result<(), PixelAccessError> {
         let image_size = self.size();
         if coords.x >= image_size.x {
             return Err(PixelAccessError::XTooLarge {
                 x: coords.x,
-                width: image_size.x - 1,
+                width: image_size.x.saturating_sub(1),
             });
         }
         if coords.y >= image_size.y {
             return Err(PixelAccessError::YTooLarge {
                 y: coords.y,
-                height: image_size.y - 1,
+                height: image_size.y.saturating_sub(1),
             });
         }
 
@@ -170,6 +239,14 @@ impl Image {
     /// * y - Y coordinate of pixel to get
     ///
     /// Return the Color of the pixel at coordinates (x, y)
+    ///
+    /// ```
+    /// # use sfml::graphics::{Color, Image};
+    /// # use sfml::system::Vector2u;
+    /// let image = Image::new_solid(Vector2u::new(2, 2), Color::CYAN);
+    /// assert_eq!(image.pixel_at(Vector2u::new(1, 1)), Some(Color::CYAN));
+    /// assert_eq!(image.pixel_at(Vector2u::new(2, 2)), None);
+    /// ```
     #[must_use]
     pub fn pixel_at(&self, coords: Vector2u) -> Option<Color> {
         let image_size = self.size();
@@ -183,14 +260,26 @@ impl Image {
     }
 
     /// Return the memory buffer of this image.
+    ///
+    /// Returns an empty slice when the image has no pixel data.
+    ///
+    /// ```
+    /// # use sfml::graphics::{Color, Image};
+    /// # use sfml::system::Vector2u;
+    /// let color = Color::rgba(1, 2, 3, 4);
+    /// let image = Image::new_solid(Vector2u::new(1, 1), color);
+    /// assert_eq!(image.pixel_data(), &[1, 2, 3, 4]);
+    /// assert_eq!(Image::new().pixel_data(), &[]);
+    /// ```
     #[must_use]
     pub fn pixel_data(&self) -> &[u8] {
-        unsafe {
-            let size = self.size();
-            let pixels = ffi::sfImage_getPixelsPtr(self);
-
-            slice::from_raw_parts(pixels, (size.x * size.y * 4) as usize)
+        let size = self.size();
+        let pixels = unsafe { ffi::sfImage_getPixelsPtr(self) };
+        if pixels.is_null() {
+            return &[];
         }
+
+        unsafe { slice::from_raw_parts(pixels, (size.x * size.y * 4) as usize) }
     }
 }
 
@@ -205,16 +294,42 @@ impl Image {
     /// # Arguments
     /// * color - Color to make transparent
     /// * alpha - Alpha value to assign to transparent pixels
+    ///
+    /// ```
+    /// # use sfml::graphics::{Color, Image};
+    /// # use sfml::system::Vector2u;
+    /// let mut image = Image::new_solid(Vector2u::new(2, 2), Color::RED);
+    /// image.create_mask_from_color(Color::RED, 0);
+    /// assert_eq!(image.pixel_at(Vector2u::new(0, 0)), Some(Color::rgba(255, 0, 0, 0)));
+    /// ```
     pub fn create_mask_from_color(&mut self, color: Color, alpha: u8) {
         unsafe { ffi::sfImage_createMaskFromColor(self, color, alpha) }
     }
 
     /// Flip an image horizontally (left <-> right)
+    ///
+    /// ```
+    /// # use sfml::graphics::{Color, Image};
+    /// # use sfml::system::Vector2u;
+    /// let mut image = Image::new_solid(Vector2u::new(2, 1), Color::RED);
+    /// image.set_pixel(Vector2u::new(0, 0), Color::BLUE).expect("in-bounds");
+    /// image.flip_horizontally();
+    /// assert_eq!(image.pixel_at(Vector2u::new(1, 0)), Some(Color::BLUE));
+    /// ```
     pub fn flip_horizontally(&mut self) {
         unsafe { ffi::sfImage_flipHorizontally(self) }
     }
 
     /// Flip an image vertically (top <-> bottom)
+    ///
+    /// ```
+    /// # use sfml::graphics::{Color, Image};
+    /// # use sfml::system::Vector2u;
+    /// let mut image = Image::new_solid(Vector2u::new(1, 2), Color::RED);
+    /// image.set_pixel(Vector2u::new(0, 0), Color::BLUE).expect("in-bounds");
+    /// image.flip_vertically();
+    /// assert_eq!(image.pixel_at(Vector2u::new(0, 1)), Some(Color::BLUE));
+    /// ```
     pub fn flip_vertically(&mut self) {
         unsafe { ffi::sfImage_flipVertically(self) }
     }
@@ -239,6 +354,17 @@ impl Image {
     /// * destY - Y coordinate of the destination position
     /// * sourceRect - Sub-rectangle of the source image to copy
     /// * applyAlpha - Should the copy take in account the source transparency?
+    ///
+    /// ```
+    /// # use sfml::graphics::{Color, Image, IntRect};
+    /// # use sfml::system::{Vector2i, Vector2u};
+    /// let mut dest = Image::new_solid(Vector2u::new(2, 2), Color::BLACK);
+    /// let source = Image::new_solid(Vector2u::new(1, 1), Color::GREEN);
+    ///
+    /// let whole = IntRect::new(Vector2i::new(0, 0), Vector2i::new(1, 1));
+    /// dest.copy_image(&source, Vector2u::new(1, 1), whole, false).expect("failed to copy");
+    /// assert_eq!(dest.pixel_at(Vector2u::new(1, 1)), Some(Color::GREEN));
+    /// ```
     pub fn copy_image(
         &mut self,
         source: &Image,
@@ -253,6 +379,15 @@ impl Image {
 /// Etc.
 impl Image {
     /// Resize the image and fill it with a unique color
+    ///
+    /// ```
+    /// # use sfml::graphics::{Color, Image};
+    /// # use sfml::system::Vector2u;
+    /// let mut image = Image::new();
+    /// image.resize_with_color(Vector2u::new(3, 2), Color::BLUE);
+    /// assert_eq!(image.size(), Vector2u::new(3, 2));
+    /// assert_eq!(image.pixel_at(Vector2u::new(2, 1)), Some(Color::BLUE));
+    /// ```
     pub fn resize_with_color(&mut self, size: Vector2u, color: Color) {
         unsafe {
             ffi::sfImage_resizeWithColor(self, size, color);
@@ -263,6 +398,17 @@ impl Image {
     /// The pixel array is assumed to contain 32-bits RGBA pixels,
     /// and have the given `size`. If not, this is an undefined behavior.
     /// If `pixels` is `nullptr`, an empty image is created.
+    ///
+    /// ```
+    /// # use sfml::graphics::{Color, Image};
+    /// # use sfml::system::Vector2u;
+    /// let mut image = Image::new();
+    /// let pixels = [255, 0, 0, 255, 0, 255, 0, 255];
+    /// image.resize_with_pixels(Vector2u::new(2, 1), &pixels);
+    /// assert_eq!(image.size(), Vector2u::new(2, 1));
+    /// assert_eq!(image.pixel_at(Vector2u::new(0, 0)), Some(Color::RED));
+    /// assert_eq!(image.pixel_at(Vector2u::new(1, 0)), Some(Color::GREEN));
+    /// ```
     pub fn resize_with_pixels(&mut self, size: Vector2u, data: &[u8]) {
         unsafe { ffi::sfImage_resizeWithPixels(self, size, data.as_ptr()) }
     }
@@ -270,7 +416,7 @@ impl Image {
     ///
     /// The format of the image is automatically deduced from
     /// the extension. The supported image formats are bmp, png,
-    /// tga and jpg. The destination file is overwritten
+    /// tga, jpg and qoi. The destination file is overwritten
     /// if it already exists. This function fails if the image is empty.
     ///
     /// # Arguments
@@ -285,11 +431,18 @@ impl Image {
     /// Save the image to a buffer in memory
     ///
     /// The format of the image must be specified.
-    /// The supported image formats are bmp, png, tga and jpg.
+    /// The supported image formats are bmp, png, tga, jpg and qoi.
     /// This function fails if the image is empty, or if
     /// the format was invalid.
     ///
-    /// Returns an optional buffer None for failure
+    /// # Returns
+    ///
+    /// The encoded image data on success.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`SfError::CallFailed`](crate::SfError::CallFailed) if the
+    /// image is empty or the format is invalid.
     #[must_use = "The returned buffer contains the saved data. Ignoring this result will discard the exported memory."]
     pub fn save_to_memory(&self, format: &str) -> SfResult<FBox<Buffer>> {
         let c_str = CString::new(format)?;
@@ -310,10 +463,7 @@ impl ToOwned for Image {
 
     fn to_owned(&self) -> Self::Owned {
         let ptr = unsafe { ffi::sfImage_cpy(self) };
-        match FBox::new(ptr) {
-            Some(new) => new,
-            None => panic!("Failed to copy image"),
-        }
+        FBox::new(ptr).expect("Failed to copy image")
     }
 }
 
@@ -326,6 +476,16 @@ impl Drop for Image {
 }
 
 /// Error that can happen when trying to access a pixel
+///
+/// ```
+/// # use sfml::graphics::{Color, Image, PixelAccessError};
+/// # use sfml::system::Vector2u;
+/// let mut image = Image::new_solid(Vector2u::new(1, 1), Color::BLACK);
+/// match image.set_pixel(Vector2u::new(1, 0), Color::WHITE) {
+///     Err(PixelAccessError::XTooLarge { x, .. }) => assert_eq!(x, 1),
+///     other => panic!("expected XTooLarge, got {other:?}"),
+/// }
+/// ```
 #[derive(Debug, Copy, Clone)]
 pub enum PixelAccessError {
     /// X coordinate is larger than the width of the image

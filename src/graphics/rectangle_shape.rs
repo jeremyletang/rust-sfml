@@ -26,6 +26,13 @@ impl<'s> RectangleShape<'s> {
     /// # Panics
     ///
     /// Panics if a `RectangleShape` can't be created for some reason.
+    ///
+    /// ```
+    /// # use sfml::graphics::{RectangleShape, Shape};
+    /// # use sfml::system::Vector2f;
+    /// let shape = RectangleShape::new();
+    /// assert_eq!(shape.size(), Vector2f::new(0., 0.));
+    /// ```
     #[must_use]
     pub fn new() -> RectangleShape<'s> {
         let rectangle = unsafe { ffi::sfRectangleShape_new() };
@@ -44,6 +51,17 @@ impl<'s> RectangleShape<'s> {
     }
 
     /// Returns a new `RectangleShape` with the provided size.
+    ///
+    /// ```
+    /// # use sfml::graphics::{RectangleShape, Shape};
+    /// # use sfml::system::Vector2f;
+    /// let shape = RectangleShape::with_size(Vector2f::new(30., 40.));
+    /// assert_eq!(shape.size(), Vector2f::new(30., 40.));
+    /// assert_eq!(
+    ///     shape.local_bounds(),
+    ///     sfml::graphics::FloatRect::new(Vector2f::new(0., 0.), Vector2f::new(30., 40.))
+    /// );
+    /// ```
     #[must_use]
     pub fn with_size(size: Vector2f) -> RectangleShape<'s> {
         let mut shape = Self::new();
@@ -52,6 +70,15 @@ impl<'s> RectangleShape<'s> {
     }
 
     /// Returns a new `RectangleShape` created from a [`FloatRect`].
+    ///
+    /// ```
+    /// # use sfml::graphics::{FloatRect, RectangleShape, Shape, Transformable};
+    /// # use sfml::system::Vector2f;
+    /// let rect = FloatRect::new(Vector2f::new(5., 10.), Vector2f::new(30., 40.));
+    /// let shape = RectangleShape::from_rect(rect);
+    /// assert_eq!(shape.size(), rect.size);
+    /// assert_eq!(shape.position(), rect.position);
+    /// ```
     #[must_use]
     pub fn from_rect(rect: FloatRect) -> Self {
         let mut shape = Self::new();
@@ -72,6 +99,14 @@ impl<'s> RectangleShape<'s> {
     ///
     /// # Arguments
     /// * size - The new size of the rectangle
+    ///
+    /// ```
+    /// # use sfml::graphics::RectangleShape;
+    /// # use sfml::system::Vector2f;
+    /// let mut shape = RectangleShape::new();
+    /// shape.set_size(Vector2f::new(15., 25.));
+    /// assert_eq!(shape.size(), Vector2f::new(15., 25.));
+    /// ```
     pub fn set_size<S: Into<Vector2f>>(&mut self, size: S) {
         unsafe { ffi::sfRectangleShape_setSize(self.handle.as_ptr(), size.into()) }
     }
@@ -115,7 +150,7 @@ impl Transformable for RectangleShape<'_> {
     fn rotation(&self) -> Angle {
         Angle::degrees(unsafe { ffi::sfRectangleShape_getRotation(self.handle.as_ptr()) })
     }
-    fn get_scale(&self) -> Vector2f {
+    fn scale(&self) -> Vector2f {
         unsafe { ffi::sfRectangleShape_getScale(self.handle.as_ptr()) }
     }
     fn origin(&self) -> Vector2f {
@@ -127,7 +162,7 @@ impl Transformable for RectangleShape<'_> {
     fn rotate(&mut self, angle: Angle) {
         unsafe { ffi::sfRectangleShape_rotate(self.handle.as_ptr(), angle.as_degrees()) }
     }
-    fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
+    fn scale_by<F: Into<Vector2f>>(&mut self, factors: F) {
         unsafe { ffi::sfRectangleShape_scale(self.handle.as_ptr(), factors.into()) }
     }
     fn transform(&self) -> &Transform {
@@ -157,6 +192,9 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfRectangleShape_setOutlineThickness(self.handle.as_ptr(), thickness) }
     }
+    fn set_miter_limit(&mut self, limit: f32) {
+        unsafe { ffi::sfRectangleShape_setMiterLimit(self.handle.as_ptr(), limit) }
+    }
     fn texture(&self) -> Option<&'s Texture> {
         unsafe { ffi::sfRectangleShape_getTexture(self.handle.as_ptr()).as_ref() }
     }
@@ -171,6 +209,9 @@ impl<'s> Shape<'s> for RectangleShape<'s> {
     }
     fn outline_thickness(&self) -> f32 {
         unsafe { ffi::sfRectangleShape_getOutlineThickness(self.handle.as_ptr()) }
+    }
+    fn miter_limit(&self) -> f32 {
+        unsafe { ffi::sfRectangleShape_getMiterLimit(self.handle.as_ptr()) }
     }
     fn point_count(&self) -> usize {
         unsafe { ffi::sfRectangleShape_getPointCount(self.handle.as_ptr()) }

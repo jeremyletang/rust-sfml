@@ -22,9 +22,9 @@ use {
 /// - `Vector3<f32>` is [`Vector3f`]
 /// - `Vector3<i32>` is [`Vector3i`]
 ///
-/// The `Vector3` type has a small and simple interface, its x and y members can be
-/// accessed directly (there are no accessors like `set_x()`, `get_x()`) and it contains no
-/// mathematical function like dot product, cross product, length, etc.
+/// The `Vector3` type has a small and simple interface, its `x`, `y`, and `z`
+/// members can be accessed directly (there are no accessors like `set_x()` or
+/// `get_x()`), and it provides helpers such as `dot`, `cross`, and `length`.
 ///
 /// # Usage example
 /// ```
@@ -309,8 +309,7 @@ impl<T> Vector3<T> {
 
     /// Returns a normalized (unit length) vector with the same direction.
     ///
-    /// # Panics
-    /// Panics in debug mode if the vector is zero.
+    /// Normalizing a zero vector produces a non-finite vector.
     ///
     /// # Usage Example
     /// ```

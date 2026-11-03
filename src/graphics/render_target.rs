@@ -1,3 +1,5 @@
+use std::ops::Range;
+
 use crate::{
     ffi::graphics::StencilValue,
     graphics::{
@@ -153,17 +155,17 @@ pub trait RenderTarget {
     /// located at (10, 50) in your render-window may map to the point
     /// (150, 75) in your 2D world -- if the view is translated by (140, 25).
     ///
-    /// This function is typically used to find which point (or object) is
-    /// located below the mouse cursor.
+    /// This function is typically used to find where a world-space point
+    /// appears on the target.
     ///
     /// This version uses the current view for calculations, see the
-    /// [`map_pixel_to_coords`](RenderTarget::map_pixel_to_coords) function if
+    /// [`map_coords_to_pixel`](RenderTarget::map_coords_to_pixel) function if
     /// you want to use a custom view.
     ///
     /// # Arguments
-    /// * point - Pixel to convert
+    /// * point - Point to convert
     ///
-    /// Return the converted point, in "world" units
+    /// Return the converted point, in target pixels
     fn map_coords_to_pixel_current_view(&self, point: Vector2f) -> Vector2i;
 
     /// Draw a drawable object to the render target
@@ -247,6 +249,37 @@ pub trait RenderTarget {
     /// Draw primitives defined by a vertex buffer
     fn draw_vertex_buffer(&mut self, vertex_buffer: &VertexBuffer, rs: &RenderStates);
 
+    /// Draw a range of the primitives defined by a vertex buffer
+    ///
+    /// `range` selects the vertices to draw, so `0..3` draws the first three. Vertices past the
+    /// end of the buffer are ignored, and a range whose end is before its start draws nothing.
+    fn draw_vertex_buffer_range(
+        &mut self,
+        vertex_buffer: &VertexBuffer,
+        range: Range<usize>,
+        rs: &RenderStates,
+    );
+
     /// Draw primitives defined by an array of vertices.
     fn draw_primitives(&mut self, vertices: &[Vertex], ty: PrimitiveType, rs: &RenderStates);
+}
+
+pub(crate) fn range_to_first_count(range: Range<usize>) -> (usize, usize) {
+    (range.start, range.end.saturating_sub(range.start))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::range_to_first_count;
+
+    #[test]
+    fn range_converts_to_first_and_count() {
+        assert_eq!(range_to_first_count(2..5), (2, 3));
+    }
+
+    #[test]
+    fn reversed_range_has_no_vertices() {
+        let (start, end) = (5, 2);
+        assert_eq!(range_to_first_count(start..end), (5, 0));
+    }
 }

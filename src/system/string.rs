@@ -1,5 +1,4 @@
 use {
-    crate::ffi::system as ffi,
     core::fmt,
     std::error::Error,
     widestring::{U32CStr, U32CString, error::Utf32Error},
@@ -13,6 +12,7 @@ use {
 pub struct SfStr(U32CStr);
 
 impl SfStr {
+    #[cfg(feature = "window")]
     pub(crate) unsafe fn from_ptr_str<'a>(p: *const u32) -> &'a Self {
         unsafe {
             let ptr: *const U32CStr = U32CStr::from_ptr_str(p);
@@ -32,7 +32,9 @@ impl SfStr {
 
     /// Convert to a UTF-8 `String` from the Rust standard library.
     ///
-    /// Returns a `Result` and errors if the string is not valid UTF-32
+    /// # Errors
+    ///
+    /// Returns [`SfStrConvError`] if the string is not valid UTF-32.
     pub fn try_to_rust_string(&self) -> Result<String, SfStrConvError> {
         match self.0.to_string() {
             Ok(string) => Ok(string),
@@ -40,6 +42,7 @@ impl SfStr {
         }
     }
 
+    #[cfg(feature = "window")]
     pub(crate) fn as_ptr(&self) -> *const u32 {
         self.0.as_ptr()
     }
@@ -85,7 +88,16 @@ impl SfStrConv for &String {
     }
 }
 
-/// Errors which can occur when attempting to translate from UTF-32 to UTF-8
+/// Errors which can occur when attempting to translate from UTF-32 to UTF-8.
+///
+/// This is the error type returned by [`SfStr::try_to_rust_string`].
+///
+/// ```
+/// use sfml::system::SfStrConvError;
+///
+/// fn assert_error<T: std::error::Error>() {}
+/// assert_error::<SfStrConvError>();
+/// ```
 #[derive(Debug)]
 pub struct SfStrConvError(Utf32Error);
 
@@ -94,7 +106,8 @@ impl SfStrConvError {
         Self(value)
     }
 
-    /// Returns the index in the string where the conversion error occured
+    /// Returns the index in the string where the conversion error occurred
+    #[must_use]
     pub fn index(&self) -> usize {
         self.0.index()
     }
@@ -114,28 +127,5 @@ impl Error for SfStrConvError {}
 impl fmt::Display for SfStrConvError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{:?}", self.0)
-    }
-}
-
-decl_opaque! {
-    /// Opaque handle to a C++ `sf::String`
-    pub SfString;
-}
-
-impl SfString {
-    fn data(&self) -> &[u32] {
-        unsafe {
-            let len = ffi::sfString_getLength(self);
-            let data = ffi::sfString_getData(self);
-            std::slice::from_raw_parts(data, len)
-        }
-    }
-}
-
-impl fmt::Display for SfString {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let data = self.data();
-        let ustr = widestring::U32Str::from_slice(data);
-        write!(f, "{}", ustr.to_string_lossy())
     }
 }

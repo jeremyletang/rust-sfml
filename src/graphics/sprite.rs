@@ -43,9 +43,8 @@ impl<'s> Sprite<'s> {
     /// Create a new sprite with a texture and a source rectangle
     ///
     /// # Panics
-    /// Panics during const evaluation.
-    /// This method will panic during const evaluation if the pointer cannot be
-    /// determined to be null or not.
+    ///
+    /// Panics if the sprite allocation fails.
     #[must_use]
     pub fn with_texture_and_rect(texture: &'s Texture, rect: IntRect) -> Self {
         let sp = unsafe { ffi::sfSprite_new(texture, rect) };
@@ -201,7 +200,7 @@ impl Transformable for Sprite<'_> {
     fn rotation(&self) -> Angle {
         Angle::degrees(unsafe { ffi::sfSprite_getRotation(self.handle.as_ptr()) })
     }
-    fn get_scale(&self) -> Vector2f {
+    fn scale(&self) -> Vector2f {
         unsafe { ffi::sfSprite_getScale(self.handle.as_ptr()) }
     }
     fn origin(&self) -> Vector2f {
@@ -213,7 +212,7 @@ impl Transformable for Sprite<'_> {
     fn rotate(&mut self, angle: Angle) {
         unsafe { ffi::sfSprite_rotate(self.handle.as_ptr(), angle.as_degrees()) }
     }
-    fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
+    fn scale_by<F: Into<Vector2f>>(&mut self, factors: F) {
         unsafe { ffi::sfSprite_scale(self.handle.as_ptr(), factors.into()) }
     }
     fn transform(&self) -> &Transform {

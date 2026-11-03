@@ -59,6 +59,7 @@ fn main() -> SfResult<()> {
     shape.set_position((400., 300.));
     shape.set_origin((400., 300.));
     shape.set_outline_thickness(3.);
+    shape.update();
 
     'mainloop: loop {
         while let Some(event) = window.poll_event() {

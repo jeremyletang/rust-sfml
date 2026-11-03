@@ -1,8 +1,9 @@
 use sfml::{
     SfResult,
     graphics::{
-        Color, RcFont, RcSprite, RcText, RcTexture, RectangleShape, RenderTarget, RenderWindow,
-        Shape, Sprite, Texture, Transformable,
+        ClusterGrouping, Color, GlyphAppearance, LineAlignment, RcFont, RcSprite, RcText,
+        RcTexture, RectangleShape, RenderTarget, RenderWindow, Shape, ShapedGlyph, Sprite,
+        TextOrientation, TextStyle, Texture, Transformable,
     },
     system::Vector2f,
     window::{Event, Key, Style, clipboard, window_enums::State},
@@ -34,7 +35,7 @@ impl FloatingResource {
 
     fn with_font(font: &RcFont, up: bool, left: bool, speed: f32) -> Self {
         let mut text = RcText::new("", font, 16);
-        text.scale(Vector2f::new(2., 2.));
+        text.scale_by(Vector2f::new(2., 2.));
         Self {
             up,
             left,
@@ -112,9 +113,32 @@ fn get_set_smooth_rc_text(font: &RcFont) -> RcText {
         font,
         16,
     );
-    set_smooth_text.scale(Vector2f::new(2., 2.));
+    set_smooth_text.scale_by(Vector2f::new(2., 2.));
 
     set_smooth_text
+}
+
+/// Makes every other cluster bold, to show the glyph pre-processor and the cluster grouping
+fn bold_alternate_clusters(glyph: &ShapedGlyph, appearance: &mut GlyphAppearance) {
+    if glyph.cluster % 2 == 0 {
+        appearance.style |= TextStyle::BOLD;
+    }
+}
+
+fn get_layout_rc_text(font: &RcFont) -> RcText {
+    let mut layout_text = RcText::new("Centered, cluster grouped\nRcText layout", font, 16);
+    layout_text.set_line_alignment(LineAlignment::Center);
+    layout_text.set_cluster_grouping(ClusterGrouping::Grapheme);
+    layout_text.set_glyph_pre_processor(Some(bold_alternate_clusters));
+    layout_text.set_position((300., 400.));
+    layout_text
+}
+
+fn get_vertical_rc_text(font: &RcFont) -> RcText {
+    let mut vertical_text = RcText::new("Vertical RcText", font, 16);
+    vertical_text.set_text_orientation(TextOrientation::TopToBottom);
+    vertical_text.set_position((700., 100.));
+    vertical_text
 }
 
 fn main() -> SfResult<()> {
@@ -155,6 +179,14 @@ fn main() -> SfResult<()> {
     ]);
 
     let set_smooth_text = get_set_smooth_rc_text(&font);
+    let mut layout_text = get_layout_rc_text(&font);
+    let vertical_text = get_vertical_rc_text(&font);
+    println!(
+        "RcText layout: {} glyphs, {} vertices, {} outline vertices",
+        layout_text.shaped_glyphs().len(),
+        layout_text.vertex_data().len(),
+        layout_text.outline_vertex_data().len()
+    );
     let mut show_texture_atlas = false;
     let mut text_buf = String::from("SFML");
 
@@ -206,6 +238,8 @@ fn main() -> SfResult<()> {
         }
 
         window.draw(&set_smooth_text);
+        window.draw(&layout_text);
+        window.draw(&vertical_text);
         if show_texture_atlas {
             let scale = 3.0;
             let tex = font.texture(16);

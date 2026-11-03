@@ -1,2 +1,6 @@
-imports_granularity = "One"
-group_imports = "One"
+# Keep this file free of nightly-only options: the project formats with stable
+# rustfmt, which ignores them and warns about each one.
+#
+# Previously set nightly options. Some may find it useful if you are on nightly:
+# imports_granularity = "One"
+# group_imports = "One"

@@ -31,11 +31,11 @@ jobs:
     steps:
     - uses: hecrj/setup-rust-action@v2
       with:
-        rust-version: 1.86.0
+        rust-version: 1.99.0
     - uses: actions/checkout@v4
     - name: Install deps
       run: |
-        brew install freetype libvorbis flac libogg
+        brew install freetype harfbuzz libvorbis flac libogg
     - name: Build
       run: |
        git submodule update --init

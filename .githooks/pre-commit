@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# Format tracked Rust sources with rustfmt before each commit.
+#
+# Generated src/ffi/*_bindgen.rs files carry #[rustfmt::skip], so rustfmt
+# leaves them untouched.
+#
+# If rustfmt is not installed, this hook does nothing.
+
+set -u
+
+if ! command -v rustfmt >/dev/null 2>&1; then
+  exit 0
+fi
+
+# Only touch files without unstaged changes, so the hook never stages edits
+# that were not meant to be part of this commit.
+files=()
+skipped=()
+
+while IFS= read -r -d '' file; do
+  [ -f "$file" ] || continue
+
+  if ! git diff --quiet -- "$file"; then
+    skipped+=("$file")
+  else
+    files+=("$file")
+  fi
+done < <(git ls-files -z -- '*.rs')
+
+if [ "${#skipped[@]}" -gt 0 ]; then
+  echo "pre-commit: skipped files with unstaged changes:" >&2
+  printf '  %s\n' "${skipped[@]}" >&2
+fi
+
+if [ "${#files[@]}" -eq 0 ]; then
+  exit 0
+fi
+
+if ! rustfmt --edition 2024 "${files[@]}"; then
+  echo "pre-commit: rustfmt failed" >&2
+  exit 1
+fi
+
+changed=()
+for file in "${files[@]}"; do
+  if ! git diff --quiet -- "$file"; then
+    changed+=("$file")
+  fi
+done
+
+if [ "${#changed[@]}" -gt 0 ]; then
+  git add -- "${changed[@]}"
+  echo "pre-commit: rustfmt formatted and staged:"
+  printf '  %s\n' "${changed[@]}"
+fi
+
+exit 0

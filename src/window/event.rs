@@ -14,6 +14,18 @@ use crate::ffi::window::{self as ffi, EventType};
 /// [`Window::poll_event`]: crate::window::Window::poll_event
 /// [`Window::wait_event`]: crate::window::Window::wait_event
 ///
+/// # Examples
+///
+/// ```
+/// use sfml::window::Event;
+///
+/// let event = Event::TextEntered { unicode: 'a' };
+/// match event {
+///     Event::TextEntered { unicode } => assert_eq!(unicode, 'a'),
+///     _ => unreachable!(),
+/// }
+/// assert_eq!(Event::Closed, Event::Closed);
+/// ```
 #[derive(Clone, PartialEq, Debug, Copy)]
 pub enum Event {
     /// The window requested to be closed
@@ -201,7 +213,13 @@ pub enum Event {
 
 impl Event {
     pub(crate) unsafe fn from_raw(event: &ffi::Event) -> Option<Self> {
-        use crate::window::Event::{Closed, Resized, FocusLost, FocusGained, TextEntered, KeyPressed, KeyReleased, MouseWheelScrolled, MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseMovedRaw, MouseEntered, MouseLeft, JoystickButtonPressed, JoystickButtonReleased, JoystickMoved, JoystickConnected, JoystickDisconnected, TouchBegan, TouchMoved, TouchEnded, SensorChanged};
+        use crate::window::Event::{
+            Closed, FocusGained, FocusLost, JoystickButtonPressed, JoystickButtonReleased,
+            JoystickConnected, JoystickDisconnected, JoystickMoved, KeyPressed, KeyReleased,
+            MouseButtonPressed, MouseButtonReleased, MouseEntered, MouseLeft, MouseMoved,
+            MouseMovedRaw, MouseWheelScrolled, Resized, SensorChanged, TextEntered, TouchBegan,
+            TouchEnded, TouchMoved,
+        };
         let evt = match event.type_ {
             EventType::Closed => Closed,
             EventType::Resized => Resized {
@@ -271,15 +289,15 @@ impl Event {
             },
             EventType::TouchBegan => TouchBegan {
                 finger: unsafe { event.union.touch.finger },
-                position: unsafe { event.union.mouse_button.position },
+                position: unsafe { event.union.touch.position },
             },
             EventType::TouchMoved => TouchMoved {
                 finger: unsafe { event.union.touch.finger },
-                position: unsafe { event.union.mouse_button.position },
+                position: unsafe { event.union.touch.position },
             },
             EventType::TouchEnded => TouchEnded {
                 finger: unsafe { event.union.touch.finger },
-                position: unsafe { event.union.mouse_button.position },
+                position: unsafe { event.union.touch.position },
             },
             EventType::SensorChanged => SensorChanged {
                 type_: unsafe { event.union.sensor.type_ },
@@ -287,5 +305,36 @@ impl Event {
             },
         };
         Some(evt)
+    }
+}
+
+pub(crate) fn drain_events(
+    mut poll: impl FnMut() -> Option<Event>,
+    mut handler: impl FnMut(Event),
+) {
+    while let Some(event) = poll() {
+        handler(event);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{Event, drain_events};
+    use std::collections::VecDeque;
+
+    #[test]
+    fn drain_events_delivers_every_queued_event_in_order() {
+        let mut queue = VecDeque::from([Event::Closed, Event::FocusGained, Event::FocusLost]);
+        let mut seen = Vec::new();
+        drain_events(|| queue.pop_front(), |event| seen.push(event));
+        assert_eq!(seen, [Event::Closed, Event::FocusGained, Event::FocusLost]);
+        assert!(queue.is_empty());
+    }
+
+    #[test]
+    fn drain_events_on_empty_queue_calls_nothing() {
+        let mut calls = 0;
+        drain_events(|| None, |_| calls += 1);
+        assert_eq!(calls, 0);
     }
 }

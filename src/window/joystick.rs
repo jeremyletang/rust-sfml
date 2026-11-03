@@ -37,7 +37,7 @@
 //!     // How many buttons does joystick #0 support?
 //!     let _buttons = joystick::button_count(0);
 //!     // Does joystick #0 define a X axis?
-//!     let _hax_x = joystick::has_axis(0, joystick::Axis::X);
+//!     let _has_x = joystick::has_axis(0, joystick::Axis::X);
 //!     // Is button #2 pressed on joystick #0?
 //!     let _pressed = joystick::is_button_pressed(0, 2);
 //!     // What's the current position of the Y axis on joystick #0?
@@ -51,7 +51,7 @@
 //! [`update`]: update
 //!
 
-use crate::{cpp::FBox, ffi::window as ffi, system::SfString};
+use crate::{cpp::FBox, ffi::window as ffi, system::SfStr};
 pub use ffi::JoystickAxis as Axis;
 
 /// Maximum number of supported joysticks.
@@ -128,7 +128,7 @@ pub fn axis_position(joystick: u32, axis: Axis) -> f32 {
 /// Update the states of all joysticks
 ///
 /// This function is used internally by SFML, so you normally
-/// don't have to call it explicitely. However, you may need to
+/// don't have to call it explicitly. However, you may need to
 /// call it if you have no window yet (or no window at all):
 /// in this case the joysticks states are not updated automatically.
 pub fn update() {
@@ -158,8 +158,11 @@ pub fn identification(joystick: u32) -> FBox<Identification> {
 impl Identification {
     /// Name of the joystick.
     #[must_use]
-    pub fn name(&self) -> &SfString {
-        unsafe { &*ffi::sfJoystickIdentification_getName(self) }
+    pub fn name(&self) -> String {
+        unsafe {
+            let name = ffi::sfJoystickIdentification_getName(self);
+            SfStr::from_ptr_str(crate::ffi::system::sfString_getData(name)).to_rust_string()
+        }
     }
     /// Manufacturer identifier.
     #[must_use]

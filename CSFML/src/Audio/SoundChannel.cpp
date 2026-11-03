@@ -9,7 +9,3 @@ extern "C" std::size_t sfSoundChannelVector_getLength(const std::vector<sf::Soun
 extern "C" const sf::SoundChannel *sfSoundChannelVector_getData(const std::vector<sf::SoundChannel> *vec) {
     return vec->data();
 }
-
-extern "C" void sfSoundChannelVector_del(const std::vector<sf::SoundChannel> *vec) {
-    delete vec;
-}

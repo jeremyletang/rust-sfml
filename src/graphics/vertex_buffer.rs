@@ -177,7 +177,7 @@ impl VertexBuffer {
     /// Bind a vertex buffer for rendering.
     ///
     /// This function is not part of the graphics API, it mustn't be used when drawing SFML
-    /// entities. It must be used only if you mix sf::VertexBuffer with OpenGL code.
+    /// entities. It must be used only if you mix `sf::VertexBuffer` with OpenGL code.
     ///
     #[cfg_attr(feature = "ci-headless", doc = "```no_run")]
     #[cfg_attr(not(feature = "ci-headless"), doc = "```")]
@@ -215,7 +215,7 @@ impl VertexBuffer {
     ///
     /// Return True if vertex buffers are supported, false otherwise
     #[must_use]
-    pub fn available() -> bool {
+    pub fn is_available() -> bool {
         unsafe { ffi::sfVertexBuffer_isAvailable() }
     }
 }
@@ -225,10 +225,7 @@ impl ToOwned for VertexBuffer {
 
     fn to_owned(&self) -> Self::Owned {
         let ptr = unsafe { ffi::sfVertexBuffer_cpy(self) };
-        match FBox::new(ptr) {
-            Some(new) => new,
-            None => panic!("Failed to clone VertexBuffer"),
-        }
+        FBox::new(ptr).expect("Failed to clone VertexBuffer")
     }
 }
 

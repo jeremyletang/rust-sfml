@@ -2,6 +2,20 @@ use crate::{ffi, system::Time};
 
 #[derive(Default, Debug, Clone, Copy)]
 /// Structure defining a time range
+///
+/// # Examples
+///
+/// ```
+/// use sfml::audio::TimeSpan;
+/// use sfml::system::Time;
+///
+/// let span = TimeSpan {
+///     offset: Time::seconds(1.),
+///     length: Time::milliseconds(500),
+/// };
+/// assert_eq!(span.offset.as_milliseconds(), 1000);
+/// assert_eq!(span.length.as_milliseconds(), 500);
+/// ```
 pub struct TimeSpan {
     /// The beginning offset of the time range.
     pub offset: Time,

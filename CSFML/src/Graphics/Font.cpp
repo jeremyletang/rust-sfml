@@ -5,6 +5,8 @@
 
 struct sfGlyph {
     float advance;         ///< Offset to move horizontically to the next character
+    int lsbDelta;          ///< Left offset after forced autohint. Internally used by getKerning()
+    int rsbDelta;          ///< Right offset after forced autohint. Internally used by getKerning()
     sfFloatRect bounds;    ///< Bounding rectangle of the glyph, in coordinates relative to the baseline
     sfIntRect textureRect; ///< Texture coordinates of the glyph inside the font's image
 };
@@ -37,6 +39,8 @@ extern "C" sfGlyph sfFont_getGlyph(const sf::Font *font, uint32_t codePoint, uns
     sf::Glyph glyph = font->getGlyph(codePoint, characterSize, bold, outlineThickness);
     return {
         glyph.advance,
+        glyph.lsbDelta,
+        glyph.rsbDelta,
         {glyph.bounds.position.x, glyph.bounds.position.y, glyph.bounds.size.x, glyph.bounds.size.y},
         {glyph.textureRect.position.x, glyph.textureRect.position.y, glyph.textureRect.size.x, glyph.textureRect.size.y}};
 }
@@ -46,15 +50,23 @@ extern "C" bool sfFont_hasGlyph(const sf::Font *font, uint32_t codePoint) {
 }
 
 extern "C" float sfFont_getKerning(const sf::Font *font, uint32_t first, uint32_t second, unsigned int characterSize) {
-    return font->getKerning(first, second, characterSize);
+    return font->getKerning(static_cast<char32_t>(first), static_cast<char32_t>(second), characterSize);
 }
 
 extern "C" float sfFont_getBoldKerning(const sf::Font *font, uint32_t first, uint32_t second, unsigned int characterSize) {
-    return font->getKerning(first, second, characterSize, true);
+    return font->getKerning(static_cast<char32_t>(first), static_cast<char32_t>(second), characterSize, true);
 }
 
 extern "C" float sfFont_getLineSpacing(const sf::Font *font, unsigned int characterSize) {
     return font->getLineSpacing(characterSize);
+}
+
+extern "C" float sfFont_getAscent(const sf::Font *font, unsigned int characterSize) {
+    return font->getAscent(characterSize);
+}
+
+extern "C" float sfFont_getDescent(const sf::Font *font, unsigned int characterSize) {
+    return font->getDescent(characterSize);
 }
 
 extern "C" float sfFont_getUnderlinePosition(const sf::Font *font, unsigned int characterSize) {

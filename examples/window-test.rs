@@ -100,13 +100,13 @@ fn main() -> SfResult<()> {
             rw.draw(&txt);
             y += fontsize as f32;
         }
-        let mut i = configs.len();
         y += fontsize as f32;
         txt.set_position((0., y));
         txt.set_fill_color(Color::WHITE);
         txt.set_string("= Fullscreen modes =");
         rw.draw(&txt);
-        for mode in fs_modes.iter() {
+        for (offset, mode) in fs_modes.iter().enumerate() {
+            let i = configs.len() + offset;
             let n_rows = 23;
             let column = i / n_rows;
             let row = i % n_rows;
@@ -126,7 +126,6 @@ fn main() -> SfResult<()> {
                 mode.size.x, mode.size.y, mode.bits_per_pixel
             ));
             rw.draw(&txt);
-            i += 1;
         }
         rw.display();
     }

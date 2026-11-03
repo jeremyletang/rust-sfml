@@ -30,6 +30,7 @@ fn main() -> SfResult<()> {
         VertexBufferUsage::DYNAMIC,
     )?;
     vertex_buffer.update(&vertices, 0)?;
+    let mut first_visible = 0;
 
     'mainloop: loop {
         while let Some(e) = window.poll_event() {
@@ -45,12 +46,22 @@ fn main() -> SfResult<()> {
                     ));
                     vertex_buffer.update(&vertices, 0)?;
                 }
+                Event::MouseButtonPressed {
+                    button: Button::Right,
+                    ..
+                } => {
+                    first_visible = (first_visible + 1).min(vertices.len() - 2);
+                }
                 _ => {}
             }
         }
         // Clear the window
         window.clear(Color::BLACK);
-        window.draw(&*vertex_buffer);
+        window.draw_vertex_buffer_range(
+            &vertex_buffer,
+            first_visible..vertices.len(),
+            &Default::default(),
+        );
         // Display things on screen
         window.display();
     }

@@ -11,11 +11,11 @@ fn main() -> SfResult<()> {
         eprintln!("Active context id: {}", Context::active_context_id());
         let settings = ctx.settings();
         eprintln!("Settings of created context: {settings:#?}");
-        ctx.set_active(false)?;
+        ctx.set_active(false);
         // Deactivated context, so this should be null
         assert_eq!(Context::active_context(), std::ptr::null());
         eprintln!("Active context id: {}", Context::active_context_id());
-        ctx.set_active(true)?;
+        ctx.set_active(true);
         // Activated once again
         assert_eq!(Context::active_context(), &*ctx);
         eprintln!("Active context id: {}", Context::active_context_id());

@@ -3,10 +3,10 @@ use {
         SfResult,
         cpp::FBox,
         graphics::{Font, Glyph, Texture, font::Info},
+        system::InputStream,
     },
     std::{
         cell::{Ref, RefCell},
-        io::{Read, Seek},
         rc::Rc,
     },
 };
@@ -52,7 +52,9 @@ use {
 /// supports that size is used.
 ///
 /// [`RcText`]: crate::graphics::RcText
-#[derive(Debug)]
+///
+/// Cloning an `RcFont` clones the reference counter and shares the same font.
+#[derive(Clone, Debug)]
 pub struct RcFont {
     font: Rc<RefCell<FBox<Font>>>,
 }
@@ -124,6 +126,53 @@ impl RcFont {
         self.font.borrow().line_spacing(character_size)
     }
 
+    /// Get the ascent
+    ///
+    /// The ascent is the largest distance between the baseline and the top of all
+    /// glyphs in the font. There is no uniform definition of how the ascent is
+    /// calculated, so it can vary from font to font.
+    ///
+    /// # Arguments
+    /// * `character_size` - Reference character size, in pixels
+    ///
+    /// Return the ascent, in pixels
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::RcFont;
+    /// # let font = RcFont::from_file("examples/resources/sansation.ttf").unwrap();
+    /// assert!(font.ascent(32) > 0.);
+    /// ```
+    #[must_use]
+    pub fn ascent(&self, character_size: u32) -> f32 {
+        self.font.borrow().ascent(character_size)
+    }
+
+    /// Get the descent
+    ///
+    /// The descent is the largest distance between the baseline and the bottom of
+    /// all glyphs in the font. It shares the coordinate system of the ascent, so it
+    /// is negative for distances below the baseline. There is no uniform definition
+    /// of how the descent is calculated, so it can vary from font to font.
+    ///
+    /// # Arguments
+    /// * `character_size` - Reference character size, in pixels
+    ///
+    /// Return the descent, in pixels
+    ///
+    /// # Usage Example
+    ///
+    /// ```
+    /// # use sfml::graphics::RcFont;
+    /// # let font = RcFont::from_file("examples/resources/sansation.ttf").unwrap();
+    /// assert!(font.descent(32) < 0.);
+    /// ```
+    #[must_use]
+    pub fn descent(&self, character_size: u32) -> f32 {
+        self.font.borrow().descent(character_size)
+    }
+
     /// Get a glyph in a font
     ///
     /// # Arguments
@@ -143,6 +192,18 @@ impl RcFont {
         self.font
             .borrow()
             .glyph(codepoint, character_size, bold, outline_thickness)
+    }
+
+    /// Determine if this font has a glyph representing the requested code point.
+    ///
+    /// ```
+    /// # use sfml::graphics::RcFont;
+    /// # let font = RcFont::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// assert!(font.has_glyph('A' as u32));
+    /// ```
+    #[must_use]
+    pub fn has_glyph(&self, codepoint: u32) -> bool {
+        self.font.borrow().has_glyph(codepoint)
     }
 
     /// Returns the font information.
@@ -225,12 +286,15 @@ impl RcFont {
     /// Windows FNT, BDF, PFR and Type 42.
     ///
     /// # Safety
-    /// SFML cannot preload all the font data in this function, so the stream has to remain
-    /// accessible until the `RcFont` object loads a new font or is destroyed.
+    ///
+    /// SFML reads from the stream lazily through `FreeType` callbacks, so
+    /// `stream` (the adapter and its source) must outlive every use of the
+    /// returned font, including every [`crate::graphics::RcText`] bound to it.
+    /// Drop the font before the stream.
     ///
     /// # See also
     /// [`RcFont::from_file`], [`RcFont::from_memory`]
-    pub unsafe fn from_stream<T: Read + Seek>(stream: &mut T) -> SfResult<Self> {
+    pub unsafe fn from_stream<S>(stream: &InputStream<'_, S>) -> SfResult<Self> {
         Ok(RcFont {
             font: Rc::new(RefCell::new(unsafe { Font::from_stream(stream) }?)),
         })
@@ -270,11 +334,17 @@ impl RcFont {
     /// # Arguments
     /// * `character_size` - Character size, in pixels
     #[must_use]
-    pub fn texture(&self, character_size: u32) -> Ref<Texture> {
+    pub fn texture(&self, character_size: u32) -> Ref<'_, Texture> {
         Ref::map(self.font.borrow(), move |r| r.texture(character_size))
     }
 
     /// Check if the font has anti-aliasing enabled/disabled
+    ///
+    /// ```
+    /// # use sfml::graphics::RcFont;
+    /// # let font = RcFont::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// assert!(font.is_smooth());
+    /// ```
     #[must_use]
     pub fn is_smooth(&self) -> bool {
         self.font.borrow().is_smooth()
@@ -284,13 +354,21 @@ impl RcFont {
     ///
     /// # Arguments
     /// * `smooth` - True to enable smoothing, false to disable smoothing
+    ///
+    /// ```
+    /// # use sfml::graphics::RcFont;
+    /// let mut font = RcFont::from_file("examples/resources/sansation.ttf").expect("failed to load font");
+    /// assert!(font.is_smooth());
+    /// font.set_smooth(false);
+    /// assert!(!font.is_smooth());
+    /// ```
     pub fn set_smooth(&mut self, smooth: bool) {
         self.font.borrow_mut().set_smooth(smooth);
     }
 
     /// Get the source font of an [`RcFont`]
     ///
-    /// It let's you temprorarily borrow the [`Font`] bieng held by [`RcFont`].
+    /// It lets you temporarily borrow the [`Font`] being held by [`RcFont`].
     /// This may be useful for many things like using a temporary text object.
     ///
     /// Returns [`Font`]
@@ -303,14 +381,5 @@ impl RcFont {
     /// Allows other rc variants to request a weak pointer to the texture
     pub(super) fn downgrade(&self) -> std::rc::Weak<RefCell<FBox<Font>>> {
         Rc::downgrade(&self.font)
-    }
-}
-
-impl ToOwned for RcFont {
-    type Owned = RcFont;
-    fn to_owned(&self) -> Self {
-        RcFont {
-            font: Rc::new(RefCell::new(self.font.borrow().to_owned())),
-        }
     }
 }

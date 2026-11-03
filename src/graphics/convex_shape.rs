@@ -34,6 +34,12 @@ impl<'s> ConvexShape<'s> {
     /// # Panics
     ///
     /// Panics if for some reason a `ConvexShape` can't be created.
+    ///
+    /// ```
+    /// # use sfml::graphics::{ConvexShape, Shape};
+    /// let shape = ConvexShape::new(3);
+    /// assert_eq!(shape.point_count(), 3);
+    /// ```
     #[must_use]
     pub fn new(points_count: usize) -> ConvexShape<'s> {
         let shape = unsafe { ffi::sfConvexShape_new() };
@@ -124,7 +130,7 @@ impl Transformable for ConvexShape<'_> {
     fn rotation(&self) -> Angle {
         unsafe { Angle::degrees(ffi::sfConvexShape_getRotation(self.handle.as_ptr())) }
     }
-    fn get_scale(&self) -> Vector2f {
+    fn scale(&self) -> Vector2f {
         unsafe { ffi::sfConvexShape_getScale(self.handle.as_ptr()) }
     }
     fn origin(&self) -> Vector2f {
@@ -136,7 +142,7 @@ impl Transformable for ConvexShape<'_> {
     fn rotate(&mut self, angle: Angle) {
         unsafe { ffi::sfConvexShape_rotate(self.handle.as_ptr(), angle.as_degrees()) }
     }
-    fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
+    fn scale_by<F: Into<Vector2f>>(&mut self, factors: F) {
         unsafe { ffi::sfConvexShape_scale(self.handle.as_ptr(), factors.into()) }
     }
     fn transform(&self) -> &Transform {
@@ -166,6 +172,9 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfConvexShape_setOutlineThickness(self.handle.as_ptr(), thickness) }
     }
+    fn set_miter_limit(&mut self, limit: f32) {
+        unsafe { ffi::sfConvexShape_setMiterLimit(self.handle.as_ptr(), limit) }
+    }
     fn texture(&self) -> Option<&'s Texture> {
         unsafe { ffi::sfConvexShape_getTexture(self.handle.as_ptr()).as_ref() }
     }
@@ -180,6 +189,9 @@ impl<'s> Shape<'s> for ConvexShape<'s> {
     }
     fn outline_thickness(&self) -> f32 {
         unsafe { ffi::sfConvexShape_getOutlineThickness(self.handle.as_ptr()) }
+    }
+    fn miter_limit(&self) -> f32 {
+        unsafe { ffi::sfConvexShape_getMiterLimit(self.handle.as_ptr()) }
     }
     fn point_count(&self) -> usize {
         unsafe { ffi::sfConvexShape_getPointCount(self.handle.as_ptr()) }

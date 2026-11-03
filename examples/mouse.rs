@@ -1,4 +1,9 @@
-use sfml::{SfResult, graphics::{RenderWindow, Font, CircleShape, Text, Transformable, RenderTarget, Color, Shape, Drawable}, system::Vector2i, window::{Style, Event, Key, VideoMode, mouse}};
+use sfml::{
+    SfResult,
+    graphics::{CircleShape, Color, Font, RenderTarget, RenderWindow, Text, Transformable},
+    system::Vector2i,
+    window::{Event, Key, Style, VideoMode, mouse},
+};
 
 include!("../example_common.rs");
 
@@ -70,7 +75,9 @@ fn main() -> SfResult<()> {
                 }
                 Event::KeyPressed { code, .. } => {
                     if code == Key::W {
-                        window.set_mouse_position(Vector2i::new(400, 300));
+                        let size = window.size();
+                        let center = Vector2i::new(size.x as i32 / 2, size.y as i32 / 2);
+                        window.set_mouse_position(center);
                     } else if code == Key::D {
                         let dm = VideoMode::desktop_mode();
                         let center = Vector2i::new(dm.size.x as i32 / 2, dm.size.y as i32 / 2);

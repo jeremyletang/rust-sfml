@@ -8,6 +8,7 @@
 //! open window for which events are being handled.
 
 use crate::{
+    cpp::FBox,
     ffi::system as ffi,
     system::{SfStr, SfStrConv},
 };
@@ -15,14 +16,16 @@ use crate::{
 /// Get the content of the clipboard as string data.
 ///
 /// If the clipboard does not contain a string, it returns an empty string.
+///
+/// # Panics
+///
+/// Panics if the clipboard string allocation fails.
 #[must_use]
 pub fn get_string() -> String {
     unsafe {
-        let sf_string = crate::ffi::window::sfClipboard_getUnicodeString();
-        let data = ffi::sfString_getData(sf_string);
-        let string = SfStr::from_ptr_str(data).to_rust_string();
-        ffi::sfString_delete(sf_string);
-        string
+        let sf_string = FBox::new(crate::ffi::window::sfClipboard_getUnicodeString())
+            .expect("Failed to get clipboard string");
+        SfStr::from_ptr_str(ffi::sfString_getData(&*sf_string)).to_rust_string()
     }
 }
 
@@ -41,6 +44,7 @@ pub fn set_string<S: SfStrConv>(string: S) {
 }
 
 #[cfg_attr(not(feature = "ci-headless"), test)]
+#[cfg_attr(feature = "ci-headless", expect(dead_code))]
 fn identity_test() {
     set_string("Hello world");
     assert_eq!(&get_string(), "Hello world");

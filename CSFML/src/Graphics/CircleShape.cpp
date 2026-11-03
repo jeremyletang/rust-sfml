@@ -89,6 +89,10 @@ extern "C" void sfCircleShape_setOutlineThickness(sf::CircleShape *shape, float 
     shape->setOutlineThickness(thickness);
 }
 
+extern "C" void sfCircleShape_setMiterLimit(sf::CircleShape *shape, float miterLimit) {
+    shape->setMiterLimit(miterLimit);
+}
+
 extern "C" const sf::Texture *sfCircleShape_getTexture(const sf::CircleShape *shape) {
     return shape->getTexture();
 }
@@ -107,6 +111,10 @@ extern "C" sfColor sfCircleShape_getOutlineColor(const sf::CircleShape *shape) {
 
 extern "C" float sfCircleShape_getOutlineThickness(const sf::CircleShape *shape) {
     return shape->getOutlineThickness();
+}
+
+extern "C" float sfCircleShape_getMiterLimit(const sf::CircleShape *shape) {
+    return shape->getMiterLimit();
 }
 
 extern "C" size_t sfCircleShape_getPointCount(const sf::CircleShape *shape) {

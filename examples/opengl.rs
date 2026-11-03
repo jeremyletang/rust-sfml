@@ -52,7 +52,7 @@ fn main() -> SfResult<()> {
 
         let mut texture = Texture::from_file("texture.jpg")?;
         texture.generate_mipmap()?;
-        window.set_active(true)?;
+        window.set_active(true);
         unsafe {
             gl::glEnable(gl::GL_DEPTH_TEST);
             gl::glDepthMask(gl::GL_TRUE as _);
@@ -102,7 +102,7 @@ fn main() -> SfResult<()> {
             gl::glDisableClientState(gl::GL_COLOR_ARRAY);
         }
 
-        window.set_active(false)?;
+        window.set_active(false);
         let mut clock = Clock::new()?;
         clock.start();
         let mut mipmap_enabled = true;
@@ -123,9 +123,9 @@ fn main() -> SfResult<()> {
                         if mipmap_enabled {
                             texture = Texture::from_file("texture.jpg")?;
                             mipmap_enabled = false;
-                            window.set_active(true)?;
+                            window.set_active(true);
                             Texture::bind(&texture);
-                            window.set_active(false)?;
+                            window.set_active(false);
                         } else {
                             texture.generate_mipmap()?;
                             mipmap_enabled = true;
@@ -136,23 +136,27 @@ fn main() -> SfResult<()> {
                     } => {
                         srgb = !srgb;
                         window.close();
+                        break;
                     }
                     Event::Resized { size } => {
-                        window.set_active(true)?;
+                        window.set_active(true);
                         unsafe {
                             gl::glViewport(0, 0, size.x as _, size.y as _);
                         }
-                        window.set_active(false)?;
+                        window.set_active(false);
                     }
                     _ => {}
                 }
+            }
+            if !window.is_open() {
+                break;
             }
             window.push_gl_states();
             window.draw(&bg_sprite);
             window.pop_gl_states();
 
-            if let Err(e) = window.set_active(true) {
-                eprintln!("Failed to set window as active: {e}");
+            if !window.set_active(true) {
+                eprintln!("Failed to set window as active");
             }
 
             unsafe {
@@ -170,8 +174,8 @@ fn main() -> SfResult<()> {
                 gl::glRotatef(clock.elapsed_time().as_seconds() * 90., 0., 0., 1.);
                 gl::glDrawArrays(gl::GL_TRIANGLES, 0, 36);
             }
-            if let Err(e) = window.set_active(false) {
-                eprintln!("Failed to set window as active: {e}");
+            if !window.set_active(false) {
+                eprintln!("Failed to set window as active");
             }
             window.push_gl_states();
             window.draw(&text);

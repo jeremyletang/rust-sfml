@@ -89,6 +89,10 @@ extern "C" void sfRectangleShape_setOutlineThickness(sf::RectangleShape *shape, 
     shape->setOutlineThickness(thickness);
 }
 
+extern "C" void sfRectangleShape_setMiterLimit(sf::RectangleShape *shape, float miterLimit) {
+    shape->setMiterLimit(miterLimit);
+}
+
 extern "C" const sf::Texture *sfRectangleShape_getTexture(const sf::RectangleShape *shape) {
     return shape->getTexture();
 }
@@ -107,6 +111,10 @@ extern "C" sfColor sfRectangleShape_getOutlineColor(const sf::RectangleShape *sh
 
 extern "C" float sfRectangleShape_getOutlineThickness(const sf::RectangleShape *shape) {
     return shape->getOutlineThickness();
+}
+
+extern "C" float sfRectangleShape_getMiterLimit(const sf::RectangleShape *shape) {
+    return shape->getMiterLimit();
 }
 
 extern "C" size_t sfRectangleShape_getPointCount(const sf::RectangleShape *shape) {

@@ -175,7 +175,7 @@ impl<T> Vector2<T> {
         self.length_sq().sqrt()
     }
 
-    /// Vector with the same direciton but length 1
+    /// Vector with the same direction but length 1
     ///
     /// # Usage example
     ///

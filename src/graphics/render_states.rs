@@ -72,6 +72,16 @@ impl RenderStates<'_, '_, '_> {
     /// The default render state.
     ///
     /// This can be used in a const context, unlike the [`Default`] implementation.
+    ///
+    /// ```
+    /// # use sfml::graphics::{BlendMode, RenderStates, Transform};
+    /// let states = RenderStates::DEFAULT;
+    /// assert_eq!(states.blend_mode, BlendMode::ALPHA);
+    /// assert_eq!(states.transform, Transform::IDENTITY);
+    /// assert!(states.texture.is_none());
+    /// assert!(states.shader.is_none());
+    /// assert_eq!(RenderStates::default().blend_mode, states.blend_mode);
+    /// ```
     pub const DEFAULT: Self = Self {
         blend_mode: BlendMode::ALPHA,
         stencil_mode: StencilMode::DEFAULT,

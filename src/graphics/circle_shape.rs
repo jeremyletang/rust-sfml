@@ -39,6 +39,13 @@ impl<'s> CircleShape<'s> {
     /// * `point_count` - The number of points to define the `CircleShape`
     ///
     /// Default value on SFML are radius = 0 / pointCount = 30
+    ///
+    /// ```
+    /// # use sfml::graphics::{CircleShape, Shape};
+    /// let circle = CircleShape::new(10., 30);
+    /// assert_eq!(circle.radius(), 10.);
+    /// assert_eq!(circle.point_count(), 30);
+    /// ```
     #[must_use]
     pub fn new(radius: f32, point_count: usize) -> CircleShape<'s> {
         let mut shape = CircleShape::default();
@@ -114,7 +121,7 @@ impl Transformable for CircleShape<'_> {
     fn rotation(&self) -> Angle {
         unsafe { Angle::degrees(ffi::sfCircleShape_getRotation(self.handle.as_ptr())) }
     }
-    fn get_scale(&self) -> Vector2f {
+    fn scale(&self) -> Vector2f {
         unsafe { ffi::sfCircleShape_getScale(self.handle.as_ptr()) }
     }
     fn origin(&self) -> Vector2f {
@@ -126,7 +133,7 @@ impl Transformable for CircleShape<'_> {
     fn rotate(&mut self, angle: Angle) {
         unsafe { ffi::sfCircleShape_rotate(self.handle.as_ptr(), angle.as_degrees()) }
     }
-    fn scale<F: Into<Vector2f>>(&mut self, factors: F) {
+    fn scale_by<F: Into<Vector2f>>(&mut self, factors: F) {
         unsafe { ffi::sfCircleShape_scale(self.handle.as_ptr(), factors.into()) }
     }
     fn transform(&self) -> &Transform {
@@ -156,6 +163,9 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     fn set_outline_thickness(&mut self, thickness: f32) {
         unsafe { ffi::sfCircleShape_setOutlineThickness(self.handle.as_ptr(), thickness) }
     }
+    fn set_miter_limit(&mut self, limit: f32) {
+        unsafe { ffi::sfCircleShape_setMiterLimit(self.handle.as_ptr(), limit) }
+    }
     fn texture(&self) -> Option<&'s Texture> {
         unsafe {
             let raw = ffi::sfCircleShape_getTexture(self.handle.as_ptr());
@@ -173,6 +183,9 @@ impl<'s> Shape<'s> for CircleShape<'s> {
     }
     fn outline_thickness(&self) -> f32 {
         unsafe { ffi::sfCircleShape_getOutlineThickness(self.handle.as_ptr()) }
+    }
+    fn miter_limit(&self) -> f32 {
+        unsafe { ffi::sfCircleShape_getMiterLimit(self.handle.as_ptr()) }
     }
     fn point_count(&self) -> usize {
         unsafe { ffi::sfCircleShape_getPointCount(self.handle.as_ptr()) }

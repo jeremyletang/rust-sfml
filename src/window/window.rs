@@ -1,12 +1,16 @@
 use crate::{
-    IntoSfResult, SfResult,
+    IntoSfResult, SfError, SfResult,
     cpp::FBox,
     ffi::window as ffi,
     system::{SfStrConv, Time, Vector2i, Vector2u},
     window::{ContextSettings, Cursor, Event, Style, VideoMode, thread_safety},
 };
 
-use super::window_enums::State;
+use super::{
+    event::drain_events,
+    vulkan::{VkAllocationCallbacks, VkInstance, VkSurfaceKHR},
+    window_enums::State,
+};
 
 /// The system native window handle type. Can be used to create an SFML Window
 /// from an existing system window.
@@ -31,23 +35,19 @@ decl_opaque! {
 }
 
 impl Window {
-    /// Create a new (closed) window.
-    pub fn new() -> SfResult<FBox<Self>> {
-        FBox::new(unsafe { ffi::sfWindow_new() }).into_sf_result()
-    }
     /// Creates a new window and opens it with the specified parameters.
     ///
     /// See [`Self::open`].
-    pub fn new_open<V: Into<VideoMode>, S: SfStrConv>(
+    pub fn new<V: Into<VideoMode>, S: SfStrConv>(
         mode: V,
         title: S,
         style: Style,
         state: State,
         settings: &ContextSettings,
     ) -> SfResult<FBox<Self>> {
-        let mut new = Self::new()?;
-        new.open(mode, title, style, state, settings);
-        Ok(new)
+        let mut window = FBox::new(unsafe { ffi::sfWindow_new() }).into_sf_result()?;
+        window.open(mode, title, style, state, settings);
+        Ok(window)
     }
     /// Open the window with the specified parameters
     ///
@@ -57,16 +57,14 @@ impl Window {
     /// title bar, resizable, closable, ...). If style contains
     /// [`Style::FULLSCREEN`], then mode must be a valid video mode.
     ///
-    /// The fourth parameter is a pointer to a structure specifying
-    /// advanced OpenGL context settings such as antialiasing,
-    /// depth-buffer bits, etc.
-    ///
     /// # Arguments
     /// * mode - Video mode to use (defines the width, height and depth of the
     ///   rendering area of the window)
     /// * title - Title of the window
     /// * style - Window style
-    /// * settings - Additional settings for the underlying OpenGL context
+    /// * state - Window state (windowed or fullscreen)
+    /// * settings - Additional settings for the underlying OpenGL context,
+    ///   such as antialiasing and depth-buffer bits
     pub fn open<V: Into<VideoMode>, S: SfStrConv>(
         &mut self,
         mode: V,
@@ -120,6 +118,34 @@ impl Window {
         unsafe { ffi::sfWindow_getNativeHandle(self) }
     }
 
+    /// Creates a Vulkan surface for the window
+    ///
+    /// The window must be open. Returns [`SfError::CallFailed`] if SFML could not create the
+    /// surface.
+    ///
+    /// # Safety
+    ///
+    /// `instance` must be a valid Vulkan instance, created with the extensions that
+    /// [`crate::window::vulkan::graphics_required_instance_extensions`] returns. If `allocator`
+    /// is given, it must stay valid until the surface is destroyed. The surface must be destroyed
+    /// before the window is closed or dropped, and before `instance` is destroyed.
+    pub unsafe fn create_vulkan_surface(
+        &mut self,
+        instance: VkInstance,
+        allocator: Option<&VkAllocationCallbacks>,
+    ) -> SfResult<VkSurfaceKHR> {
+        let mut surface = std::mem::MaybeUninit::uninit();
+        let allocator = allocator.map_or(std::ptr::null(), std::ptr::from_ref);
+        let created = unsafe {
+            ffi::sfWindow_createVulkanSurface(self, instance, surface.as_mut_ptr(), allocator)
+        };
+        if created {
+            Ok(unsafe { surface.assume_init() })
+        } else {
+            Err(SfError::CallFailed)
+        }
+    }
+
     ///  Pop the event on top of event queue, if any, and return it
     ///
     /// This function is not blocking: if there's no pending event then
@@ -139,6 +165,58 @@ impl Window {
         }
     }
 
+    /// Process every pending event, passing each one to `handler`
+    ///
+    /// The handler can't use the window, because this function borrows it until it returns.
+    /// To close the window, set a flag in the handler and call [`Window::close`] after this
+    /// function returns. Use [`Window::poll_event`] instead when the window is needed for each
+    /// event.
+    ///
+    /// # Usage Example
+    ///
+    #[cfg_attr(feature = "ci-headless", doc = "```no_run")]
+    #[cfg_attr(not(feature = "ci-headless"), doc = "```")]
+    /// use sfml::window::{Event, Style, Window};
+    ///
+    /// let mut window = Window::new(
+    ///     (800, 600),
+    ///     "handle_events",
+    ///     Style::CLOSE,
+    ///     Default::default(),
+    ///     &Default::default(),
+    /// )
+    /// .unwrap();
+    /// let mut close_requested = false;
+    /// window.handle_events(|event| {
+    ///     if event == Event::Closed {
+    ///         close_requested = true;
+    ///     }
+    /// });
+    /// if close_requested {
+    ///     window.close();
+    /// }
+    /// ```
+    ///
+    /// Calling [`Window::close`] inside the handler does not compile, because the window is
+    /// already borrowed:
+    ///
+    /// ```compile_fail,E0499
+    /// use sfml::window::{Style, Window};
+    ///
+    /// let mut window = Window::new(
+    ///     (800, 600),
+    ///     "handle_events",
+    ///     Style::CLOSE,
+    ///     Default::default(),
+    ///     &Default::default(),
+    /// )
+    /// .unwrap();
+    /// window.handle_events(|_| window.close());
+    /// ```
+    pub fn handle_events(&mut self, handler: impl FnMut(Event)) {
+        drain_events(|| self.poll_event(), handler);
+    }
+
     /// Wait for an event and return it
     ///
     /// This function is blocking: if there's no pending event then
@@ -148,7 +226,7 @@ impl Window {
     /// is dedicated to events handling: you want to make this thread
     /// sleep as long as no new event is received.
     ///
-    /// Returns `Some(event)` or `None` if an error has occured
+    /// Returns `Some(event)` or `None` if an error has occurred
     pub fn wait_event(&mut self, timeout: Time) -> Option<Event> {
         let mut event = std::mem::MaybeUninit::uninit();
         let have_event =
@@ -217,11 +295,9 @@ impl Window {
     /// # Arguments
     /// * title - New title
     pub fn set_title<S: SfStrConv>(&mut self, title: S) {
-        unsafe {
-            title.with_as_sfstr(|sfstr| {
-                ffi::sfWindow_setUnicodeTitle(self, sfstr.as_ptr());
-            });
-        }
+        title.with_as_sfstr(|sfstr| unsafe {
+            ffi::sfWindow_setUnicodeTitle(self, sfstr.as_ptr());
+        });
     }
 
     /// Show or hide a window
@@ -235,7 +311,7 @@ impl Window {
     /// Show or hide the mouse cursor
     ///
     /// # Arguments
-    /// * visible - true to  false to hide
+    /// * visible - true to show the cursor, false to hide it
     pub fn set_mouse_cursor_visible(&mut self, visible: bool) {
         unsafe { ffi::sfWindow_setMouseCursorVisible(self, visible) }
     }
@@ -365,7 +441,7 @@ impl Window {
     ///
     /// Pass `None` to unset the minimum size
     pub fn set_minimum_size(&mut self, size: Option<Vector2u>) {
-        let ptr = size.as_ref().map_or(std::ptr::null(), |v| v);
+        let ptr = size.as_ref().map_or(std::ptr::null(), std::ptr::from_ref);
         unsafe {
             ffi::sfWindow_setMinimumSize(self, ptr);
         }
@@ -375,7 +451,7 @@ impl Window {
     ///
     /// Pass `None` to unset the maximum size
     pub fn set_maximum_size(&mut self, size: Option<Vector2u>) {
-        let ptr = size.as_ref().map_or(std::ptr::null(), |v| v);
+        let ptr = size.as_ref().map_or(std::ptr::null(), std::ptr::from_ref);
         unsafe {
             ffi::sfWindow_setMaximumSize(self, ptr);
         }
@@ -408,12 +484,6 @@ impl Window {
     /// The cursor can not be destroyed while in use by the window.
     pub unsafe fn set_mouse_cursor(&mut self, cursor: &Cursor) {
         unsafe { ffi::sfWindow_setMouseCursor(self, cursor) }
-    }
-
-    /// Returns the current position of a touch in window coordinates.
-    #[must_use]
-    pub fn touch_position(&self, finger: u32) -> Vector2i {
-        unsafe { ffi::sfTouch_getPositionRelativeTo(finger, self) }
     }
 
     /// Check whether the window has the input focus.

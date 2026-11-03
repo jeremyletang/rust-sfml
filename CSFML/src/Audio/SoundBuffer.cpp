@@ -29,7 +29,8 @@ extern "C" bool sfSoundBuffer_loadFromStream(sf::SoundBuffer *buffer, sfInputStr
 }
 
 extern "C" bool sfSoundBuffer_loadFromSamples(sf::SoundBuffer *buffer, const int16_t *samples, uint64_t sampleCount, unsigned int channelCount, unsigned int sampleRate, const sfSoundChannel *channelMap, size_t channelMapLen) {
-    std::vector<sf::SoundChannel> castedChannelMap(channelMapLen);
+    std::vector<sf::SoundChannel> castedChannelMap;
+    castedChannelMap.reserve(channelMapLen);
     for (size_t i = 0; i < channelMapLen; i++) {
         castedChannelMap.push_back(static_cast<sf::SoundChannel>(channelMap[i]));
     }
@@ -57,7 +58,7 @@ extern "C" unsigned int sfSoundBuffer_getChannelCount(const sf::SoundBuffer *sou
 }
 
 extern "C" const std::vector<sf::SoundChannel> *sfSoundBuffer_getChannelMap(const sf::SoundBuffer *soundStream) {
-    return new std::vector(soundStream->getChannelMap());
+    return &soundStream->getChannelMap();
 }
 
 extern "C" int64_t sfSoundBuffer_getDuration(const sf::SoundBuffer *soundBuffer) {

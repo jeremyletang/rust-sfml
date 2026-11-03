@@ -16,6 +16,7 @@ pub use self::{
 pub mod capture;
 pub mod listener;
 mod music;
+pub mod playback_device;
 mod sound;
 mod sound_buffer;
 mod sound_channel;

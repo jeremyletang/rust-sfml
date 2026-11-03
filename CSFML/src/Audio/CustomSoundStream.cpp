@@ -23,7 +23,8 @@ class sfCustomSoundStream final : public sf::SoundStream {
                         void *userData) : myGetDataCb(onGetData),
                                           mySeekCallCb(onSeek),
                                           myUserData(userData) {
-        std::vector<sf::SoundChannel> castedSoundChannels(soundChannelMapLen);
+        std::vector<sf::SoundChannel> castedSoundChannels;
+        castedSoundChannels.reserve(soundChannelMapLen);
         for (size_t i = 0; i < soundChannelMapLen; i++) {
             castedSoundChannels.push_back(static_cast<sf::SoundChannel>(soundChannels[i]));
         }
@@ -79,7 +80,7 @@ extern "C" unsigned int sfCustomSoundStream_getSampleRate(const sfCustomSoundStr
 }
 
 extern "C" const std::vector<sf::SoundChannel> *sfCustomSoundStream_getChannelMap(const sfCustomSoundStream *soundStream) {
-    return new std::vector(soundStream->getChannelMap());
+    return &soundStream->getChannelMap();
 }
 
 extern "C" void sfCustomSoundStream_setPitch(sfCustomSoundStream *soundStream, float pitch) {

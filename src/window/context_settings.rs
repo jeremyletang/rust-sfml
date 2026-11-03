@@ -20,6 +20,18 @@ impl Default for ContextSettings {
     /// - Minor version: 1
     /// - Attribute flags: [`ATTRIB_DEFAULT`](ContextSettings::ATTRIB_DEFAULT)
     /// - SRGB capable: false
+    ///
+    /// ```
+    /// use sfml::window::ContextSettings;
+    ///
+    /// let settings = ContextSettings::default();
+    /// assert_eq!(settings.major_version, 1);
+    /// assert_eq!(settings.minor_version, 1);
+    /// assert_eq!(settings.depth_bits, 0);
+    /// assert_eq!(settings.antialiasing_level, 0);
+    /// assert_eq!(settings.attribute_flags, ContextSettings::ATTRIB_DEFAULT);
+    /// assert!(!settings.srgb_capable);
+    /// ```
     fn default() -> Self {
         Self {
             depth_bits: 0,

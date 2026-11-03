@@ -1,5 +1,8 @@
 ////////////////////////////////////////////////////////////
-/// \brief Encapsulate a 3x3 transform matrix
+/// \brief Legacy 9-float transform struct
+///
+/// This is unused by the Rust bindings, which use a 16-float
+/// `Transform`. Do not use it with the Rust `Transform` type.
 ///
 ////////////////////////////////////////////////////////////
 #include <SFML/Graphics/Transform.hpp>

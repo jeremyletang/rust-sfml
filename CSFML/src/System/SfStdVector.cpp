@@ -12,3 +12,7 @@ extern "C" const std::string *sfStdStringVector_getData(const std::vector<std::s
 extern "C" std::size_t sfStdStringVector_getLength(const std::vector<std::string> *vec) {
     return vec->size();
 }
+
+extern "C" const std::string *sfStdStringVector_getAt(const std::vector<std::string> *vec, std::size_t index) {
+    return &(*vec)[index];
+}

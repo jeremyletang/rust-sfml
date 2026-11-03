@@ -8,10 +8,11 @@ pub use self::{
     clock::Clock,
     input_stream::InputStream,
     sleep::sleep,
-    string::{SfStr, SfStrConv, SfString},
+    string::{SfStr, SfStrConv, SfStrConvError},
     time::Time,
     vector2::{Vector2, Vector2f, Vector2i, Vector2u},
     vector3::{Vector3, Vector3f, Vector3i},
+    version::{Version, version},
 };
 
 mod angle;
@@ -23,3 +24,4 @@ mod string;
 mod time;
 mod vector2;
 mod vector3;
+mod version;

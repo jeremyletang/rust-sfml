@@ -1,8 +1,31 @@
 use {
     super::{sound_channel::SoundChannel, sound_source::SoundSource},
     crate::{
-        cpp::CppVector,
-        ffi::audio::{sfCustomSoundStream, sfCustomSoundStream_new, sfCustomSoundStream_play, sfCustomSoundStream_pause, sfCustomSoundStream_stop, sfCustomSoundStream_getPlayingOffset, sfCustomSoundStream_setPlayingOffset, sfCustomSoundStream_getChannelCount, sfCustomSoundStream_getSampleRate, sfCustomSoundStream_getChannelMap, sfCustomSoundStream_isLooping, sfCustomSoundStream_setLooping, sfCustomSoundStream_setPitch, sfCustomSoundStream_setVolume, sfCustomSoundStream_setPosition, sfCustomSoundStream_setRelativeToListener, sfCustomSoundStream_setMinDistance, sfCustomSoundStream_setAttenuation, sfCustomSoundStream_getPitch, sfCustomSoundStream_getVolume, sfCustomSoundStream_getPosition, sfCustomSoundStream_isRelativeToListener, sfCustomSoundStream_getMinDistance, sfCustomSoundStream_getAttenuation, sfCustomSoundStream_setPan, sfCustomSoundStream_setSpatializationEnabled, sfCustomSoundStream_setDirection, sfCustomSoundStream_setCone, sfCustomSoundStream_setVelocity, sfCustomSoundStream_setDopplerFactor, sfCustomSoundStream_setDirectionalAttenuationFactor, sfCustomSoundStream_setMaxDistance, sfCustomSoundStream_setMinGain, sfCustomSoundStream_setMaxGain, effect_processor_trampoline, sfCustomSoundStream_setEffectProcessor, sfCustomSoundStream_getPan, sfCustomSoundStream_isSpatializationEnabled, sfCustomSoundStream_getDirection, sfCustomSoundStream_getCone, sfCustomSoundStream_getVelocity, sfCustomSoundStream_getDopplerFactor, sfCustomSoundStream_getDirectionalAttenuationFactor, sfCustomSoundStream_getMaxDistance, sfCustomSoundStream_getMinGain, sfCustomSoundStream_getMaxGain, sfCustomSoundStream_getStatus, sfCustomSoundStream_del},
+        ffi::audio::{
+            effect_processor_trampoline, sfCustomSoundStream, sfCustomSoundStream_del,
+            sfCustomSoundStream_getAttenuation, sfCustomSoundStream_getChannelCount,
+            sfCustomSoundStream_getChannelMap, sfCustomSoundStream_getCone,
+            sfCustomSoundStream_getDirection, sfCustomSoundStream_getDirectionalAttenuationFactor,
+            sfCustomSoundStream_getDopplerFactor, sfCustomSoundStream_getMaxDistance,
+            sfCustomSoundStream_getMaxGain, sfCustomSoundStream_getMinDistance,
+            sfCustomSoundStream_getMinGain, sfCustomSoundStream_getPan,
+            sfCustomSoundStream_getPitch, sfCustomSoundStream_getPlayingOffset,
+            sfCustomSoundStream_getPosition, sfCustomSoundStream_getSampleRate,
+            sfCustomSoundStream_getStatus, sfCustomSoundStream_getVelocity,
+            sfCustomSoundStream_getVolume, sfCustomSoundStream_isLooping,
+            sfCustomSoundStream_isRelativeToListener, sfCustomSoundStream_isSpatializationEnabled,
+            sfCustomSoundStream_new, sfCustomSoundStream_pause, sfCustomSoundStream_play,
+            sfCustomSoundStream_setAttenuation, sfCustomSoundStream_setCone,
+            sfCustomSoundStream_setDirection, sfCustomSoundStream_setDirectionalAttenuationFactor,
+            sfCustomSoundStream_setDopplerFactor, sfCustomSoundStream_setEffectProcessor,
+            sfCustomSoundStream_setLooping, sfCustomSoundStream_setMaxDistance,
+            sfCustomSoundStream_setMaxGain, sfCustomSoundStream_setMinDistance,
+            sfCustomSoundStream_setMinGain, sfCustomSoundStream_setPan,
+            sfCustomSoundStream_setPitch, sfCustomSoundStream_setPlayingOffset,
+            sfCustomSoundStream_setPosition, sfCustomSoundStream_setRelativeToListener,
+            sfCustomSoundStream_setSpatializationEnabled, sfCustomSoundStream_setVelocity,
+            sfCustomSoundStream_setVolume, sfCustomSoundStream_stop,
+        },
         system::{Time, Vector3f},
     },
     std::{ffi::c_uint, marker::PhantomData, os::raw::c_void, panic, ptr::NonNull},
@@ -49,11 +72,14 @@ unsafe extern "C" fn get_data_callback<S: SoundStream>(
 ) -> bool {
     let stream: *mut S = user_data.cast();
     unsafe {
-        let (data, keep_playing) =
-            if let Ok(ret) = panic::catch_unwind(panic::AssertUnwindSafe(|| (*stream).get_data())) { ret } else {
-                eprintln!("sound_stream: Stopping playback beacuse `get_data` panicked.");
-                (&[][..], false)
-            };
+        let (data, keep_playing) = if let Ok(ret) =
+            panic::catch_unwind(panic::AssertUnwindSafe(|| (*stream).get_data()))
+        {
+            ret
+        } else {
+            eprintln!("sound_stream: Stopping playback because `get_data` panicked.");
+            (&[][..], false)
+        };
         (*chunk).samples = data.as_ptr();
         (*chunk).sample_count = data.len();
         keep_playing
@@ -165,7 +191,7 @@ impl<'a, S: SoundStream> SoundStreamPlayer<'a, S> {
     ///
     /// Return Map of position in sample frame to sound channel
     #[must_use]
-    pub fn channel_map(&self) -> &'static CppVector<SoundChannel> {
+    pub fn channel_map(&self) -> &[SoundChannel] {
         unsafe { &*sfCustomSoundStream_getChannelMap(self.handle.as_ptr()) }
     }
     /// Tell whether or not the stream is in loop mode.
@@ -292,13 +318,13 @@ impl<S: SoundStream> SoundSource for SoundStreamPlayer<'_, S> {
     fn directional_attenuation_factor(&self) -> f32 {
         unsafe { sfCustomSoundStream_getDirectionalAttenuationFactor(self.handle.as_ptr()) }
     }
-    fn get_max_distance(&self) -> f32 {
+    fn max_distance(&self) -> f32 {
         unsafe { sfCustomSoundStream_getMaxDistance(self.handle.as_ptr()) }
     }
-    fn get_min_gain(&self) -> f32 {
+    fn min_gain(&self) -> f32 {
         unsafe { sfCustomSoundStream_getMinGain(self.handle.as_ptr()) }
     }
-    fn get_max_gain(&self) -> f32 {
+    fn max_gain(&self) -> f32 {
         unsafe { sfCustomSoundStream_getMaxGain(self.handle.as_ptr()) }
     }
     fn status(&self) -> super::sound_source::Status {

@@ -139,7 +139,7 @@ extern "C" sfVector3f sfSound_getPosition(const sf::Sound *sound) {
 }
 
 extern "C" sfVector3f sfSound_getDirection(const sf::Sound *sound) {
-    return convertVector3(sound->getPosition());
+    return convertVector3(sound->getDirection());
 }
 
 extern "C" sfSoundSourceCone sfSound_getCone(const sf::Sound *sound) {
@@ -155,7 +155,7 @@ extern "C" float sfSound_getDopplerFactor(const sf::Sound *sound) {
 }
 
 extern "C" float sfSound_getDirectionalAttenuationFactor(const sf::Sound *sound) {
-    return sound->getDopplerFactor();
+    return sound->getDirectionalAttenuationFactor();
 }
 
 extern "C" float sfSound_getMaxDistance(const sf::Sound *sound) {

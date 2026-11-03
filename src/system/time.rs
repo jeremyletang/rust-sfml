@@ -63,6 +63,12 @@ impl Ord for Time {
 
 impl Time {
     /// Constructs a time value from a number of seconds.
+    ///
+    /// ```
+    /// # use sfml::system::Time;
+    /// let t = Time::seconds(1.5);
+    /// assert_eq!(t.as_milliseconds(), 1500);
+    /// ```
     #[must_use]
     #[expect(clippy::cast_possible_truncation)]
     pub const fn seconds(seconds: f32) -> Self {
@@ -70,24 +76,46 @@ impl Time {
     }
 
     /// Constructs a time value from a number of milliseconds.
+    ///
+    /// ```
+    /// # use sfml::system::Time;
+    /// let t = Time::milliseconds(250);
+    /// assert_eq!(t.as_microseconds(), 250_000);
+    /// ```
     #[must_use]
     pub const fn milliseconds(milliseconds: i32) -> Self {
         Time(milliseconds as i64 * 1000)
     }
 
     /// Constructs a time value from a number of microseconds.
+    ///
+    /// ```
+    /// # use sfml::system::Time;
+    /// let t = Time::microseconds(12_345);
+    /// assert_eq!(t.as_microseconds(), 12_345);
+    /// ```
     #[must_use]
     pub const fn microseconds(microseconds: i64) -> Self {
         Time(microseconds)
     }
 
     /// Returns the time value as a number of seconds.
+    ///
+    /// ```
+    /// # use sfml::system::Time;
+    /// assert_eq!(Time::milliseconds(1500).as_seconds(), 1.5);
+    /// ```
     #[must_use]
     pub const fn as_seconds(self) -> f32 {
         self.0 as f32 / 1_000_000.
     }
 
     /// Returns the time value as a number of milliseconds.
+    ///
+    /// ```
+    /// # use sfml::system::Time;
+    /// assert_eq!(Time::seconds(2.0).as_milliseconds(), 2000);
+    /// ```
     #[must_use]
     #[expect(clippy::cast_possible_truncation)]
     pub const fn as_milliseconds(self) -> i32 {
@@ -95,6 +123,11 @@ impl Time {
     }
 
     /// Returns the time value as a number of microseconds.
+    ///
+    /// ```
+    /// # use sfml::system::Time;
+    /// assert_eq!(Time::milliseconds(2).as_microseconds(), 2000);
+    /// ```
     #[must_use]
     pub const fn as_microseconds(self) -> i64 {
         self.0
@@ -107,6 +140,12 @@ impl Time {
     }
 
     /// Predefined "zero" time value.
+    ///
+    /// ```
+    /// # use sfml::system::Time;
+    /// assert_eq!(Time::ZERO.as_microseconds(), 0);
+    /// assert_eq!(Time::ZERO, Time::seconds(0.0));
+    /// ```
     pub const ZERO: Time = Time(0);
 }
 
